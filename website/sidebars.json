@@ -1,0 +1,12 @@
+{
+
+  "docs": {
+    "docs.wandisco.com": ["doc1"]
+  },
+  "api": {
+    "API": ["api", "api-again"]
+  },
+  "quickstarts": {
+    "Initial Configuration": ["quickstart-config", "adlsg1", "adlsg2", "cdh", "hdp"]
+  }
+}

@@ -1,17 +1,17 @@
 ---
 id: adlsg1
-title: ADLS Gen 1
-sidebar_label: ADLS Gen 1
+title: ADLS Gen1
+sidebar_label: ADLS Gen1
 ---
 
-Use this quickstart if you want to configure Fusion to connect to ADLS Gen 1 storage.
+Use this quickstart if you want to configure Fusion to connect to ADLS Gen1 storage.
 
 ## Prerequisites
 
 * Azure VM instance set up and running, with root access available.
 * Docker (v19.03.3 or higher), Docker Compose (v1.24.1 or higher), and Git installed on instance.
-* Credentials for accessing the Data Lake Storage Gen 1.
-* Network connectivity between Azure VM and Data Lake Storage Gen 1.
+* Credentials for accessing the Data Lake Storage Gen1.
+* Network connectivity between Azure VM and Data Lake Storage Gen1.
 
 ## Guidance
 
@@ -39,9 +39,9 @@ Please choose from one of the following zone types:
 Enter the first zone type: hdi-adls1
 Enter a name for the first zone [hdi-adls1]: adls1-zone
 Configure a second zone? (Y/n) n
-Enter the ADLS home hostname for adls1-zone [example.westeurope.azuredatalakestore.net]: "The ADLS Gen 1 hostname to connect to."
+Enter the ADLS home hostname for adls1-zone [example.westeurope.azuredatalakestore.net]: "The ADLS Gen1 hostname to connect to."
 Enter the ADLS home mountpoint for adls1-zone [/]: "The file path in the ADLS file system for Fusion to use as root."
-Enter the ADL handshake user for adls1-zone: "The service principal name to be used to authenticate with the ADLS Gen 1."
+Enter the ADL handshake user for adls1-zone: "The service principal name to be used to authenticate with the ADLS Gen1."
 Enter the ADL OAUTH2 Credential for adls1-zone: "The authentication key of the Active Directory credential you wish to use with Fusion."
 Enter the ADL OAUTH2 Refresh URL for adls1-zone [https://login.microsoftonline.com/example/oauth2/token]: "The Refresh Token URL for the account."
 Enter the ADL OAUTH2 Client ID for adls1-zone: "The full client ID of the Active Directory credential you wish to use with Fusion."

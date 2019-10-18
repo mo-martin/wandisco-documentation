@@ -23,14 +23,14 @@ function Help(props) {
     {
       content: `Learn more in the WANdisco [User Guides.](https://docs.wandisco.com/,
       )`,
-      title: 'Browse Docs',
+      title: 'Browse the Docs',
     },
     {
-      content: 'Ask questions about the documentation and project',
-      title: 'Join the community',
+      content: 'Go to the [WANdisco community](https://community.wandisco.com/) to contact our support team.',
+      title: 'Get support',
     },
     {
-      content: "Find out what's new with this project",
+      content: "Find out what's new on [wandisco.com](https://wandisco.com/).",
       title: 'Stay up to date',
     },
   ];
@@ -42,8 +42,6 @@ function Help(props) {
           <header className="postHeader">
             <h1>Need help?</h1>
           </header>
-          <p>Visit the <a href="https://community.wandisco.com/">WANdisco community</a>
-          </p>
           <GridBlock contents={supportLinks} layout="threeColumn" />
         </div>
       </Container>

@@ -39,8 +39,9 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'quickstart-config', label: 'Quickstarts'},
+    {doc: 'quickstarts/quickstart-config', label: 'Quickstarts'},
     {doc: 'doc1', label: 'Docs'},
+    {doc: 'glossary/a', label: 'Glossary'},
     {doc: 'api', label: 'API'},
     {page: 'help', label: 'Help'},
   ],
@@ -74,7 +75,7 @@ const siteConfig = {
   */
 
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
-  copyright: `Copyright © ${new Date().getFullYear()} WANdisco Inc.`,
+  copyright: `Copyright © ${new Date().getFullYear()} WANdisco, Inc.`,
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.

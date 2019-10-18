@@ -63,7 +63,7 @@ class HomeSplash extends React.Component {
         <div className="inner">
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
-            <Button href={docUrl('quickstart-config.html')}>Get Started</Button>
+            <Button href={docUrl('quickstarts/quickstart-config.html')}>Get Started</Button>
             <Button href="https://wandisco.tech">WANdisco.tech</Button>
             <Button href="https://www.docker.com/get-started">Get Docker</Button>
 
@@ -92,31 +92,6 @@ class Index extends React.Component {
       </Container>
     );
 
-    const FeatureCallout = () => (
-
-      <div
-        className="productShowcaseSection paddingBottom"
-        style={{textAlign: 'center'}}>
-        <h2>Docker</h2>
-        <MarkdownBlock>Get up and running in minutes with WANdisco Fusion & Docker.</MarkdownBlock>
-      </div>
-    );
-
-    const TryOut = () => (
-      <Block id="try">
-        {[
-          {
-            content:
-              'To make your landing page more attractive, use illustrations! Check out ' +
-              '[**unDraw**](https://undraw.co/) which provides you with customizable illustrations which are free to use. ' +
-              'The illustrations you see on this page are from unDraw.',
-            image: `${baseUrl}img/undraw_code_review.svg`,
-            imageAlign: 'left',
-            title: 'Wonderful SVG Illustrations',
-          },
-        ]}
-      </Block>
-    );
 
     const Description = () => (
       <Block background="dark">
@@ -132,19 +107,7 @@ class Index extends React.Component {
       </Block>
     );
 
-    const LearnHow = () => (
-      <Block background="light">
-        {[
-          {
-            content:
-              'Each new Docusaurus project has **randomly-generated** theme colors.',
-            image: `${baseUrl}img/undraw_youtube_tutorial.svg`,
-            imageAlign: 'right',
-            title: 'Randomly Generated Theme Colors',
-          },
-        ]}
-      </Block>
-    );
+
 
     const Features = () => (
       <Block layout="fourColumn">
@@ -154,6 +117,25 @@ class Index extends React.Component {
             image: `https://wandisco.com/assets/front-page/july-2019/hybrid-cloud.png`,
             imageAlign: 'top',
             title: 'LiveMigrator',
+          },
+          {
+            content: 'Immediate analytic data access.',
+            image: `https://wandisco.com/assets/blt81946ac27cc6a107/Flexibility.svg`,
+            imageAlign: 'top',
+            title: 'LiveAnalytics',
+          },
+        ]}
+      </Block>
+    );
+
+    const Features2 = () => (
+      <Block layout="fourColumn">
+        {[
+          {
+            content: 'Get up and running in minutes with Fusion & Docker.',
+            image: `img/docker.png`,
+            imageAlign: 'top',
+            title: 'Docker',
           },
           {
             content: 'Manage your whole Fusion ecosystem in one place.',
@@ -180,18 +162,7 @@ class Index extends React.Component {
 
       const pageUrl = page => baseUrl + (language ? `${language}/` : '') + page;
 
-      return (
-        <div className="productShowcaseSection paddingBottom">
-          <h2>Who is Using This?</h2>
-          <p>This project is used by all these people</p>
-          <div className="logos">{showcase}</div>
-          <div className="more-users">
-            <a className="button" href={pageUrl('users.html')}>
-              More {siteConfig.title} Users
-            </a>
-          </div>
-        </div>
-      );
+
     };
 
     return (
@@ -199,11 +170,8 @@ class Index extends React.Component {
         <HomeSplash siteConfig={siteConfig} language={language} />
         <div className="mainContainer">
           <Features />
-          <FeatureCallout />
-          <LearnHow />
-          <TryOut />
+          <Features2 />
           <Description />
-          <Showcase />
         </div>
       </div>
     );

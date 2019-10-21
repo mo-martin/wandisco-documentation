@@ -4,6 +4,8 @@ title: ADLS Gen2
 sidebar_label: ADLS Gen2
 ---
 
+_THIS IS DEFUNCT UNTIL KUBERNETES OR EQUIVALENT ORCHESTRATION IS AVAILABLE._
+
 Use this quickstart if you want to configure Fusion to connect to ADLS Gen2 storage.
 
 ## Prerequisites
@@ -28,6 +30,7 @@ Switch to the repository directory, and run the setup script:
 Follow the prompts to configure your zone(s):
 
 ```text
+Enter the first zone type: [Press enter to get a list of available zone types]
 Please choose from one of the following zone types:
 
   cdh
@@ -37,24 +40,23 @@ Please choose from one of the following zone types:
   s3
 
 Enter the first zone type: hdi-adls2
-Enter a name for the first zone [hdi-adls2]: adls2-zone
-Configure a second zone? (Y/n) n
-Enter the Azure storage account name for adls2-zone: "The name of the ADLS Gen2 storage account.""
-Enter the Azure storage container for adls2-zone: "The blob container that should be used."
-Enter the Azure account key for adls2-zone: "The Primary Access Key is now referred to as Key1 in Microsoft’s documentation. You can get the KEY from the Microsoft Azure storage account."
-Enter the default FS for adls2-zone [abfss://<storage-container>@<storage-account>.dfs.core.windows.net/]: "Leave blank as default is okay to use here"
-Enter the underlying FS for adls2-zone [abfs://<storage-container>@<storage-account>.dfs.core.windows.net/]: "Leave blank as default is okay to use here"
+Enter the second zone type (or NONE to skip): NONE
+Enter your license file path (or NONE for a trial): [NONE]: "Press enter for a trial license, or provide an absolute path to one on the filesystem."
+Enter the UI external address for zone-a [fusion-ui.example.com]: "Enter the external hostname for the Fusion node."
+Enter the Azure storage account name for zone-a: "The name of the ADLS Gen2 storage account.""
+Enter the Azure storage container for zone-a: "The blob container that should be used."
+Enter the Azure account key for zone-a: "The Primary Access Key is now referred to as Key1 in Microsoft’s documentation. You can get the KEY from the Microsoft Azure storage account."
+Enter the default FS for zone-a [abfss://<storage-container>@<storage-account>.dfs.core.windows.net/]: "Leave blank as default is okay to use here"
+Enter the underlying FS for zone-a [abfs://<storage-container>@<storage-account>.dfs.core.windows.net/]: "Leave blank as default is okay to use here"
 ```
 
 After all the prompts have been completed, the following text will appear:
 
 ```text
-# This script should be sourced with:
-#   . ./setup-env.sh
-# Or you can manually export the following:
-export COMPOSE_FILE="docker-compose.common.yml:docker-compose.zone-a.yml"
-Run docker-compose up -d to start the Fusion containers
-Once Fusion starts browse to http://HOST:8080 to access the UI
+The environment has now been configured. You can run:
+  docker-compose up -d
+to start the Fusion containers.
+Once Fusion starts browse to http://<zone-a.external.address>:8080 to access the UI.
 ```
 
 Ensure that Docker is started:
@@ -65,27 +67,19 @@ If not, start the Docker service:
 
 `systemctl start docker`
 
-As per the instructions provided after the prompts, source the setup file, and export the environment variable:
-
-_Example_
-
-`. ./setup-env.sh`
-
-`export COMPOSE_FILE="docker-compose.common.yml:docker-compose.zone-a.yml"`
-
 Start the Fusion containers with:
 
 `docker-compose up -d`
 
-Log into the ONEUI via a web browser with the VM's hostname and port 8080.
+Log into the ONEUI via a web browser with the VM's external hostname and port 8080.
 
 _Example_
 
-`http://<hostname>:8080/`
+`http://<zone-a.external.address>:8080/`
 
 Register your email address and password, and then use these to log into the ONEUI.
 
-*You have now completed this quickstart, until you have registered another zone, you will not be able to create replication rules.*
+*You have now completed this quickstart, until you have inducted another zone, you will not be able to create replication rules.*
 
 ## Useful docker commands
 
@@ -130,7 +124,7 @@ Restart the ONEUI service:
 Note: The Fusion service names can be found in the `.yml` files contained within the `fusion-docker-compose` Git repository.
 
 _Example_
-```
+```text
 docker-compose.zone-a.yml
 docker-compose.common.yml
 ```
@@ -147,7 +141,7 @@ As the ONEUI is not required in a specific zone, the service name can be found i
   fusion-oneui-server:
 ```
 
-If you wanting to run the setup script again, you must remove all of the `.yml` and `.env` files that were created after the setup:
+If you wanting to run through the setup script with prompts again, you must remove all of the `.yml` and `.env` files that were created after the setup:
 
 `rm -f common.env zone_a.env docker-compose.zone-a.yml docker-compose.common.yml`
 

@@ -1,11 +1,14 @@
 ---
 id: quickstart-config
-title: Quickstarts Intro
-sidebar_label: Intro
+title: Introduction to Quickstarts
+sidebar_label: Introduction
 ---
 
-Introduction to quickstarts.
+Select an appropriate option on the sidebar for guidance on configuring your Fusion instances.
 
-Here are the quickstart guides for configuring your Fusion instances.
+_Examples_
 
-Please follow the combination of quickstarts needed for your deployment.
+* ADLS Gen1 --> ADLS Gen2
+* Hortonworks <-> Hortonworks
+* Cloudera <-> Cloudera
+* Hortonworks <-> Cloudera

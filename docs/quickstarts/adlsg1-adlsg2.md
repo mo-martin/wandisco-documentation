@@ -151,7 +151,7 @@ You should then `docker container stop $(docker container ls -aq)` and `docker s
 
 If you wanting to run through the setup script with prompts again, you must remove all of the `.yml` and `.env` files that were created after the setup:
 
-`rm -f common.env zone_a.env docker-compose.zone-a.yml docker-compose.common.yml`
+`rm -f common.env zone_a.env zone_b.env docker-compose.zone-a.yml docker-compose.zone-b.yml docker-compose.common.yml`
 
 ## Reference links
 

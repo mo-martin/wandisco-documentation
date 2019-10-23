@@ -97,11 +97,10 @@ class Index extends React.Component {
       <Block background="dark">
         {[
           {
-            content:
-              'This is another description of how this project is useful',
-            image: `${baseUrl}img/undraw_note_list.svg`,
-            imageAlign: 'right',
-            title: 'Description',
+            content: 'Welcome to our new docs site. More information coming soon.',
+            image: `https://wandisco.com/assets/wandisco_logo2.svg`,
+            imageAlign: 'left',
+            title: '',
           },
         ]}
       </Block>

@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>API extras · WANdisco docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Another one for API"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="API extras · WANdisco docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/"/><meta property="og:description" content="Another one for API"/><meta property="og:image" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="https://wandisco.github.io/wandisco-documentation/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://wandisco.github.io/wandisco-documentation/js/scrollSpy.js"></script><link rel="stylesheet" href="https://wandisco.github.io/wandisco-documentation/css/main.css"/><script src="https://wandisco.github.io/wandisco-documentation/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="https://wandisco.github.io/wandisco-documentation/"><img class="logo" src="https://wandisco.github.io/wandisco-documentation/img/favicon.png" alt="WANdisco docs"/><h2 class="headerTitleWithLogo">WANdisco docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/quickstarts/quickstart-config" target="_self">Quickstarts</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/doc1" target="_self">Docs</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/glossary/a" target="_self">Glossary</a></li><li class="siteNavGroupActive"><a href="https://wandisco.github.io/wandisco-documentation/docs/api" target="_self">API</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/help" target="_self">Help</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>API</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">API<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="https://wandisco.github.io/wandisco-documentation/docs/api">API</a></li><li class="navListItem navListItemActive"><a class="navItem" href="https://wandisco.github.io/wandisco-documentation/docs/api-again">API extras</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">API extras</h1></header><article><div><span><p>Another one for API</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="https://wandisco.github.io/wandisco-documentation/docs/api"><span class="arrow-prev">← </span><span>API</span></a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://wandisco.github.io/wandisco-documentation/" class="nav-home"></a><div><h5>Docs</h5><a href="https://wandisco.github.io/wandisco-documentation/docs/en/quickstarts/quickstart-config.html">Getting Started</a><a href="https://docs.wandisco.com">Product User Guides</a><a href="https://community.wandisco.com/s/knowledge-base">Knowledge Base</a></div><div><h5>Community</h5><a href="https://community.wandisco.com/">WANdisco Community</a><a href="//wandisco.com/partners/find">Partners</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://wandisco.com/blog">Blog</a><a href="https://blogs.wandisco.com/">Developer Blog</a><a href="https://github.com/wandisco">GitHub</a></div></section><section class="copyright">Copyright © 2019 WANdisco, Inc.</section></footer></div></body></html>

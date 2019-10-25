@@ -40,9 +40,9 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'quickstarts/quickstart-config', label: 'Quickstarts'},
-    {doc: 'doc1', label: 'Docs'},
+    {doc: 'docs/doc1', label: 'Docs'},
     {doc: 'glossary/a', label: 'Glossary'},
-    {doc: 'api', label: 'API'},
+    {doc: 'api/api', label: 'API'},
     {page: 'help', label: 'Help'},
   ],
 
@@ -97,6 +97,14 @@ const siteConfig = {
   // For sites with a sizable amount of content, set collapsible to true.
   // Expand/collapse the links and subcategories under categories.
 docsSideNavCollapsible: true,
+
+  algolia: {
+    apiKey: '56e573413aa88e9ec072a585bec45683',
+    indexName: 'wandisco',
+    algoliaOptions: {} // Optional, if provided by Algolia
+  },
+
+
 
   // Show documentation's last contributor's name.
   // enableUpdateBy: true,

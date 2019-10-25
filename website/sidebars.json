@@ -2,13 +2,12 @@
 
   "docs": {
     "docs.wandisco.com": [
-      "doc1"
+      "docs/doc1"
     ]
   },
   "api": {
     "API": [
-      "api",
-      "api-again"
+      "api/api"
     ]
   },
   "quickstarts": {

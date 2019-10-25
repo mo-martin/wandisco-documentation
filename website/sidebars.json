@@ -14,7 +14,8 @@
   "quickstarts": {
     "Initial Configuration": [
       "quickstarts/quickstart-config",
-      "quickstarts/adlsg1-adlsg2"
+      "quickstarts/adlsg1-adlsg2",
+      "quickstarts/hdp-adlsg2"
     ]
   },
   "Glossary": {

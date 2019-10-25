@@ -1,17 +1,19 @@
 ---
-id: adlsg1-adlsg2
-title: ADLS Gen1 to ADLS Gen2
-sidebar_label: ADLS Gen1 to ADLS Gen2
+id: hdp-adlsg2
+title: Hortonworks (HDP) to ADLS Gen2
+sidebar_label: Hortonworks (HDP) to ADLS Gen2
 ---
 
-Use this quickstart if you want to configure Fusion to connect to ADLS Gen1 storage and ADLS Gen2 storage.
+Use this quickstart if you want to configure Fusion to connect to Hortonworks (HDP) and ADLS Gen2 storage.
 
 ## Prerequisites
 
 * Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7).
 * Docker (v19.03.3 or higher), Docker Compose (v1.24.1 or higher), and Git installed on instance.
-* Credentials for accessing the Data Lake Storage Gen1 and Data Lake Storage Gen2.
-* Network connectivity between Azure VM and Data Lake Storage Gen1/Gen2.
+* Administrator credentials for the HDP Ambari Manager.
+* Network connectivity to the Ambari Manager.
+* Credentials for accessing the Data Lake Storage Gen2.
+* Network connectivity to the Data Lake Storage Gen2.
 
 ## Guidance
 
@@ -37,19 +39,11 @@ _Licenses_
 
 Trial licenses will last 30 days and are limited to 1TB of replicated data.
 
-_Examples entries for ADLS Gen1_
+_Example entries for HDP_
 
-Hostname: `example.westeurope.azuredatalakestore.net`
+Hadoop NameNode IP/hostname: `namenode.example.com` - if NameNode HA is configured, this should be the Active NameNode.
 
-Mountpoint: `/`,`/path/to/mountpoint` - Can be root or a specific directory.
-
-Handshake user: `wandisco` - must be an Owner of the ADLS Gen1 (under role assignments).
-
-OAUTH2 Credential: `RANDOM_STRING` - the authentication key of the Active Directory credential you wish to use with Fusion.
-
-OAUTH2 Refresh URL: `https://login.microsoftonline.com/abc123de-fgh4-567i-8jkl-90123mnop456/oauth2/token`
-
-OAUTH2 Client ID: `123ab456-78c9-0d12-3456-78e90123f45g`
+NameNode port: `8020` - if NameNode HA is configured, this value will be defined in the `dfs.namenode.rpc-address.<nameservice>.<namenode_id>` property. If NameNode HA is not configured, the value will be defined in the `fs.defaultFS` property."
 
 _Example entries for ADLS Gen2_
 

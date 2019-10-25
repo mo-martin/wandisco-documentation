@@ -9,6 +9,6 @@ Select an appropriate option on the sidebar for guidance on configuring your Fus
 _Examples_
 
 * ADLS Gen1 --> ADLS Gen2
-* Hortonworks <-> Hortonworks
-* Cloudera <-> Cloudera
-* Hortonworks <-> Cloudera
+* Hortonworks --> ADLS Gen2
+
+Further quickstarts are being written and will be made available as we continue to develop the site. For further information on what WANdisco Fusion can offer, please see our reference documentation - [Deployment Models](https://docs.wandisco.com/bigdata/wdfusion/#_deployment_models).

@@ -6,6 +6,13 @@ sidebar_label: Hortonworks (HDP) to ADLS Gen2
 
 Use this quickstart if you want to configure Fusion to connect to Hortonworks (HDP) and ADLS Gen2 storage.
 
+## Limitations of this quickstart
+
+* This guide does not currently offer configuration of Fusion to a **Kerberized** HDP cluster.
+* Migration of existing data will be available after configuration, but not live replication.
+
+We are working to include these additional items as soon as possible.
+
 ## Prerequisites
 
 * Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7).
@@ -43,7 +50,7 @@ _Example entries for HDP_
 
 Hadoop NameNode IP/hostname: `namenode.example.com` - if NameNode HA is configured, this should be the Active NameNode.
 
-NameNode port: `8020` - if NameNode HA is configured, this value will be defined in the `dfs.namenode.rpc-address.<nameservice>.<namenode_id>` property. If NameNode HA is not configured, the value will be defined in the `fs.defaultFS` property."
+NameNode port: `8020` - if NameNode HA is configured, this value will be defined in the `dfs.namenode.rpc-address.<nameservice>.<namenode_id>` property. If NameNode HA is not configured, the value will be defined in the `fs.defaultFS` property.
 
 _Example entries for ADLS Gen2_
 

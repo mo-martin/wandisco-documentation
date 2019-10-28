@@ -3,12 +3,12 @@
     "examples": "docusaurus-examples",
     "start": "docusaurus-start",
     "build": "docusaurus-build",
-"publish-gh-pages": "DEPLOY_ENV=github docusaurus-publish",
+    "publish-gh-pages": "DEPLOY_ENV=github docusaurus-publish",
     "write-translations": "docusaurus-write-translations",
     "version": "docusaurus-version",
     "rename-version": "docusaurus-rename-version"
   },
   "devDependencies": {
-    "docusaurus": "^1.13.0"
+    "docusaurus": "^1.14.0"
   }
 }

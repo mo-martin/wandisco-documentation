@@ -6,15 +6,7 @@ sidebar_label: Cloudera (CDH) to ADLS Gen2
 
 Use this quickstart if you want to configure Fusion to connect to Cloudera (CDH) and ADLS Gen2 storage.
 
-## Reference links
-
-[Useful information and troubleshooting](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/useful_info_ts)
-
-[Docker installation guide](https://docs.docker.com/install/)
-
-[Docker Compose installation guide](https://docs.docker.com/compose/install/)
-
-[Git installation guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+Please see the [Useful information and troubleshooting](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/useful_info_ts) section for additional commands and help.
 
 ## Limitations of this quickstart
 
@@ -26,7 +18,7 @@ We are working to include these additional items as soon as possible.
 ## Prerequisites
 
 * Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7).
-* Docker (v19.03.3 or higher), Docker Compose (v1.24.1 or higher), and Git installed on instance.
+* [Docker](https://docs.docker.com/install/) (v19.03.3 or higher), [Docker Compose](https://docs.docker.com/compose/install/) (v1.24.1 or higher), and [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on instance.
 * Administrator credentials for the Cloudera Manager.
 * Network connectivity to the Cloudera Manager.
 * Credentials for accessing the Data Lake Storage Gen2.

@@ -15,7 +15,8 @@
       "quickstarts/quickstart-config",
       "quickstarts/adlsg1-adlsg2",
       "quickstarts/hdp-adlsg2",
-      "quickstarts/cdh-adlsg2"
+      "quickstarts/cdh-adlsg2",
+      "quickstarts/useful_info_ts"
     ]
   },
   "Glossary": {

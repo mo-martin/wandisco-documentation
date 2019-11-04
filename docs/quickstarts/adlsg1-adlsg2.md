@@ -6,6 +6,16 @@ sidebar_label: ADLS Gen1 to ADLS Gen2
 
 Use this quickstart if you want to configure Fusion to connect to ADLS Gen1 storage and ADLS Gen2 storage.
 
+## Reference links
+
+[Useful information and troubleshooting](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/useful_info_ts)
+
+[Docker installation guide](https://docs.docker.com/install/)
+
+[Docker Compose installation guide](https://docs.docker.com/compose/install/)
+
+[Git installation guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
 ## Prerequisites
 
 * Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7).
@@ -87,90 +97,4 @@ Register your email address and password, and then use these to log into the ONE
 
 ### Replication
 
-_You now have the ability to create replication rules via the ONEUI, feel free to create one and test replication._
-
-## Useful docker-compose commands
-
-Bring down containers and retain configured state:
-
-`docker-compose down`
-
-Remove all named volumes and down containers (current configuration will be lost):
-
-`docker-compose down -v`
-
-## Useful docker commands
-
-List all running containers:
-
-`docker ps`
-
-Log into specific container:
-
-`docker exec -it <container-ID> /bin/bash`
-
-Stop all containers:
-
-`docker container stop $(docker container ls -aq)`
-
-Remove all stopped containers, all networks not used by at least one container, all dangling images and all dangling build cache:
-
-`docker system prune`
-
-## Information on service names
-
-The Fusion service names can be found in the `.yml` files contained within the `fusion-docker-compose` Git repository.
-
-_Example_
-```text
-docker-compose.zone-a.yml
-docker-compose.common.yml
-```
-For instance, the ONEUI service is not required in a specific zone, so the service name can be found inside of the `docker-compose.common.yml` file.
-
-`vi docker-compose.common.yml`
-
-```text
-# This service creates the One UI Server component to manage both zones.
-#
-# Note: this component can be run in either zone, so one is chosen arbitrarily
-
-  # Fusion OneUI Server
-  fusion-oneui-server:
-```
-
-Restart the ONEUI service:
-
-`docker-compose up -d --force fusion-oneui-server`
-
-## Troubleshooting
-
-In the event that you need to rebuild your Fusion environment, firstly log into the ONEUI container and delete the H2 database for ONEUI.
-
-This is required because the data stored there is not cleaned up when pruning the existing containers, and will still contain information regarding the previous ecosystem.
-
-Obtain the ONEUI container ID:
-
-`docker ps | grep oneui`
-
-Log into the ONEUI container and delete the H2 database for ONEUI:
-
-`docker exec -it <ONEUI-container-ID> /bin/bash`
-
-`rm -rf /h2db/db`
-
-`exit`
-
-You should then `docker container stop $(docker container ls -aq)` and `docker system prune` all existing containers.
-
-If you wanting to run through the setup script with prompts again, you must remove all of the `.yml` and `.env` files that were created after the setup:
-
-`rm -f common.env zone_a.env zone_b.env docker-compose.zone-a.yml docker-compose.zone-b.yml docker-compose.common.yml`
-
-## Reference links
-
-https://docs.docker.com/install/
-
-https://docs.docker.com/compose/install/
-
-https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+_You now have the ability to create replication rules via the UI, feel free to create one and test replication._

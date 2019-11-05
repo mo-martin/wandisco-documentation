@@ -19,7 +19,7 @@ Please see the [Useful information and troubleshooting](https://wandisco.github.
 
 Clone the Fusion docker repository to your Azure VM instance:
 
-`$ git clone https://github.com/WANdisco/fusion-docker-compose.git`
+`git clone https://github.com/WANdisco/fusion-docker-compose.git`
 
 Switch to the repository directory, and run the setup script:
 

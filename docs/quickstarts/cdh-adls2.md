@@ -20,7 +20,7 @@ We are working to include these additional items as soon as possible.
 * Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7).
 * [Docker](https://docs.docker.com/install/) (v19.03.3 or higher), [Docker Compose](https://docs.docker.com/compose/install/) (v1.24.1 or higher), and [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on instance.
 * Administrator credentials for the Cloudera Manager.
-* Network connectivity to the Cloudera Manager.
+* Network connectivity to the Cloudera Manager and NameNodes.
 * Credentials for accessing the Data Lake Storage Gen2.
 * Network connectivity to the Data Lake Storage Gen2.
 
@@ -28,7 +28,7 @@ We are working to include these additional items as soon as possible.
 
 Clone the Fusion docker repository to your Azure VM instance:
 
-`$ git clone https://github.com/WANdisco/fusion-docker-compose.git`
+`git clone https://github.com/WANdisco/fusion-docker-compose.git`
 
 Switch to the repository directory, and run the setup script:
 

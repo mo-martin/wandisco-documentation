@@ -84,9 +84,11 @@
 <p><em>Licenses</em></p>
 <p>Trial licenses will last 30 days and are limited to 1TB of replicated data.</p>
 <p><em>Example entries for CDH</em></p>
+<p>CDH version: <code>6.1.0</code></p>
 <p>Hadoop NameNode IP/hostname: <code>namenode.example.com</code> - if NameNode HA is configured, this should be the Active NameNode.</p>
 <p>NameNode port: <code>8020</code> - if NameNode HA is configured, this value will be defined in the <code>dfs.namenode.rpc-address.&lt;nameservice&gt;.&lt;namenode_id&gt;</code> property. If NameNode HA is not configured, the value will be defined in the <code>fs.defaultFS</code> property.</p>
 <p><em>Example entries for ADLS Gen2</em></p>
+<p>HDI version: <code>4.0</code></p>
 <p>Storage account: <code>adlsg2storage</code></p>
 <p>Storage container: <code>fusionreplication</code></p>
 <p>Account key: <code>RANDOM_STRING</code> - the Primary Access Key is now referred to as Key1 in Microsoft’s documentation. You can get the KEY from the Microsoft Azure storage account.</p>
@@ -100,7 +102,7 @@
 <p><code>systemctl start docker</code></p>
 <p>Start the Fusion containers with:</p>
 <p><code>docker-compose up -d</code></p>
-<p>Log in to the UI via a web browser with the VM's hostname and port 8080.</p>
+<p>Log in to the UI via a web browser with the VM's hostname and port 8081.</p>
 <p><code>http://&lt;docker_hostname&gt;:8081/</code></p>
 <p>Register your email address and password, and then use these to log in to the UI.</p>
 <h3><a class="anchor" aria-hidden="true" id="replication"></a><a href="#replication" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Replication</h3>

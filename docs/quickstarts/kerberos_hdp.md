@@ -1,12 +1,12 @@
 ---
-id: kerberos_cdh
-title: Kerberos (CDH) integration with Fusion
-sidebar_label: Kerberos (CDH) integration with Fusion
+id: kerberos_hdp
+title: Kerberos (HDP) integration with Fusion
+sidebar_label: Kerberos (HDP) integration with Fusion
 ---
 
 _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_
 
-**This guide should only be followed if you have already completed the [Cloudera (CDH) to ADLS Gen2](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/cdh-adlsg2) quickstart.**
+**This guide should only be followed if you have already completed the [Hortonworks (HDP) to ADLS Gen2](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/hdp-adlsg2) quickstart.**
 
 ## Considerations
 
@@ -58,7 +58,7 @@ If creating a new principal/keytab for Fusion, the following configuration is re
 
   `hadooop.proxyuser.fusion.hosts=*`
 
-  If they do not exist, additional proxyuser rules can be added in the _Cluster-wide Advanced Configuration Snippet (Safety Valve) for core-site.xml_ section.
+  If they do not exist, additional proxyuser rules can be added in the _Custom core-site_ section.
 
 ## Prerequisites
 
@@ -85,11 +85,11 @@ If creating a new principal/keytab for Fusion, the following configuration is re
 
 2. Obtain the HDFS client config from the cluster manager.
 
-   Cloudera Manager UI -> HDFS -> Actions -> Download Client Configuration
+   Ambari UI -> HDFS -> Actions -> Download Client Config
 
 3. Transfer the Client config to the Fusion docker host.
 
-   `scp hdfs1-clientconfig.zip $DOCKER_HOST:~`
+   `scp HDFS_CLIENT-configs.tar.gz $DOCKER_HOST:~`
 
 4. Log into the Fusion docker host, and copy the keytab and `krb5.conf` into the specified staging directories within the git repository.
 
@@ -101,65 +101,70 @@ If creating a new principal/keytab for Fusion, the following configuration is re
 
 5. Decompress the HDFS Client config and edit the `core-site.xml` file to include additional properties.
 
-   `unzip hdfs1-clientconfig.zip`
-
-   `cd hadoop-conf`
+   `tar -xf HDFS_CLIENT-configs.tar.gz`
 
    `vi core-site.xml`
 
    First, add the following properties as they are displayed below:
 
    ```json
-     <property>
-       <name>fusion.client.ssl.enabled</name>
-       <value>false</value>
-     </property>
-     <property>
-       <name>fusion.handshakeToken.dir</name>
-       <value>/wandisco/handshake_tokens</value>
-     </property>
-     <property>
-       <name>fusion.http.authentication.enabled</name>
-       <value>false</value>
-     </property>
-     <property>
-       <name>fusion.http.authorization.enabled</name>
-       <value>false</value>
-     </property>
-     <property>
-       <name>fusion.keytab</name>
-       <value>/etc/security/keytabs/fusion.keytab</value>
-     </property>
-     <property>
-       <name>fusion.replicated.dir.exchange</name>
-       <value>/wandisco/exchange_dir</value>
-     </property>
+      <property>
+        <name>fusion.client.ssl.enabled</name>
+        <value>false</value>
+      </property>
+
+      <property>
+        <name>fusion.handshakeToken.dir</name>
+        <value>/wandisco/handshake_tokens</value>
+      </property>
+
+      <property>
+        <name>fusion.http.authentication.enabled</name>
+        <value>false</value>
+      </property>
+
+      <property>
+        <name>fusion.http.authorization.enabled</name>
+        <value>false</value>
+      </property>
+
+      <property>
+        <name>fusion.keytab</name>
+        <value>/etc/security/keytabs/fusion.keytab</value>
+      </property>
+
+      <property>
+        <name>fusion.replicated.dir.exchange</name>
+        <value>/wandisco/exchange_dir</value>
+      </property>
    ```
 
    Next, add the following properties below but adjust the values (prefixed with `$`) so that they are correct for your environment:
 
    ```json
-     <property>
-       <name>fs.fusion.underlyingFs</name>
-       <value>hdfs://${CLUSTER_NAMESERVICE} or hdfs://${NAMENODE}:${PORT}</value>
-     </property>
-     <property>
-       <name>fusion.principal</name>
-       <value>${FUSION_PRINCIPAL}@${REALM}</value>
-     </property>
-     <property>
-       <name>fusion.server</name>
-       <value>${DOCKER_HOSTNAME}:8023</value>
-     </property>
+      <property>
+        <name>fs.fusion.underlyingFs</name>
+        <value>hdfs://${CLUSTER_NAMESERVICE} or hdfs://${NAMENODE}:${PORT}</value>
+      </property>
+
+      <property>
+        <name>fusion.principal</name>
+        <value>${FUSION_PRINCIPAL}@${REALM}</value>
+      </property>
+
+      <property>
+        <name>fusion.server</name>
+        <value>${DOCKER_HOSTNAME}:8023</value>
+      </property>
    ```
 
    Note that the `fs.fusion.underlyingFs` value will depend if your cluster has NameNode HA enabled or not.
 
    Once complete, save and quit the file.
 
-6. Transfer the relevant files to one of the docker containers in the CDH zone.
+6. Transfer the relevant files to one of the docker containers in the HDP zone.
 
-   You will first need to obtain an Container ID from the CDH zone, this will be a 12 digit hexadecimal string. Note that the `oneui` and `ubuntu` images cannot be used as they are not zone specific.
+   You will first need to obtain an Container ID from the HDP zone, this will be a 12 digit hexadecimal string. Note that the `oneui` and `ubuntu` images cannot be used as they are not zone specific.
 
    `docker ps` _- obtain ID._
 
@@ -171,9 +176,9 @@ If creating a new principal/keytab for Fusion, the following configuration is re
 
    As this location is shared amongst all containers in the zone, it is only necessary to transfer these files to one of them.
 
-7. Log into the Fusion UI container for the CDH zone, and edit the `ui.properties` file.
+7. Log into the Fusion UI container for the HDP zone, and edit the `ui.properties` file.
 
-   You will first need to obtain an Container ID from the CDH zone for the Fusion UI, this will be a 12 digit hexadecimal string. The name of the image will appear much like this example - `fusion-docker-compose_fusion-ui-server-cdh_1`.
+   You will first need to obtain an Container ID from the HDP zone for the Fusion UI, this will be a 12 digit hexadecimal string. The name of the image will appear much like this example - `fusion-docker-compose_fusion-ui-server-hdp_1`.
 
    `docker ps` _- obtain ID._
 

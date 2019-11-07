@@ -50,11 +50,15 @@ Trial licenses will last 30 days and are limited to 1TB of replicated data.
 
 _Example entries for HDP_
 
+HDP version: `3.1.0`
+
 Hadoop NameNode IP/hostname: `namenode.example.com` - if NameNode HA is configured, this should be the Active NameNode.
 
 NameNode port: `8020` - if NameNode HA is configured, this value will be defined in the `dfs.namenode.rpc-address.<nameservice>.<namenode_id>` property. If NameNode HA is not configured, the value will be defined in the `fs.defaultFS` property.
 
 _Example entries for ADLS Gen2_
+
+HDI version: `4.0`
 
 Storage account: `adlsg2storage`
 
@@ -82,7 +86,7 @@ Start the Fusion containers with:
 
 `docker-compose up -d`
 
-Log in to the UI via a web browser with the VM's hostname and port 8080.
+Log in to the UI via a web browser with the VM's hostname and port 8081.
 
 `http://<docker_hostname>:8081/`
 

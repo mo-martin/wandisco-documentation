@@ -84,7 +84,7 @@ Start the Fusion containers with:
 
 `docker-compose up -d`
 
-Log in to the UI via a web browser with the VM's hostname and port 8080.
+Log in to the UI via a web browser with the VM's hostname and port 8081.
 
 `http://<docker_hostname>:8081/`
 

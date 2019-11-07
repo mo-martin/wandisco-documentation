@@ -41,6 +41,8 @@ Trial licenses will last 30 days and are limited to 1TB of replicated data.
 
 _Examples entries for ADLS Gen1_
 
+HDI version: `4.0`
+
 Hostname: `example.westeurope.azuredatalakestore.net`
 
 Mountpoint: `/`,`/path/to/mountpoint` - Can be root or a specific directory.
@@ -54,6 +56,8 @@ OAUTH2 Refresh URL: `https://login.microsoftonline.com/abc123de-fgh4-567i-8jkl-9
 OAUTH2 Client ID: `123ab456-78c9-0d12-3456-78e90123f45g`
 
 _Example entries for ADLS Gen2_
+
+HDI version: `4.0`
 
 Storage account: `adlsg2storage`
 
@@ -81,7 +85,7 @@ Start the Fusion containers with:
 
 `docker-compose up -d`
 
-Log into the ONEUI via a web browser with the VM's hostname and port 8080.
+Log into the ONEUI via a web browser with the VM's hostname and port 8081.
 
 `http://<docker_hostname>:8081/`
 

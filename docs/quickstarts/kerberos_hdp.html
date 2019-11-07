@@ -1,5 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Kerberos (CDH) integration with Fusion · WANdisco docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="_THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Kerberos (CDH) integration with Fusion · WANdisco docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/"/><meta property="og:description" content="_THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_"/><meta property="og:image" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="https://wandisco.github.io/wandisco-documentation/img/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://wandisco.github.io/wandisco-documentation/js/scrollSpy.js"></script><link rel="stylesheet" href="https://wandisco.github.io/wandisco-documentation/css/main.css"/><script src="https://wandisco.github.io/wandisco-documentation/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="https://wandisco.github.io/wandisco-documentation/"><img class="logo" src="https://wandisco.github.io/wandisco-documentation/img/favicon.png" alt="WANdisco docs"/><h2 class="headerTitleWithLogo">WANdisco docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/quickstarts/quickstart-config" target="_self">Quickstarts</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/docs/doc1" target="_self">Docs</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/glossary/a" target="_self">Glossary</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/api/api" target="_self">API</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/help" target="_self">Help</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Kerberos (CDH) integration with Fusion</h1></header><article><div><span><p><em>THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED</em></p>
-<p><strong>This guide should only be followed if you have already completed the <a href="https://wandisco.github.io/wandisco-documentation/docs/quickstarts/cdh-adlsg2">Cloudera (CDH) to ADLS Gen2</a> quickstart.</strong></p>
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Kerberos (HDP) integration with Fusion · WANdisco docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="_THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Kerberos (HDP) integration with Fusion · WANdisco docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/"/><meta property="og:description" content="_THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_"/><meta property="og:image" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="https://wandisco.github.io/wandisco-documentation/img/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://wandisco.github.io/wandisco-documentation/js/scrollSpy.js"></script><link rel="stylesheet" href="https://wandisco.github.io/wandisco-documentation/css/main.css"/><script src="https://wandisco.github.io/wandisco-documentation/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="https://wandisco.github.io/wandisco-documentation/"><img class="logo" src="https://wandisco.github.io/wandisco-documentation/img/favicon.png" alt="WANdisco docs"/><h2 class="headerTitleWithLogo">WANdisco docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/quickstarts/quickstart-config" target="_self">Quickstarts</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/docs/doc1" target="_self">Docs</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/glossary/a" target="_self">Glossary</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/api/api" target="_self">API</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/help" target="_self">Help</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Kerberos (HDP) integration with Fusion</h1></header><article><div><span><p><em>THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED</em></p>
+<p><strong>This guide should only be followed if you have already completed the <a href="https://wandisco.github.io/wandisco-documentation/docs/quickstarts/hdp-adlsg2">Hortonworks (HDP) to ADLS Gen2</a> quickstart.</strong></p>
 <h2><a class="anchor" aria-hidden="true" id="considerations"></a><a href="#considerations" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Considerations</h2>
 <p>There are a number considerations when enabling Fusion to function with a kerberized cluster.</p>
 <p>An existing keytab and principal that the cluster provides can be used with Fusion (e.g. the <code>hdfs</code> keytab). The cluster is already likely to be configured to work with an existing keytab. As such, a restart of cluster services should not be required for Fusion to use an existing keytab.</p>
@@ -26,7 +26,7 @@
 <p><em>Example</em></p>
 <p><code>hadooop.proxyuser.fusion.groups=*</code></p>
 <p><code>hadooop.proxyuser.fusion.hosts=*</code></p>
-<p>If they do not exist, additional proxyuser rules can be added in the <em>Cluster-wide Advanced Configuration Snippet (Safety Valve) for core-site.xml</em> section.</p></li>
+<p>If they do not exist, additional proxyuser rules can be added in the <em>Custom core-site</em> section.</p></li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="prerequisites"></a><a href="#prerequisites" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Prerequisites</h2>
 <ul>
@@ -44,68 +44,74 @@
 <p><code>scp krb5.conf $DOCKER_HOST:~</code></p>
 <p><code>scp ${fusion.keytab} $DOCKER_HOST:~</code></p></li>
 <li><p>Obtain the HDFS client config from the cluster manager.</p>
-<p>Cloudera Manager UI -&gt; HDFS -&gt; Actions -&gt; Download Client Configuration</p></li>
+<p>Ambari UI -&gt; HDFS -&gt; Actions -&gt; Download Client Config</p></li>
 <li><p>Transfer the Client config to the Fusion docker host.</p>
-<p><code>scp hdfs1-clientconfig.zip $DOCKER_HOST:~</code></p></li>
+<p><code>scp HDFS_CLIENT-configs.tar.gz $DOCKER_HOST:~</code></p></li>
 <li><p>Log into the Fusion docker host, and copy the keytab and <code>krb5.conf</code> into the specified staging directories within the git repository.</p>
 <p>Ensure the keytab is renamed to <code>fusion.keytab</code> inside the <code>fusion-docker-compose/keytabs</code> directory.</p>
 <p><code>cp ${fusion.keytab} /path/to/fusion-docker-compose/keytabs/fusion.keytab</code></p>
 <p><code>cp krb5.conf /path/to/fusion-docker-compose/config_files/</code></p></li>
 <li><p>Decompress the HDFS Client config and edit the <code>core-site.xml</code> file to include additional properties.</p>
-<p><code>unzip hdfs1-clientconfig.zip</code></p>
-<p><code>cd hadoop-conf</code></p>
+<p><code>tar -xf HDFS_CLIENT-configs.tar.gz</code></p>
 <p><code>vi core-site.xml</code></p>
 <p>First, add the following properties as they are displayed below:</p>
-<pre><code class="hljs css language-json">  &lt;property&gt;
-    &lt;name&gt;fusion.client.ssl.enabled&lt;/name&gt;
-    &lt;value&gt;false&lt;/value&gt;
-  &lt;/property&gt;
-  &lt;property&gt;
-    &lt;name&gt;fusion.handshakeToken.dir&lt;/name&gt;
-    &lt;value&gt;/wandisco/handshake_tokens&lt;/value&gt;
-  &lt;/property&gt;
-  &lt;property&gt;
-    &lt;name&gt;fusion.http.authentication.enabled&lt;/name&gt;
-    &lt;value&gt;false&lt;/value&gt;
-  &lt;/property&gt;
-  &lt;property&gt;
-    &lt;name&gt;fusion.http.authorization.enabled&lt;/name&gt;
-    &lt;value&gt;false&lt;/value&gt;
-  &lt;/property&gt;
-  &lt;property&gt;
-    &lt;name&gt;fusion.keytab&lt;/name&gt;
-    &lt;value&gt;/etc/security/keytabs/fusion.keytab&lt;/value&gt;
-  &lt;/property&gt;
-  &lt;property&gt;
-    &lt;name&gt;fusion.replicated.dir.exchange&lt;/name&gt;
-    &lt;value&gt;/wandisco/exchange_dir&lt;/value&gt;
-  &lt;/property&gt;
+<pre><code class="hljs css language-json">   &lt;property&gt;
+     &lt;name&gt;fusion.client.ssl.enabled&lt;/name&gt;
+     &lt;value&gt;false&lt;/value&gt;
+   &lt;/property&gt;
+
+   &lt;property&gt;
+     &lt;name&gt;fusion.handshakeToken.dir&lt;/name&gt;
+     &lt;value&gt;/wandisco/handshake_tokens&lt;/value&gt;
+   &lt;/property&gt;
+
+   &lt;property&gt;
+     &lt;name&gt;fusion.http.authentication.enabled&lt;/name&gt;
+     &lt;value&gt;false&lt;/value&gt;
+   &lt;/property&gt;
+
+   &lt;property&gt;
+     &lt;name&gt;fusion.http.authorization.enabled&lt;/name&gt;
+     &lt;value&gt;false&lt;/value&gt;
+   &lt;/property&gt;
+
+   &lt;property&gt;
+     &lt;name&gt;fusion.keytab&lt;/name&gt;
+     &lt;value&gt;/etc/security/keytabs/fusion.keytab&lt;/value&gt;
+   &lt;/property&gt;
+
+   &lt;property&gt;
+     &lt;name&gt;fusion.replicated.dir.exchange&lt;/name&gt;
+     &lt;value&gt;/wandisco/exchange_dir&lt;/value&gt;
+   &lt;/property&gt;
 </code></pre>
 <p>Next, add the following properties below but adjust the values (prefixed with <code>$</code>) so that they are correct for your environment:</p>
-<pre><code class="hljs css language-json">  &lt;property&gt;
-    &lt;name&gt;fs.fusion.underlyingFs&lt;/name&gt;
-    &lt;value&gt;hdfs://${CLUSTER_NAMESERVICE} or hdfs://${NAMENODE}:${PORT}&lt;/value&gt;
-  &lt;/property&gt;
-  &lt;property&gt;
-    &lt;name&gt;fusion.principal&lt;/name&gt;
-    &lt;value&gt;${FUSION_PRINCIPAL}@${REALM}&lt;/value&gt;
-  &lt;/property&gt;
-  &lt;property&gt;
-    &lt;name&gt;fusion.server&lt;/name&gt;
-    &lt;value&gt;${DOCKER_HOSTNAME}:8023&lt;/value&gt;
-  &lt;/property&gt;
+<pre><code class="hljs css language-json">   &lt;property&gt;
+     &lt;name&gt;fs.fusion.underlyingFs&lt;/name&gt;
+     &lt;value&gt;hdfs://${CLUSTER_NAMESERVICE} or hdfs://${NAMENODE}:${PORT}&lt;/value&gt;
+   &lt;/property&gt;
+
+   &lt;property&gt;
+     &lt;name&gt;fusion.principal&lt;/name&gt;
+     &lt;value&gt;${FUSION_PRINCIPAL}@${REALM}&lt;/value&gt;
+   &lt;/property&gt;
+
+   &lt;property&gt;
+     &lt;name&gt;fusion.server&lt;/name&gt;
+     &lt;value&gt;${DOCKER_HOSTNAME}:8023&lt;/value&gt;
+   &lt;/property&gt;
 </code></pre>
 <p>Note that the <code>fs.fusion.underlyingFs</code> value will depend if your cluster has NameNode HA enabled or not.</p>
 <p>Once complete, save and quit the file.</p></li>
-<li><p>Transfer the relevant files to one of the docker containers in the CDH zone.</p>
-<p>You will first need to obtain an Container ID from the CDH zone, this will be a 12 digit hexadecimal string. Note that the <code>oneui</code> and <code>ubuntu</code> images cannot be used as they are not zone specific.</p>
+<li><p>Transfer the relevant files to one of the docker containers in the HDP zone.</p>
+<p>You will first need to obtain an Container ID from the HDP zone, this will be a 12 digit hexadecimal string. Note that the <code>oneui</code> and <code>ubuntu</code> images cannot be used as they are not zone specific.</p>
 <p><code>docker ps</code> <em>- obtain ID.</em></p>
 <p>Transfer the files to a persistent storage directory that is shared amongst all containers for the specified zone (i.e. <code>/etc/hadoop</code>).</p>
 <p><code>docker cp core-site.xml $CONTAINER_ID:/etc/hadoop/conf/core-site.xml</code></p>
 <p><code>docker cp hdfs-site.xml $CONTAINER_ID:/etc/hadoop/conf/hdfs-site.xml</code></p>
 <p>As this location is shared amongst all containers in the zone, it is only necessary to transfer these files to one of them.</p></li>
-<li><p>Log into the Fusion UI container for the CDH zone, and edit the <code>ui.properties</code> file.</p>
-<p>You will first need to obtain an Container ID from the CDH zone for the Fusion UI, this will be a 12 digit hexadecimal string. The name of the image will appear much like this example - <code>fusion-docker-compose_fusion-ui-server-cdh_1</code>.</p>
+<li><p>Log into the Fusion UI container for the HDP zone, and edit the <code>ui.properties</code> file.</p>
+<p>You will first need to obtain an Container ID from the HDP zone for the Fusion UI, this will be a 12 digit hexadecimal string. The name of the image will appear much like this example - <code>fusion-docker-compose_fusion-ui-server-hdp_1</code>.</p>
 <p><code>docker ps</code> <em>- obtain ID.</em></p>
 <p><code>docker exec -u root -it $CONTAINER_ID /bin/bash</code></p>
 <p><code>vi /opt/wandisco/fusion-ui-server/properties/ui.properties</code></p>

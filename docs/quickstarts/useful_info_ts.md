@@ -14,6 +14,10 @@ sidebar_label: Useful information and troubleshooting
 
 ## Useful docker-compose commands
 
+Pull down latest docker container images:
+
+`docker-compose pull`
+
 Bring down containers and retain configured state:
 
 `docker-compose down`

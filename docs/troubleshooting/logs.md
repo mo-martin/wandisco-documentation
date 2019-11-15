@@ -1,7 +1,7 @@
 ---
-id: troubleshooting
-title: Troubleshooting guide
-sidebar_label: Troubleshooting guide
+id: logs
+title: Logs
+sidebar_label: Logs
 ---
 
 ## Logs

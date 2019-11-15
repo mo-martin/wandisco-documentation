@@ -1,7 +1,7 @@
 ---
-id: useful_info_ts
-title: Useful information and troubleshooting
-sidebar_label: Useful information and troubleshooting
+id: useful_info
+title: Useful information
+sidebar_label: Useful information
 ---
 
 ## Reference links
@@ -70,7 +70,7 @@ Restart the ONEUI service:
 
 `docker-compose up -d --force fusion-oneui-server`
 
-## Troubleshooting
+## Rebuild
 
 In the event that you need to rebuild your Fusion environment, use the docker compose command shown below to stop and delete all containers.
 

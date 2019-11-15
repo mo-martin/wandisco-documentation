@@ -18,7 +18,8 @@
       "quickstarts/cdh-adlsg2",
       "quickstarts/hdp-s3",
       "quickstarts/cdh-s3",
-      "quickstarts/useful_info_ts"
+      "quickstarts/useful_info",
+      "quickstarts/troubleshooting"
     ]
   },
   "Glossary": {

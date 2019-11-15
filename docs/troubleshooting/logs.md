@@ -12,7 +12,7 @@ The log files for Fusion are split into the various components that make up a Fu
 * Fusion IHC Server
 * Fusion UI Server
 
-If it is a Hadoop zone (i.e. CDH or HDP), then an additional component will be included:
+For Hadoop zones (i.e. CDH or HDP), an additional component will be included:
 
 * Fusion NameNode Proxy
 
@@ -35,7 +35,7 @@ e61981d914d5        wandisco/fusion-ui-server-s3-asf-2.8.0:2.14.2.1-3594    "/us
 f711d5adc3bb        ubuntu                                                  "tail -f /dev/null"      21 hours ago        Up 52 minutes                                                                                          fusion-docker-compose_debug_1
 ```
 
-It is possible to log into the container and view the logs for a specific component in a zone. For example, if you are wanting to view the Fusion Server's logs for the CDH zone (as per the example output above), you would run the following command:
+You can log into a container and view the logs for a specific component in a zone. For example, if you are wanting to view the Fusion Server's logs for the CDH zone, you would run the following command:
 
 `docker exec -u root -it 38c8258e709f /bin/bash`
 
@@ -45,7 +45,7 @@ Once inside, you can access the log directory for the Fusion Server.
 
 ### Log locations
 
-For each component, there is a different log directory. The following list below details the default log directory for each component in their individual containers:
+For each component, there is a different log directory. The list below highlights the log directory for each component in their individual containers:
 
 _Fusion Server:_
 `/var/log/fusion/server/`
@@ -75,7 +75,7 @@ This container holds all the Fusion log files for each component. You can log in
 
 `docker exec -u root -it f711d5adc3bb /bin/bash`
 
-You will be logged inside of the `/debug` directory by default, inside of which are directories that reference each Fusion component in their specific zone:
+You will be logged inside of the `/debug` directory by default, which contains directories that reference each Fusion component in their specific zone:
 
  _Example of a CDH to S3 environment_
  ```text

@@ -60,9 +60,9 @@ Region: `us-west-1`
 
 Bucket name: `fusion-bucket`
 
-Access key: `UPPER_CASE_STRING` - If using AWS, this can be found under _My security credentials_ in the IAM management page (Access key ID).
+Access key: `ACCESS_KEY` - If using AWS, this can be found under _My security credentials_ in the IAM management page (Access key ID).
 
-Secret key: `RANDOM_STRING`
+Secret key: `SECRET_KEY`- If using AWS, this will have been provided during the initial creation of the Access Key.
 
 Buffer directory: `/tmp` - this can be left as default.
 

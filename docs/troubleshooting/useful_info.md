@@ -14,6 +14,10 @@ sidebar_label: Useful information
 
 ## Useful docker-compose commands
 
+Bring the docker containers up and force a recreation of the containers (useful if encountering errors):
+
+`docker-compose up -d --force`
+
 Pull down latest docker container images:
 
 `docker-compose pull`

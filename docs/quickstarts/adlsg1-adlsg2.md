@@ -6,7 +6,7 @@ sidebar_label: ADLS Gen1 to ADLS Gen2
 
 Use this quickstart if you want to configure Fusion to connect to ADLS Gen1 storage and ADLS Gen2 storage.
 
-Please see the [Useful information and troubleshooting](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/useful_info_ts) section for additional commands and help.
+Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/troubleshooting/useful_info) section for additional commands and help.
 
 ## Prerequisites
 

@@ -6,7 +6,7 @@ sidebar_label: Cloudera (CDH) to S3
 
 Use this quickstart if you want to configure Fusion to connect to Cloudera (CDH) and an S3 bucket.
 
-Please see the [Useful information and troubleshooting](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/useful_info_ts) section for additional commands and help.
+Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/troubleshooting/useful_info) section for additional commands and help.
 
 ## Limitations of this quickstart
 

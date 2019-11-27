@@ -184,6 +184,9 @@ After all the prompts have been completed, you will be able to start the contain
 
    `http://<docker_hostname/IP>:8083`
 
+   Username: `admin`
+   Password: `admin`
+
    Proceed to the Settings tab and select the *Live Hive: Plugin Activation* option on the left-hand panel.
 
    Click on the *Activate* option.
@@ -278,11 +281,64 @@ After all the prompts have been completed, you will be able to start the contain
 
 ### Setup Databricks on ADLS Gen2 zone
 
-1. TBC
+1. Log into the Fusion UI for the ADLS Gen2 zone.
 
-### Replication
+   `http://<docker_hostname/IP>:8583`
 
-_You now have the ability to create replication rules via the UI, feel free to create one and test replication._
+   Username: `admin`
+   Password: `admin`
+
+2. Enter the Databricks Configuration details on the Settings page.
+
+   **Fusion UI -> Settings -> Databricks: Configuration**
+
+   _Examples for Databricks details_
+
+   * Databricks Service Address: `westeurope.azuredatabricks.net`
+
+   * Bearer Token: `dapicd7689jkb25473c765ghty78bb299a83`
+
+   * Databricks Cluster ID: `2233-255452-boned277`
+
+   * Unique JDBC HTTP path: `sql/protocolv1/o/6987013384345789/2233-255452-boned277`
+
+   Click **Update** once complete.
+
+3. Log into one of the containers for the ADLS Gen2 zone.
+
+   You will first need to obtain a Container ID from the adls2 zone, this will be a 12 digit hexadecimal string. The name of the image will appear much like this example - `fusion-docker-compose_fusion-ui-server-adls2_1`.
+
+   `docker ps` _- obtain ID._
+
+   `docker exec -u root -it $CONTAINER_ID /bin/bash`
+
+4. Upload the Live Analytics "datatransformer" jar using a curl command.
+
+   _Example_
+
+   `curl -v -H "Authorization: Bearer dapicd7689jkb25473c765ghty78bb299a83"  -F contents=@/opt/wandisco/fusion/plugins/databricks/live-analytics-databricks-etl-5.0.0.0-SNAPSHOT.jar -F path="/datatransformer.jar" https://westeurope.azuredatabricks.net/api/2.0/dbfs/put`
+
+   You will need to adjust the command so that your Bearer token and azuredatabricks URL is referenced.
+
+5. Log into the Azure portal and Launch Workspace for your Databricks cluster.
+
+6. On the left-hand panel, select **Clusters** and then select your interactive cluster.
+
+7. Click on the **Libraries** tab, and select the option to **Install New**.
+
+8. Select the following options for the Install Library prompt:
+
+   * Library Source = `DBFS`
+
+   * Library Type = `Jar`
+
+   * File Path = `dbfs:/datatransformer.jar`
+
+9. Select **Install** once the details are entered. Wait for the **Status** of the jar to display as **Installed** before continuing.
+
+### Replication rules
+
+1. TBA
 
 ## Advanced options
 

@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>ihc.server · WANdisco docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="The Inter-Hadoop Communication (IHC) Server is configured from a single file located at `/etc/wandisco/fusion/ihc/server/{distro}/{version string}.ihc`."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="ihc.server · WANdisco docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/"/><meta property="og:description" content="The Inter-Hadoop Communication (IHC) Server is configured from a single file located at `/etc/wandisco/fusion/ihc/server/{distro}/{version string}.ihc`."/><meta property="og:image" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="https://wandisco.github.io/wandisco-documentation/img/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://wandisco.github.io/wandisco-documentation/js/scrollSpy.js"></script><link rel="stylesheet" href="https://wandisco.github.io/wandisco-documentation/css/main.css"/><script src="https://wandisco.github.io/wandisco-documentation/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="https://wandisco.github.io/wandisco-documentation/"><img class="logo" src="https://wandisco.github.io/wandisco-documentation/img/favicon.png" alt="WANdisco docs"/><h2 class="headerTitleWithLogo">WANdisco docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/quickstarts/quickstart-config" target="_self">Quickstarts</a></li><li class="siteNavGroupActive"><a href="https://wandisco.github.io/wandisco-documentation/docs/docs/doc1" target="_self">Docs</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/glossary/a" target="_self">Glossary</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/api/api" target="_self">API</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/help" target="_self">Help</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Configuration properties</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">docs.wandisco.com<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="https://wandisco.github.io/wandisco-documentation/docs/docs/doc1">Docs</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Configuration properties<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="https://wandisco.github.io/wandisco-documentation/docs/docs/config-properties/config-properties">Configuration Properties</a></li><li class="navListItem"><a class="navItem" href="https://wandisco.github.io/wandisco-documentation/docs/docs/config-properties/application.properties">application.properties</a></li><li class="navListItem navListItemActive"><a class="navItem" href="https://wandisco.github.io/wandisco-documentation/docs/docs/config-properties/ihc.server">ihc.server</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">ihc.server</h1></header><article><div><span><p>The Inter-Hadoop Communication (IHC) Server is configured from a single file located at <code>/etc/wandisco/fusion/ihc/server/{distro}/{version string}.ihc</code>.</p>
+<p>All properties in this file are checked at startup. If set options are given, the default is highlighted in bold, e.g. True/<strong>false</strong>.</p>
+<h2><a class="anchor" aria-hidden="true" id="default-installation-properties"></a><a href="#default-installation-properties" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Default installation properties</h2>
+<h3><a class="anchor" aria-hidden="true" id="httpserver"></a><a href="#httpserver" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>http.server</code></h3>
+<p>The host and port for the web server, used when the <code>ihc.http.policy</code> is equal to HTTP_ONLY or BOTH_HTTP_HTTPS.</p>
+<ul>
+<li>Default - 0.0.0.0:9001, permitted - <string>:[1 - 65535]</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="httpsserver"></a><a href="#httpsserver" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>https.server</code></h3>
+<p>The host and port for the web server, used when the <code>ihc.http.policy</code> is equal to HTTPS_ONLY or BOTH_HTTP_HTTPS.</p>
+<ul>
+<li>Default - 0.0.0.0:8001, permitted - <string>:[1 - 65535]</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihchttppolicy"></a><a href="#ihchttppolicy" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.http.policy</code></h3>
+<p>Determines the HTTP policy supported by IHC Server.</p>
+<ul>
+<li><strong>HTTP_ONLY</strong>, HTTPS_ONLY, BOTH_HTTP_HTTPS</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihcserver"></a><a href="#ihcserver" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.server</code></h3>
+<p>The hostname and port the IHC server will listen on.</p>
+<ul>
+<li>Default - $FUSION_HOSTNAME:7000, permitted - <string>:[1 - 65535]</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihcserverbind"></a><a href="#ihcserverbind" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.server.bind</code></h3>
+<p>The address the IHC server will bind to. The port must match that used in the <code>ihc.server</code> address.</p>
+<ul>
+<li>Default - 0.0.0.0:7000, permitted - <string>:[1 - 65535]</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihcsslenabled"></a><a href="#ihcsslenabled" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.ssl.enabled</code></h3>
+<p>Signifies that the IHC Server communications has SSL encryption enabled.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihcsslkeyalias"></a><a href="#ihcsslkeyalias" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.ssl.key.alias</code></h3>
+<p>Alias of private key / certificate chain of the IHC server used to encrypt communications.</p>
+<ul>
+<li>Alias of a keystore entry</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihcsslkeypassword"></a><a href="#ihcsslkeypassword" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.ssl.key.password</code></h3>
+<p>Encrypted password of private key entry in keystore. Can be encrypted using encrypt-password.sh.</p>
+<h3><a class="anchor" aria-hidden="true" id="ihcsslkeystore"></a><a href="#ihcsslkeystore" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.ssl.keystore</code></h3>
+<p>Local filesystem path of key store containing key entry.</p>
+<ul>
+<li>Absolute path to key store.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihcsslkeystorepassword"></a><a href="#ihcsslkeystorepassword" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.ssl.keystore.password</code></h3>
+<p>Encrypted password of key store. Can be encrypted using encrypt-password.sh.</p>
+<h3><a class="anchor" aria-hidden="true" id="ihcsslkeystoretype"></a><a href="#ihcsslkeystoretype" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.ssl.keystore.type</code></h3>
+<p>Format of key store</p>
+<ul>
+<li><strong>JKS</strong>, PKCS12, etc.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihcssltruststore"></a><a href="#ihcssltruststore" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.ssl.truststore</code></h3>
+<p>Local filesystem path of trust store used to validate certificates sent by other IHC servers or Fusion Servers.</p>
+<ul>
+<li>Absolute path to trust store</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihcssltruststorepassword"></a><a href="#ihcssltruststorepassword" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.ssl.truststore.password</code></h3>
+<p>Encrypted password of trust store. Can be encrypted using encrypt-password.sh.</p>
+<h3><a class="anchor" aria-hidden="true" id="ihcssltruststoretype"></a><a href="#ihcssltruststoretype" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.ssl.truststore.type</code></h3>
+<p>Format of trust store.</p>
+<ul>
+<li><strong>JKS</strong>, PKCS12, etc.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="properties-which-can-be-added"></a><a href="#properties-which-can-be-added" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Properties which can be added</h2>
+<p>The following properties are non-standard, and will not be present in a IHC properties file by default.</p>
+<h3><a class="anchor" aria-hidden="true" id="ihctransfersslhandshaketimeout"></a><a href="#ihctransfersslhandshaketimeout" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.transfer.ssl.handshake.timeout</code></h3>
+<p>SSL Handshake timeout on transfer channel.</p>
+<ul>
+<li>Default - 60. Any positive integer permitted.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihctransferwritelimit"></a><a href="#ihctransferwritelimit" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.transfer.write.limit</code></h3>
+<p>Write bandwidth limit on transfer channel, in bytes/sec.</p>
+<ul>
+<li>Default - 0 (unlimited). Any integer permitted.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihctransferwritelimitcheckinterval"></a><a href="#ihctransferwritelimitcheckinterval" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.transfer.write.limit.check.interval</code></h3>
+<p>Check interval for bandwidth limit enforcement, in seconds.</p>
+<ul>
+<li>Default - 1. Any positive integer permitted.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihcwriterthreads"></a><a href="#ihcwriterthreads" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.writer.threads</code></h3>
+<p>Number of threads servicing write handlers that perform reads from underlying storage and writes to network channel.</p>
+<ul>
+<li>Default - 32. Any positive integer permitted.</li>
+</ul>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="https://wandisco.github.io/wandisco-documentation/docs/docs/config-properties/application.properties"><span class="arrow-prev">← </span><span>application.properties</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#default-installation-properties">Default installation properties</a><ul class="toc-headings"><li><a href="#httpserver"><code>http.server</code></a></li><li><a href="#httpsserver"><code>https.server</code></a></li><li><a href="#ihchttppolicy"><code>ihc.http.policy</code></a></li><li><a href="#ihcserver"><code>ihc.server</code></a></li><li><a href="#ihcserverbind"><code>ihc.server.bind</code></a></li><li><a href="#ihcsslenabled"><code>ihc.ssl.enabled</code></a></li><li><a href="#ihcsslkeyalias"><code>ihc.ssl.key.alias</code></a></li><li><a href="#ihcsslkeypassword"><code>ihc.ssl.key.password</code></a></li><li><a href="#ihcsslkeystore"><code>ihc.ssl.keystore</code></a></li><li><a href="#ihcsslkeystorepassword"><code>ihc.ssl.keystore.password</code></a></li><li><a href="#ihcsslkeystoretype"><code>ihc.ssl.keystore.type</code></a></li><li><a href="#ihcssltruststore"><code>ihc.ssl.truststore</code></a></li><li><a href="#ihcssltruststorepassword"><code>ihc.ssl.truststore.password</code></a></li><li><a href="#ihcssltruststoretype"><code>ihc.ssl.truststore.type</code></a></li></ul></li><li><a href="#properties-which-can-be-added">Properties which can be added</a><ul class="toc-headings"><li><a href="#ihctransfersslhandshaketimeout"><code>ihc.transfer.ssl.handshake.timeout</code></a></li><li><a href="#ihctransferwritelimit"><code>ihc.transfer.write.limit</code></a></li><li><a href="#ihctransferwritelimitcheckinterval"><code>ihc.transfer.write.limit.check.interval</code></a></li><li><a href="#ihcwriterthreads"><code>ihc.writer.threads</code></a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://wandisco.github.io/wandisco-documentation/" class="nav-home"></a><div><h5>Docs</h5><a href="https://wandisco.github.io/wandisco-documentation/docs/en/quickstarts/quickstart-config.html">Getting Started</a><a href="https://docs.wandisco.com">Product User Guides</a><a href="https://community.wandisco.com/s/knowledge-base">Knowledge Base</a></div><div><h5>Community</h5><a href="https://community.wandisco.com/">WANdisco Community</a><a href="//wandisco.com/partners/find">Partners</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://wandisco.com/blog">Blog</a><a href="https://blogs.wandisco.com/">Developer Blog</a><a href="https://github.com/wandisco">GitHub</a></div></section><section class="copyright">Copyright © 2019 WANdisco, Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '56e573413aa88e9ec072a585bec45683',
+                indexName: 'wandisco',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>

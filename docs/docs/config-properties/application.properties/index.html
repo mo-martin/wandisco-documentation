@@ -1,0 +1,480 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>application.properties · WANdisco docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="The Fusion Server configuration properties are found in `/etc/wandisco/fusion/server/application.properties`."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="application.properties · WANdisco docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/"/><meta property="og:description" content="The Fusion Server configuration properties are found in `/etc/wandisco/fusion/server/application.properties`."/><meta property="og:image" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="https://wandisco.github.io/wandisco-documentation/img/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://wandisco.github.io/wandisco-documentation/js/scrollSpy.js"></script><link rel="stylesheet" href="https://wandisco.github.io/wandisco-documentation/css/main.css"/><script src="https://wandisco.github.io/wandisco-documentation/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="https://wandisco.github.io/wandisco-documentation/"><img class="logo" src="https://wandisco.github.io/wandisco-documentation/img/favicon.png" alt="WANdisco docs"/><h2 class="headerTitleWithLogo">WANdisco docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/quickstarts/quickstart-config" target="_self">Quickstarts</a></li><li class="siteNavGroupActive"><a href="https://wandisco.github.io/wandisco-documentation/docs/docs/doc1" target="_self">Docs</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/glossary/a" target="_self">Glossary</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/api/api" target="_self">API</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/help" target="_self">Help</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Configuration properties</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">docs.wandisco.com<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="https://wandisco.github.io/wandisco-documentation/docs/docs/doc1">Docs</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Configuration properties<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="https://wandisco.github.io/wandisco-documentation/docs/docs/config-properties/config-properties">Configuration Properties</a></li><li class="navListItem navListItemActive"><a class="navItem" href="https://wandisco.github.io/wandisco-documentation/docs/docs/config-properties/application.properties">application.properties</a></li><li class="navListItem"><a class="navItem" href="https://wandisco.github.io/wandisco-documentation/docs/docs/config-properties/ihc.server">ihc.server</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">application.properties</h1></header><article><div><span><p>The Fusion Server configuration properties are found in <code>/etc/wandisco/fusion/server/application.properties</code>.</p>
+<h2><a class="anchor" aria-hidden="true" id="default-installation-properties"></a><a href="#default-installation-properties" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Default installation properties</h2>
+<h3><a class="anchor" aria-hidden="true" id="agreementstoresegmentsize"></a><a href="#agreementstoresegmentsize" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>agreementstore.segment.size</code></h3>
+<p>The DConE AgreementStore stores agreements in segments, with each segment stored in its own file. This defines how many agreements are stored in a segment.</p>
+<ul>
+<li>Default - 5000. Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="announcementkeyinterval"></a><a href="#announcementkeyinterval" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>announcement.key.interval</code></h3>
+<p>Specifies the minimum Global Sequence Number (GSN) interval that triggers the generation of a status message.</p>
+<ul>
+<li>Default - 1000L. Any positive integer permitted.</li>
+<li>Checked dynamically</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="announcementtimeinterval"></a><a href="#announcementtimeinterval" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>announcement.time.interval</code></h3>
+<p>Specifies the minimum time interval that triggers the generation of a status message.</p>
+<ul>
+<li>Default - 10000L. Any positive integer permitted.</li>
+<li>Checked dynamically</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="applicationhostname"></a><a href="#applicationhostname" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>application.hostname</code></h3>
+<p>This is the hostname used in reporting the Fusion server’s address.</p>
+<ul>
+<li>An FQDN, for example docs01-vm01.example.com</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="applicationintegrationdbdeepcopy"></a><a href="#applicationintegrationdbdeepcopy" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>application.integration.db.deep.copy</code></h3>
+<p>If set to true, the application integration database will also write to disk rather than being exclusively stored in memory.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="applicationintegrationdbforce"></a><a href="#applicationintegrationdbforce" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>application.integration.db.force</code></h3>
+<p>If set to true, the application integration database will forcibly sync with the filesystem.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="applicationintegrationdbpanicifdirty"></a><a href="#applicationintegrationdbpanicifdirty" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>application.integration.db.panic.if.dirty</code></h3>
+<p>If set to true and the application integration database was not shut down 'cleanly', then on restart the server will not start.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="applicationlocation"></a><a href="#applicationlocation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>application.location</code></h3>
+<p>The directory the application will use for persistence.</p>
+<ul>
+<li>default is . , any existing path is permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="applicationport"></a><a href="#applicationport" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>application.port</code></h3>
+<p>The port DConE uses for communication.</p>
+<ul>
+<li>Default 6444, range 1 – 65535</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="communicationhostname"></a><a href="#communicationhostname" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>communication.hostname</code></h3>
+<p>This is the hostname used for binding opened ports (for DConE, requests port, REST).</p>
+<ul>
+<li>Default - 0.0.0.0, must be a valid hostname.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="connectionresetcount"></a><a href="#connectionresetcount" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>connection.reset.count</code></h3>
+<p>The number of message objects stored in cache before the cache is reset.</p>
+<ul>
+<li>Default - 5000. Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="databaselocation"></a><a href="#databaselocation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>database.location</code></h3>
+<p>The directory DConE will use for persistence.</p>
+<ul>
+<li>Any existing path is permitted, default - <code>/opt/wandisco/fusion/server/dcone/db</code></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="dconesystemdbdeepcopy"></a><a href="#dconesystemdbdeepcopy" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>dcone.system.db.deep.copy</code></h3>
+<p>If set to true, the DConE database will also write to disk rather than being exclusively stored in memory.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="dconesystemdbforce"></a><a href="#dconesystemdbforce" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>dcone.system.db.force</code></h3>
+<p>If set to true, the DConE database will forcibly sync with the filesystem.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="dconesystemdbpanicifdirty"></a><a href="#dconesystemdbpanicifdirty" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>dcone.system.db.panic.if.dirty</code></h3>
+<p>If set to true/false and the DConE system database was not shut down 'cleanly', then on restart the server will not start.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="dconeteachlimit"></a><a href="#dconeteachlimit" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>dcone.teach.limit</code></h3>
+<p>Specifies the maximum number of agreements sent in a teach message.</p>
+<ul>
+<li>Default - 5000. Any positive integer permitted.</li>
+<li>Checked dynamically</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="dconeuseboxcar"></a><a href="#dconeuseboxcar" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>dcone.use.boxcar</code></h3>
+<p>Whether the DConE database should use boxcars or not.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="decouplerpoolsize"></a><a href="#decouplerpoolsize" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>decoupler.pool.size</code></h3>
+<p>Specifies the size of the default decoupler’s thread pool.</p>
+<ul>
+<li>Default - 100. Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="decouplerqueuesizemax"></a><a href="#decouplerqueuesizemax" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>decoupler.queue.size.max</code></h3>
+<p>Maximum number of queued items for the decoupler.</p>
+<ul>
+<li>Default - 1000000. Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="decouplerteachpoolsize"></a><a href="#decouplerteachpoolsize" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>decoupler.teach.pool.size</code></h3>
+<p>Specifies the size of the teach decoupler’s thread pool; if 0, disables the teach decoupler.</p>
+<ul>
+<li>Default - 20. Any positive integer permitted, plus zero.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="decouplerteachqueuesizemax"></a><a href="#decouplerteachqueuesizemax" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>decoupler.teach.queue.size.max</code></h3>
+<p>Maximum number of queued items for the teach decoupler.</p>
+<ul>
+<li>Default - 1000000. Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="executorthreads"></a><a href="#executorthreads" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>executor.threads</code></h3>
+<p>The number of threads executing agreements in parallel (this is total number of repair and agreement execution threads).
+The names of the threads start with FastExecutor or AgreedExecutor. These can be used to determine where a request was executed and what type of request - the Completed log message of request contains the thread name, which would either start with AgreedExecutor or with FastExecutor.
+The fast requests are all requests that do not involve a pull of data from another zone. An agreed request is the opposite of this, whereby data is pulled from another zone as part of the request.</p>
+<ul>
+<li>Default - 250. 1 to any reasonable max number of threads as allowed per platform is permitted, must be greater than <a href="#repairthreads"><code>repair.threads</code></a> value.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusionclientsslenabled"></a><a href="#fusionclientsslenabled" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.client.ssl.enabled</code></h3>
+<p>Enables SSL between the Fusion Server - Fusion Client.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusionhttpauthenticationenabled"></a><a href="#fusionhttpauthenticationenabled" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.http.authentication.enabled</code></h3>
+<p>Enables authentication on the REST API.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusionhttpauthenticationkerberoskeytab"></a><a href="#fusionhttpauthenticationkerberoskeytab" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.http.authentication.kerberos.keytab</code></h3>
+<p>The path to a keytab that contains the principal specified in <code>fusion.http.authentication.kerberos.principal</code>.</p>
+<ul>
+<li>Absolute path to Kerberos keytab, no default.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusionhttpauthenticationkerberosprincipal"></a><a href="#fusionhttpauthenticationkerberosprincipal" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.http.authentication.kerberos.principal</code></h3>
+<p>The principal the fusion server will use to login with. The name of the principal must be <em>HTTP</em>.</p>
+<ul>
+<li>Kerberos principal in the form <em>HTTP/HOST@{KERBEROS_REALM}</em>, no default.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusionhttpauthenticationtype"></a><a href="#fusionhttpauthenticationtype" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.http.authentication.type</code></h3>
+<p>Type of authentication to use for http access.</p>
+<ul>
+<li><strong>simple</strong> or kerberos</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusionhttpauthenticationsimpleanonymousallowed"></a><a href="#fusionhttpauthenticationsimpleanonymousallowed" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.http.authentication.simple.anonymous.allowed</code></h3>
+<p>If type is &quot;simple&quot;, whether anonymous API calls are allowed. If set to false, users must append a query parameter at the end of their URL in the form user.name=$USER_NAME.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusionhttpauthorizationauthorizedproxies"></a><a href="#fusionhttpauthorizationauthorizedproxies" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.http.authorization.authorized.proxies</code></h3>
+<p>Users that are allowed to proxy on behalf of other users. HTTP calls would include a value for the header proxy.user.name. The proxied user’s permissions will then be checked against authorized readers and read-writers.</p>
+<ul>
+<li>Default is HTTP, must be a comma-delimited list of users.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusionhttpauthorizationauthorizedreaders"></a><a href="#fusionhttpauthorizationauthorizedreaders" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.http.authorization.authorized.readers</code></h3>
+<p>Users that are allowed to make read calls ONLY (write calls are PATCH, POST, PUT, DELETE).</p>
+<ul>
+<li>Default is fusionUISystem, must be a comma-delimited list of users.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusionhttpauthorizationauthorizedreadwriters"></a><a href="#fusionhttpauthorizationauthorizedreadwriters" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.http.authorization.authorized.read.writers</code></h3>
+<p>Users that are allowed to make read OR write calls (any type of HTTP request).</p>
+<ul>
+<li>Default is fusionUISystem, must be a comma-delimited list of users.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusionhttpauthorizationenabled"></a><a href="#fusionhttpauthorizationenabled" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.http.authorization.enabled</code></h3>
+<p>Enables authorization on the REST API. Authentication must also be enabled.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusionhttppolicy"></a><a href="#fusionhttppolicy" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.http.policy</code></h3>
+<p>Determines the transfer protocol(s) to be supported by Fusion Server.</p>
+<ul>
+<li><strong>HTTP_ONLY</strong>, HTTPS_ONLY, BOTH_HTTP_HTTPS</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusionreplicateddirexchange"></a><a href="#fusionreplicateddirexchange" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.replicated.dir.exchange</code></h3>
+<p>Location of a directory in the replicated filesystem to which Fusion server will write information about replicated directories for clients to read. It’s necessary to configure the same in the core-site.xml, so that it generates the necessary data.</p>
+<ul>
+<li>Default is <code>/wandisco/exchange_dir</code>, can be any underlying filesystem path not under replication</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihcsslenabled"></a><a href="#ihcsslenabled" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.ssl.enabled</code></h3>
+<p>Whether SSL is enabled for IHC network communications.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="jettyhttpport"></a><a href="#jettyhttpport" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>jetty.http.port</code></h3>
+<p>The port the Fusion HTTP API will use.</p>
+<ul>
+<li>Default - 8082, range 1 – 65535</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="jettyhttpsport"></a><a href="#jettyhttpsport" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>jetty.https.port</code></h3>
+<p>The port the Fusion HTTPS API will use (if SSL is enabled).</p>
+<ul>
+<li>Default - 8084, range 1 – 65535</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="learnermaxoutputlag"></a><a href="#learnermaxoutputlag" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>learner.max.output.lag</code></h3>
+<p>The maximum agreements that a node in a Zone can be behind before it is disabled (i.e. it will no longer be able to propose changes).</p>
+<ul>
+<li>Default - 10000000L. Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="loglocation"></a><a href="#loglocation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>log.location</code></h3>
+<p>The directory in which the Fusion Server stores log files.</p>
+<ul>
+<li>Default - <code>/var/log/fusion/server</code>, a local filesystem directory.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="maximumsize"></a><a href="#maximumsize" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>maximum.size</code></h3>
+<p>The number of agreements DConE will hold in the agreement store - this store holds agreements to be processed and agreements stored to teach other nodes.</p>
+<ul>
+<li>Default - 50000. Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="nodeid"></a><a href="#nodeid" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>node.id</code></h3>
+<p>The unique identifier given to the Fusion node automatically at installation.</p>
+<ul>
+<li>A Hexadecimal number (must not be altered)</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="nodename"></a><a href="#nodename" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>node.name</code></h3>
+<p>The name set for the Fusion node. Adjustable in the Fusion UI.</p>
+<ul>
+<li>Any String</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="remoteihcport"></a><a href="#remoteihcport" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>remote.ihc.port</code></h3>
+<p>The port remote IHC servers should connect to when the zone is set to inbound connection.</p>
+<ul>
+<li>Default - 8024, range 1 – 65535</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="repairthreadlimit"></a><a href="#repairthreadlimit" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>repair.thread.limit</code></h3>
+<p>Maximum number of outstanding files that a single repair will have scheduled for execution at any given time. This is a mechanism for allowing multiple parallel repairs to run together.</p>
+<ul>
+<li>Default - 25. Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="repairthreads"></a><a href="#repairthreads" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>repair.threads</code></h3>
+<p>Number of executor threads dedicated for repair tasks only.</p>
+<ul>
+<li>Default - 50. Any positive integer permitted, must be less then <code>executor.threads</code> value.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="requestport"></a><a href="#requestport" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>request.port</code></h3>
+<p>The port Fusion clients will use to connect the Fusion server.</p>
+<ul>
+<li>Default - 8023, range 1 – 65535</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="sslenabled"></a><a href="#sslenabled" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ssl.enabled</code></h3>
+<p>Whether SSL is enabled for Fusion Server communications.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="sslkeyalias"></a><a href="#sslkeyalias" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ssl.key.alias</code></h3>
+<p>Alias of private key / certificate chain of the server used to encrypt communications.</p>
+<ul>
+<li>Alias of a keystore entry.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="sslkeypassword"></a><a href="#sslkeypassword" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ssl.key.password</code></h3>
+<p>Encrypted password of private key entry in keystore. Can be encrypted using encrypt-password.sh.</p>
+<ul>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="sslkeystore"></a><a href="#sslkeystore" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ssl.keystore</code></h3>
+<p>Local filesystem path of key store containing key entry.</p>
+<ul>
+<li>Absolute path to key store.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="sslkeystorepassword"></a><a href="#sslkeystorepassword" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ssl.keystore.password</code></h3>
+<p>Encrypted password of key store. Can be encrypted using encrypt-password.sh.</p>
+<ul>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ssltruststore"></a><a href="#ssltruststore" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ssl.truststore</code></h3>
+<p>Local filesystem path of trust store used to validate certificates sent by other Fusion Servers or IHC servers.</p>
+<ul>
+<li>Absolute path to trust store.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ssltruststorepassword"></a><a href="#ssltruststorepassword" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ssl.truststore.password</code></h3>
+<p>Encrypted password of trust store. Can be encrypted using encrypt-password.sh.</p>
+<ul>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="stacktracemessagingenabled"></a><a href="#stacktracemessagingenabled" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>stacktrace.messaging.enabled</code></h3>
+<p>Allows you to turn off the ability to receive stack traces from REST API calls.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="transferchunksize"></a><a href="#transferchunksize" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>transfer.chunk.size</code></h3>
+<p>The size of the ChunkedStream.</p>
+<ul>
+<li>Default - 32768. Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="zone"></a><a href="#zone" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>zone</code></h3>
+<p>The zone name for where the Fusion server is located. This is set during installation.</p>
+<ul>
+<li>Any String (must not be altered)</li>
+<li>Checked at startup</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="properties-which-can-be-added"></a><a href="#properties-which-can-be-added" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Properties which can be added</h2>
+<h3><a class="anchor" aria-hidden="true" id="agreedproposalstorerollback"></a><a href="#agreedproposalstorerollback" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>agreed.proposal.store.rollback</code></h3>
+<p>Determines whether the Fusion server will attempt to rollback any uncommitted transactions on start up.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusiongsngarbagecollectorblock"></a><a href="#fusiongsngarbagecollectorblock" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.gsn.garbage.collector.block</code></h3>
+<p>Coordinated requests (GSNs) in stable storage are garbage collected by a thread pool, periodically requests will be submitted to garbage collect (GC) the GSNs. By default, the thread submitting requests does not wait for the GSN to be GC’d.
+If this is set to true, then the thread that requests the GC will be blocked until the GC is done - this will cause back pressure on the system and reduce the throughput.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusiongsngarbagecollectorthreadcount"></a><a href="#fusiongsngarbagecollectorthreadcount" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.gsn.garbage.collector.thread.count</code></h3>
+<p>Coordinated requests (GSNs) are now removed from the shared storage using a thread pool. This controls the number of threads.</p>
+<ul>
+<li>Default - 10. Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="fusiongsngarbagecollectorwarnthresholdtime"></a><a href="#fusiongsngarbagecollectorwarnthresholdtime" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fusion.gsn.garbage.collector.warn.threshold.time</code></h3>
+<p>If it takes longer than this time to garbage collect the coordinated requests (GSNs) stored in stable storage, then issue a warning and diagnostic event.</p>
+<ul>
+<li>Default - 30 (in seconds). Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="ihcconnecttimeout"></a><a href="#ihcconnecttimeout" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>ihc.connect.timeout</code></h3>
+<p>Timeout on how long Fusion should wait for IHC connection being established (networking timeout).</p>
+<ul>
+<li>Default - 60000L (in ms). Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="licensefile"></a><a href="#licensefile" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>license.file</code></h3>
+<p>The absolute path to the license file.</p>
+<ul>
+<li>Default <code>/etc/wandisco/fusion/server/license.key</code></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="nettyclientreuseaddr"></a><a href="#nettyclientreuseaddr" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>netty.client.reuse.addr</code></h3>
+<p>Whether netty clients can reuse address and port for connections that are in the TIME_WAIT state.</p>
+<ul>
+<li>True/<strong>false</strong></li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="readtimeout"></a><a href="#readtimeout" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>read.timeout</code></h3>
+<p>Timeout of how long without response the IHC connection can be.</p>
+<ul>
+<li>Default - 60000L (in ms). Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="responsecachesizelimit"></a><a href="#responsecachesizelimit" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>response.cache.size.limit</code></h3>
+<p>Allows you to set the size limit of the response cache which holds the processed request ids and corresponding responses.</p>
+<ul>
+<li>Default - 100000. Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="responsecacheexpiration"></a><a href="#responsecacheexpiration" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>response.cache.expiration</code></h3>
+<p>This specifies how long entries are stored in the response cache before they expire.</p>
+<ul>
+<li>Default - 60 (in minutes). Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="retrysleeptime"></a><a href="#retrysleeptime" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>retry.sleep.time</code></h3>
+<p>The sleep time in between retries of an agreed request.</p>
+<ul>
+<li>Default - 1000L (in ms). Any positive integer permitted.</li>
+<li>Checked at startup</li>
+</ul>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="https://wandisco.github.io/wandisco-documentation/docs/docs/config-properties/config-properties"><span class="arrow-prev">← </span><span>Configuration Properties</span></a><a class="docs-next button" href="https://wandisco.github.io/wandisco-documentation/docs/docs/config-properties/ihc.server"><span>ihc.server</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#default-installation-properties">Default installation properties</a><ul class="toc-headings"><li><a href="#agreementstoresegmentsize"><code>agreementstore.segment.size</code></a></li><li><a href="#announcementkeyinterval"><code>announcement.key.interval</code></a></li><li><a href="#announcementtimeinterval"><code>announcement.time.interval</code></a></li><li><a href="#applicationhostname"><code>application.hostname</code></a></li><li><a href="#applicationintegrationdbdeepcopy"><code>application.integration.db.deep.copy</code></a></li><li><a href="#applicationintegrationdbforce"><code>application.integration.db.force</code></a></li><li><a href="#applicationintegrationdbpanicifdirty"><code>application.integration.db.panic.if.dirty</code></a></li><li><a href="#applicationlocation"><code>application.location</code></a></li><li><a href="#applicationport"><code>application.port</code></a></li><li><a href="#communicationhostname"><code>communication.hostname</code></a></li><li><a href="#connectionresetcount"><code>connection.reset.count</code></a></li><li><a href="#databaselocation"><code>database.location</code></a></li><li><a href="#dconesystemdbdeepcopy"><code>dcone.system.db.deep.copy</code></a></li><li><a href="#dconesystemdbforce"><code>dcone.system.db.force</code></a></li><li><a href="#dconesystemdbpanicifdirty"><code>dcone.system.db.panic.if.dirty</code></a></li><li><a href="#dconeteachlimit"><code>dcone.teach.limit</code></a></li><li><a href="#dconeuseboxcar"><code>dcone.use.boxcar</code></a></li><li><a href="#decouplerpoolsize"><code>decoupler.pool.size</code></a></li><li><a href="#decouplerqueuesizemax"><code>decoupler.queue.size.max</code></a></li><li><a href="#decouplerteachpoolsize"><code>decoupler.teach.pool.size</code></a></li><li><a href="#decouplerteachqueuesizemax"><code>decoupler.teach.queue.size.max</code></a></li><li><a href="#executorthreads"><code>executor.threads</code></a></li><li><a href="#fusionclientsslenabled"><code>fusion.client.ssl.enabled</code></a></li><li><a href="#fusionhttpauthenticationenabled"><code>fusion.http.authentication.enabled</code></a></li><li><a href="#fusionhttpauthenticationkerberoskeytab"><code>fusion.http.authentication.kerberos.keytab</code></a></li><li><a href="#fusionhttpauthenticationkerberosprincipal"><code>fusion.http.authentication.kerberos.principal</code></a></li><li><a href="#fusionhttpauthenticationtype"><code>fusion.http.authentication.type</code></a></li><li><a href="#fusionhttpauthenticationsimpleanonymousallowed"><code>fusion.http.authentication.simple.anonymous.allowed</code></a></li><li><a href="#fusionhttpauthorizationauthorizedproxies"><code>fusion.http.authorization.authorized.proxies</code></a></li><li><a href="#fusionhttpauthorizationauthorizedreaders"><code>fusion.http.authorization.authorized.readers</code></a></li><li><a href="#fusionhttpauthorizationauthorizedreadwriters"><code>fusion.http.authorization.authorized.read.writers</code></a></li><li><a href="#fusionhttpauthorizationenabled"><code>fusion.http.authorization.enabled</code></a></li><li><a href="#fusionhttppolicy"><code>fusion.http.policy</code></a></li><li><a href="#fusionreplicateddirexchange"><code>fusion.replicated.dir.exchange</code></a></li><li><a href="#ihcsslenabled"><code>ihc.ssl.enabled</code></a></li><li><a href="#jettyhttpport"><code>jetty.http.port</code></a></li><li><a href="#jettyhttpsport"><code>jetty.https.port</code></a></li><li><a href="#learnermaxoutputlag"><code>learner.max.output.lag</code></a></li><li><a href="#loglocation"><code>log.location</code></a></li><li><a href="#maximumsize"><code>maximum.size</code></a></li><li><a href="#nodeid"><code>node.id</code></a></li><li><a href="#nodename"><code>node.name</code></a></li><li><a href="#remoteihcport"><code>remote.ihc.port</code></a></li><li><a href="#repairthreadlimit"><code>repair.thread.limit</code></a></li><li><a href="#repairthreads"><code>repair.threads</code></a></li><li><a href="#requestport"><code>request.port</code></a></li><li><a href="#sslenabled"><code>ssl.enabled</code></a></li><li><a href="#sslkeyalias"><code>ssl.key.alias</code></a></li><li><a href="#sslkeypassword"><code>ssl.key.password</code></a></li><li><a href="#sslkeystore"><code>ssl.keystore</code></a></li><li><a href="#sslkeystorepassword"><code>ssl.keystore.password</code></a></li><li><a href="#ssltruststore"><code>ssl.truststore</code></a></li><li><a href="#ssltruststorepassword"><code>ssl.truststore.password</code></a></li><li><a href="#stacktracemessagingenabled"><code>stacktrace.messaging.enabled</code></a></li><li><a href="#transferchunksize"><code>transfer.chunk.size</code></a></li><li><a href="#zone"><code>zone</code></a></li></ul></li><li><a href="#properties-which-can-be-added">Properties which can be added</a><ul class="toc-headings"><li><a href="#agreedproposalstorerollback"><code>agreed.proposal.store.rollback</code></a></li><li><a href="#fusiongsngarbagecollectorblock"><code>fusion.gsn.garbage.collector.block</code></a></li><li><a href="#fusiongsngarbagecollectorthreadcount"><code>fusion.gsn.garbage.collector.thread.count</code></a></li><li><a href="#fusiongsngarbagecollectorwarnthresholdtime"><code>fusion.gsn.garbage.collector.warn.threshold.time</code></a></li><li><a href="#ihcconnecttimeout"><code>ihc.connect.timeout</code></a></li><li><a href="#licensefile"><code>license.file</code></a></li><li><a href="#nettyclientreuseaddr"><code>netty.client.reuse.addr</code></a></li><li><a href="#readtimeout"><code>read.timeout</code></a></li><li><a href="#responsecachesizelimit"><code>response.cache.size.limit</code></a></li><li><a href="#responsecacheexpiration"><code>response.cache.expiration</code></a></li><li><a href="#retrysleeptime"><code>retry.sleep.time</code></a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://wandisco.github.io/wandisco-documentation/" class="nav-home"></a><div><h5>Docs</h5><a href="https://wandisco.github.io/wandisco-documentation/docs/en/quickstarts/quickstart-config.html">Getting Started</a><a href="https://docs.wandisco.com">Product User Guides</a><a href="https://community.wandisco.com/s/knowledge-base">Knowledge Base</a></div><div><h5>Community</h5><a href="https://community.wandisco.com/">WANdisco Community</a><a href="//wandisco.com/partners/find">Partners</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://wandisco.com/blog">Blog</a><a href="https://blogs.wandisco.com/">Developer Blog</a><a href="https://github.com/wandisco">GitHub</a></div></section><section class="copyright">Copyright © 2019 WANdisco, Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '56e573413aa88e9ec072a585bec45683',
+                indexName: 'wandisco',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>

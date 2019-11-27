@@ -3,6 +3,12 @@
   "docs": {
     "docs.wandisco.com": [
       "docs/doc1"
+    ],
+    "Configuration properties": [
+      "docs/config-properties/config-properties",
+      "docs/config-properties/application.properties",
+      "docs/config-properties/ihc.server"
+
     ]
   },
   "api": {

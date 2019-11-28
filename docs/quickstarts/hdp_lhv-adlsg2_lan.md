@@ -153,7 +153,7 @@ After all the prompts have been completed, you will be able to start the contain
 
    ```json
    user.username=admin
-   user.password=$2a$10$q2HYSQ25F6emHMP/9ssZHuQx6/kOGs5Y2TVa1lNiUyVcDaLqzo132
+   user.password=$2a$10$jQH1VJ/zBByUD8d0prf0A.Uh9FDKuW/AWUUEayefsP/owiIuFrRAW
    manager.type=UNMANAGED_BIGINSIGHTS
    ```
 
@@ -185,7 +185,7 @@ After all the prompts have been completed, you will be able to start the contain
    `http://<docker_hostname/IP>:8083`
 
    Username: `admin`
-   Password: `admin`
+   Password: `wandisco`
 
    Proceed to the Settings tab and select the *Live Hive: Plugin Activation* option on the left-hand panel.
 
@@ -272,7 +272,7 @@ After all the prompts have been completed, you will be able to start the contain
    _Type = hivemetastore-site.xml_
 
    ```json
-   fs.defaultFS=<namenode_hostname_address>:8020
+   fs.defaultFS=hdfs://<namenode_hostname_address>:8020
    ```
 
    **Save** the config after making the addition.
@@ -338,7 +338,70 @@ After all the prompts have been completed, you will be able to start the contain
 
 ### Replication rules
 
-1. TBA
+1. Log into the Fusion UI for the HDP zone.
+
+   `http://<docker_hostname/IP>:8083`
+
+   Username: `admin`
+   Password: `wandisco`
+
+2. Enter the Replication tab, and select to **+ Create** a replication rule.
+
+3. Create a new HCFS rule using the UI with the following properties:
+
+   * Type = `HCFS`
+
+   * Zones = `adls2, hdp` _- Leave as default._
+
+   * Priority Zone = `hdp` _- Leave as default._
+
+   * Rule Name = `warehouse`
+
+   * Path for adls2 = `/apps/hive/warehouse`
+
+   * Path for hdp = `/apps/hive/warehouse`
+
+   Click **Add** after entering the Rule Name and Paths.
+
+   * Advanced Options: Preserve Origin Block Size = `true` _- click the checkbox to set this to true._
+
+   Click **Create rules (1)** once complete.
+
+4. Create a new Hive rule using the UI with the following properties:
+
+   * Type = `Hive`
+
+   * Database name = `test*`
+
+   * Table name = `*`
+
+   * Description = `testing` _- this field is optional_
+
+   Click **Create rule** once complete.
+
+5. Both rules should now display on the **Replication** tab in the Fusion UI.
+
+## Testing replication
+
+In this section, follow the steps detailed to perform live replication of HCFS data and Hive metadata from the HDP cluster to the Azure Databricks cluster.
+
+Prior to performing these tasks, the Databricks cluster must be in a **running** state. Please access the Azure portal and check the status of the cluster. If it is not running, select to start the cluster and wait until it is **running** before continuing.
+
+1. Log into a HDP cluster node with the Hive client available.
+
+   You can confirm the Hive client is installed by switching to the `hdfs` user and running `hive` on the command line.
+
+   `ssh <hdp-cluster-node>`
+
+   `su - hdfs`
+
+   `hive`
+
+   After running the Hive command as the `hdfs` user, you will now be inside a Hive interactive session.
+
+2. Create a database to use that will match the regex for the Hive replication rule created earlier in the Fusion UI.
+
+   `hive> create database test01;`
 
 ## Advanced options
 

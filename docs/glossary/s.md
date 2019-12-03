@@ -13,6 +13,9 @@ A sidelined repository replica is a replica that will no longer get updates from
 ## Site
 A physical location containing computers where one or more WANdisco replicated products are installed.
 
+## Source
+The cluster the data originates from, this is normally on premises but does not have to be. It can also be referred to as the donor.
+
 ## SSH
 Secure Shell (SSH) is a means of getting secure access to a remote computer. It can be used for authentication.
 

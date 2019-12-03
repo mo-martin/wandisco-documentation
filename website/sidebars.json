@@ -25,6 +25,10 @@
       "quickstarts/hdp-s3",
       "quickstarts/cdh-s3"
     ],
+    "Operation": [
+      "quickstarts/operation/create-rule",
+      "quickstarts/operation/migration"
+    ],
     "Troubleshooting": [
       "troubleshooting/useful_info",
       "troubleshooting/logs"

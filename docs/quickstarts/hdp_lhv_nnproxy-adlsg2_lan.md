@@ -12,7 +12,7 @@ Please see the [Useful information](https://wandisco.github.io/wandisco-document
 
 ## Prerequisites
 
-* Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7).
+* Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7.7).
 
   (TBC) Minimum size VM recommendation = **Standard A4m v2 (4 vcpus, 32 GiB memory).**
 * [Docker](https://docs.docker.com/install/) (v19.03.3 or higher), [Docker Compose](https://docs.docker.com/compose/install/) (v1.24.1 or higher), and [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on instance.

@@ -1,7 +1,7 @@
 ---
-id: hdp_lhv_client-adlsg2_lan
-title: Hortonworks (HDP) with Live Hive & Client to ADLS Gen2 with Live Analytics
-sidebar_label: Hortonworks (HDP) with Live Hive & Client to ADLS Gen2 with Live Analytics
+id: hdp_sandbox_lhv_client-adlsg2_lan
+title: Hortonworks (HDP) Sandbox with Live Hive & Client to ADLS Gen2 with Live Analytics
+sidebar_label: Hortonworks (HDP) Sandbox with Live Hive & Client to ADLS Gen2 with Live Analytics
 ---
 
 _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_

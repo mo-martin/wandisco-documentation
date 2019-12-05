@@ -1,7 +1,7 @@
 ---
-id: hdp_lhv-adlsg2_lan
-title: Hortonworks (HDP) with Live Hive to ADLS Gen2 with Live Analytics
-sidebar_label: Hortonworks (HDP) with Live Hive to ADLS Gen2 with Live Analytics
+id: hdp_lhv_nnproxy-adlsg2_lan
+title: Hortonworks (HDP) with Live Hive & NN Proxy to ADLS Gen2 with Live Analytics
+sidebar_label: Hortonworks (HDP) with Live Hive & NN Proxy to ADLS Gen2 with Live Analytics
 ---
 
 _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_
@@ -27,23 +27,47 @@ Please see the [Useful information](https://wandisco.github.io/wandisco-document
 
 1. Clone the Fusion docker repository to your Azure VM instance:
 
-   `git clone https://github.com/WANdisco/fusion-docker-compose.git`
+   `git clone -b features/livehive-merge https://github.com/WANdisco/fusion-docker-compose.git`
 
 2. Change to the repository directory:
 
    `cd fusion-docker-compose`
 
-3. _(TBC if correct approach)_
+3. Edit the Common configuration file for the purposes of this demo:
 
-   Switch to <demo> git branch:
+   `vi common.conf`
 
-   `git checkout features/livehive-merge`
+   Change:
+
+   ```json
+   # save versions
+   save_var FUSION_BASE_VERSION           "2.14.2.1" "$SAVE_ENV"
+   save_var FUSION_IMAGE_RELEASE          "3594"     "$SAVE_ENV"
+   save_var FUSION_NN_PROXY_VERSION       "4.0.0.6"  "$SAVE_ENV"
+   save_var FUSION_NN_PROXY_IMAGE_RELEASE "3594"     "$SAVE_ENV"
+   save_var FUSION_ONEUI_VERSION          "1.0.0"    "$SAVE_ENV"
+   save_var FUSION_LIVEHIVE_VERSION       "5.0.0.0"  "$SAVE_ENV"
+   ```
+
+   To:
+
+   ```json
+   # save versions
+   save_var FUSION_BASE_VERSION           "2.14.2.1" "$SAVE_ENV"
+   save_var FUSION_IMAGE_RELEASE          "3600"     "$SAVE_ENV"
+   save_var FUSION_NN_PROXY_VERSION       "4.0.0.6"  "$SAVE_ENV"
+   save_var FUSION_NN_PROXY_IMAGE_RELEASE "3600"     "$SAVE_ENV"
+   save_var FUSION_ONEUI_VERSION          "1.0.0"    "$SAVE_ENV"
+   save_var FUSION_LIVEHIVE_VERSION       "5.0.0.1"  "$SAVE_ENV"
+   ```
+
+   Once complete, save and quit the file (e.g. `:wq!`).
 
 4. Run the setup script:
 
    `./setup-env.sh`
 
-5. Follow the prompts to configure your zones.
+5. Follow the prompts to configure your zones, see the next section below for guidance on this.
 
 ### Setup prompts
 
@@ -61,17 +85,17 @@ Please see the [Useful information](https://wandisco.github.io/wandisco-document
 
   _Docker hostname_
 
-  * For the purposes of this quickstart, this should be changed to the IP address of your docker host.
+  * For the purposes of this quickstart, this can be changed to the IP address of your docker host.
 
   _Example entries for HDP_
 
   * HDP version: `2.6.5`
 
-  * Hadoop NameNode IP/hostname: `namenode.example.com` - The value will be the hostname defined in the `fs.defaultFS` property in the HDFS config.
+  * Hadoop NameNode IP/hostname: `namenode.example.com` - The value will be the hostname defined in the `fs.defaultFS` property in the HDFS config, but not including the `hdfs://` prefix.
 
   * NameNode port: `8020` - The value will be the port defined in the `fs.defaultFS` property in the HDFS config.
 
-  * NameNode Service Name: `<docker_IP_address>:8890` - This value should be changed to reference the docker host IP on port 8890.
+  * NameNode Service Name: `<docker_hostname/IP>:8890` - Press enter to leave as default.
 
   _Example entries for Live Hive_
 
@@ -89,17 +113,30 @@ Please see the [Useful information](https://wandisco.github.io/wandisco-document
 
   * Storage container: `fusionreplication`
 
-  * Account key: `KEY_1_STRING` - the Primary Access Key is now referred to as "Key1" in Microsoft’s documentation. You can get the KEY from the Microsoft Azure storage account.
+  * Account key: `KEY_1_STRING` - the Primary Access Key is now referred to as "Key1" in Microsoft’s documentation. You can get the Access Key from the Microsoft Azure storage account under the **Access Keys** section.
 
   * default FS: `abfss://fusionreplication@adlsg2storage.dfs.core.windows.net/` - press enter for the default value.
 
   * underlying FS: `abfs://fusionreplication@adlsg2storage.dfs.core.windows.net/` - press enter for the default value.
 
+  * Enter `NONE` for the adls2 zone when prompted to select a plugin.
+
 ### Startup
 
 After all the prompts have been completed, you will be able to start the containers.
 
-1. Ensure that Docker is started:
+1. Perform a docker image pull of specific images to be used for this quickstart:
+
+   ```
+   docker image pull registry.wandisco.com:8423/wandisco/fusion-ui-server-hcfs-azure-hdi-3.6:2.14.2.1-3594
+   docker image tag registry.wandisco.com:8423/wandisco/fusion-ui-server-hcfs-azure-hdi-3.6:2.14.2.1-3594 wandisco/fusion-ui-server-hcfs-azure-hdi-3.6:2.14.2.1-3600
+   docker image pull registry.wandisco.com:8423/wandisco/fusion-server-hcfs-azure-hdi-3.6:2.14.2.1-3594
+   docker image tag registry.wandisco.com:8423/wandisco/fusion-server-hcfs-azure-hdi-3.6:2.14.2.1-3594 wandisco/fusion-server-hcfs-azure-hdi-3.6:2.14.2.1-3600
+   docker image pull registry.wandisco.com:8423/wandisco/fusion-ihc-server-hcfs-azure-hdi-3.6:2.14.2.1-3594
+   docker image tag registry.wandisco.com:8423/wandisco/fusion-ihc-server-hcfs-azure-hdi-3.6:2.14.2.1-3594 wandisco/fusion-ihc-server-hcfs-azure-hdi-3.6:2.14.2.1-3600
+   ```
+
+2. Ensure that Docker is started:
 
    `systemctl status docker`
 
@@ -107,31 +144,25 @@ After all the prompts have been completed, you will be able to start the contain
 
    `systemctl start docker`
 
-2. Start the Fusion containers with:
+3. Start the Fusion containers with:
 
    `docker-compose up -d`
 
-3. If the Induction container comes up before all other containers, please run the previous command again to ensure the zones are inducted together.
+4. If the Induction container comes up before all other containers, please run the previous command again to ensure the zones are inducted together.
 
    `docker-compose up -d`
-
-4. Log in to the UI via a web browser with the VM's hostname and port 8081.
-
-   `http://<docker_hostname/IP>:8081/`
-
-5. Register your email address and password, and then use these to log in to the UI.
-
-   You will be able to return to the UI later once some additional configuration has been completed.
 
 ### Live Hive config changes
 
 1. Log into one of the containers for the HDP zone.
 
-   You will first need to obtain a Container ID from the HDP zone, this will be a 12 digit hexadecimal string. The name of the image will appear much like this example - `fusion-docker-compose_fusion-ui-server-hdp_1`.
+   You will first need to obtain the name of a suitable container, this can be done by running the command below.
 
-   `docker ps` _- obtain ID._
+   `docker-compose ps` _- obtain list of container names._
 
-   `docker exec -u root -it $CONTAINER_ID /bin/bash`
+   Utilise a container name from the HDP zone in the command below, for example, `fusion-docker-compose_fusion-ui-server-hdp_1`.
+
+   `docker exec -u root -it fusion-docker-compose_fusion-ui-server-hdp_1 bash`
 
 2. Symlink the Live Hive config files to the Fusion Server config path:
 
@@ -190,40 +221,6 @@ After all the prompts have been completed, you will be able to start the contain
    Proceed to the Settings tab and select the *Live Hive: Plugin Activation* option on the left-hand panel.
 
    Click on the *Activate* option.
-
-### Install the Live Hiveserver2 template on the HDP cluster
-
-1. Log into the Ambari Server via a terminal session.
-
-2. Download the Live Hiveserver2 template stack from the docker host.
-
-   `wget http://<docker_hostname/IP>:8083/ui/downloads/core_plugins/live-hive/stack_packages/live-hiveserver2-template-5.0.0.1.stack.tar.gz`
-
-3. Decompress the stack to the Ambari services directory.
-
-   `tar -xf live-hiveserver2-template-5.0.0.1.stack.tar.gz -C /var/lib/ambari-server/resources/stacks/HDP/2.6/services/`
-
-4. Delete the compressed file afterwards.
-
-   `rm -f live-hiveserver2-template-5.0.0.1.stack.tar.gz`
-
-5. Restart the Ambari Server so that the new stack will be available to install.
-
-   `ambari-server restart`
-
-6. Log into the Ambari UI once it is available after the restart.
-
-7. In the Dashboard, select to **Add Service** in the Actions.
-
-8. Select the **Live Hiveserver2 Template** and click Next.
-
-9. Ensure the **Live Hiveserver2 Template Master** is assigned to the host on which the **Hiveserver2** component is installed. Click Next once confirmed.
-
-10. On the **Customize Services** page, click Next.
-
-11. On the **Review** page, click Deploy. After the **Install, Start and Test** operation is complete, click Next.
-
-12. On the **Summary** page, click Complete.
 
 ### Activate NameNode Proxy and Live Hive Proxy on the HDP cluster
 
@@ -306,11 +303,13 @@ After all the prompts have been completed, you will be able to start the contain
 
 3. Log into one of the containers for the ADLS Gen2 zone.
 
-   You will first need to obtain a Container ID from the adls2 zone, this will be a 12 digit hexadecimal string. The name of the image will appear much like this example - `fusion-docker-compose_fusion-ui-server-adls2_1`.
+   You will first need to obtain the name of a suitable container, this can be done by running the command below.
 
-   `docker ps` _- obtain ID._
+   `docker-compose ps` _- obtain list of container names._
 
-   `docker exec -u root -it $CONTAINER_ID /bin/bash`
+   Utilise a container name from the ADLS Gen2 zone in the command below, for example, `fusion-docker-compose_fusion-ui-server-adls2_1`.
+
+   `docker exec -u root -it fusion-docker-compose_fusion-ui-server-adls2_1 bash`
 
 4. Upload the Live Analytics "datatransformer" jar using a curl command.
 

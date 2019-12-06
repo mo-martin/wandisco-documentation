@@ -17,10 +17,11 @@ To complete this lab exercise, you will need:
 * Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7.7).
   * (TBC) Minimum size VM recommendation = **Standard A4m v2 (4 vcpus, 32 GiB memory).**
 
-    A mininum of 100GB storage is required for the `/var` partition.
+    A minimum of 100GB storage is required for the `/var` partition.
   * [Docker](https://docs.docker.com/install/) (v19.03.3 or higher), [Docker Compose](https://docs.docker.com/compose/install/) (v1.24.1 or higher), and [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on instance.
   * `wget`, `tar` and `unzip` utilities installed on the instance, including a CLI text editor (such as `vi`).
   * Java v1.8 installed on the instance (run `yum install -y java-1.8.0-openjdk.x86_64` on the VM).
+  * Iptables and selinux are disabled.
 * Administrator credentials for the HDP Ambari Manager and root access via terminal.
 * Network connectivity to the Ambari Manager and NameNode.
 * Credentials for accessing the Data Lake Storage Gen2 and Databricks cluster.
@@ -40,41 +41,11 @@ All the commands within this guidance should be run as **root** user. To switch 
 
    `cd fusion-docker-compose`
 
-3. Edit the Common configuration file for the purposes of this demo:
-
-   `vi common.conf`
-
-   Change:
-
-   ```json
-   # save versions
-   save_var FUSION_BASE_VERSION           "2.14.2.1" "$SAVE_ENV"
-   save_var FUSION_IMAGE_RELEASE          "3594"     "$SAVE_ENV"
-   save_var FUSION_NN_PROXY_VERSION       "4.0.0.6"  "$SAVE_ENV"
-   save_var FUSION_NN_PROXY_IMAGE_RELEASE "3594"     "$SAVE_ENV"
-   save_var FUSION_ONEUI_VERSION          "1.0.0"    "$SAVE_ENV"
-   save_var FUSION_LIVEHIVE_VERSION       "5.0.0.0"  "$SAVE_ENV"
-   ```
-
-   To:
-
-   ```json
-   # save versions
-   save_var FUSION_BASE_VERSION           "2.14.2.1" "$SAVE_ENV"
-   save_var FUSION_IMAGE_RELEASE          "3600"     "$SAVE_ENV"
-   save_var FUSION_NN_PROXY_VERSION       "4.0.0.6"  "$SAVE_ENV"
-   save_var FUSION_NN_PROXY_IMAGE_RELEASE "3600"     "$SAVE_ENV"
-   save_var FUSION_ONEUI_VERSION          "1.0.0"    "$SAVE_ENV"
-   save_var FUSION_LIVEHIVE_VERSION       "5.0.0.1"  "$SAVE_ENV"
-   ```
-
-   Once complete, save and quit the file (e.g. `:wq!`).
-
-4. Run the setup script:
+3. Run the setup script:
 
    `./setup-env.sh`
 
-5. Follow the prompts to configure your zones, see the next section below for guidance on this.
+4. Follow the prompts to configure your zones, see the next section below for guidance on this.
 
 ### Setup prompts
 

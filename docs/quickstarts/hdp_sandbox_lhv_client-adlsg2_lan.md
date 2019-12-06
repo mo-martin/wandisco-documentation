@@ -14,23 +14,141 @@ Please see the [Useful information](https://wandisco.github.io/wandisco-document
 
 To complete this lab exercise, you will need:
 
-* Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7.7).
-  * (TBC) Minimum size VM recommendation = **Standard A4m v2 (4 vcpus, 32 GiB memory).**
-
-    A mininum of 100GB storage is required for the `/var` partition.
-  * [Docker](https://docs.docker.com/install/) (v19.03.3 or higher), [Docker Compose](https://docs.docker.com/compose/install/) (v1.24.1 or higher), and [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on instance.
-  * `wget`, `tar` and `unzip` utilities installed on the instance, including a CLI text editor (such as `vi`).
-  * Java v1.8 installed on the instance (run `yum install -y java-1.8.0-openjdk.x86_64` on the VM).
-* Administrator credentials for the HDP Ambari Manager and root access via terminal.
-* Network connectivity to the Ambari Manager and NameNode.
+* Azure VM server set up and running on RHEL 7.7 or higher (instructions were tested on this release).
+  * (TBC) Minimum size VM recommendation = **Standard D8 v3 (8 vcpus, 32 GiB memory).**
+  * A minimum of 100GB storage is required for the `/datadrive` partition. See the [Microsoft documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal) for steps on how to attach a disk to a Linux VM.
+  * Root access on server (this is normally available by default).
 * Credentials for accessing the Data Lake Storage Gen2 and Databricks cluster.
-* Network connectivity to the Data Lake Storage Gen2 and Databricks cluster.
+* Network connectivity from the VM to the Data Lake Storage Gen2 and Databricks cluster.
 
-## Guidance
+###  Note on command line editing
+
+The `vi` command line editor will be used in this lab, please see this [vi cheat sheet](https://ryanstutorials.net/linuxtutorial/cheatsheetvi.php) for guidance on how to use it.
+
+## Preparation
 
 All the commands within this guidance should be run as **root** user. To switch to this user, type `sudo -i` in the command line when logged in as the default Azure user (this will have been set during creation of the VM).
 
-### Initial Setup
+### Disable iptables and selinux
+
+For the purposes of this lab, iptables and selinux will be disabled.
+
+1. Log into the VM via a terminal session and switch to root user.
+
+   `ssh <docker_host>`
+
+   `sudo -i`
+
+2. Run the commands below to stop and disable iptables.
+
+   `systemctl stop firewalld`
+
+   `systemctl disable firewalld`
+
+3. Edit the selinux configuration file to disable it.
+
+   `vi /etc/sysconfig/selinux`
+
+   Change:
+
+   `SELINUX=enforced`
+
+   To:
+
+   `SELINUX=disabled`
+
+   Once complete, save and quit the file (e.g. `:wq!`).
+
+4. If not already performed, please mount the `/datadrive` partition now as detailed in the [link](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal#connect-to-the-linux-vm-to-mount-the-new-disk) provided in the prerequisites.
+
+5. The server will now need to be rebooted, run the command below to do this.
+
+   `shutdown -r now`
+
+   You will be automatically logged out of the server.
+
+### Install utilities
+
+1. Log into the VM via a terminal session and switch to root user.
+
+   `ssh <docker_host>`
+
+   `sudo -i`
+
+2. Run the command below to install Java 1.8 and Git.
+
+   `yum install -y java-1.8.0-openjdk.x86_64 git`
+
+3. Run the commands below to install [Docker](https://docs.docker.com/install/) (v19.03.5 or higher).
+
+   `yum install -y yum-utils device-mapper-persistent-data lvm2`
+
+   `yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo`
+
+   `yum install docker-ce docker-ce-cli containerd.io` - answer `y` to any prompts.
+
+4. Start the Docker service and verify that it is correctly installed.
+
+   `systemctl start docker`
+
+   `docker run hello-world` - This will print an informational message and exit if docker is running correctly.
+
+   `systemctl enable docker` - This will enable docker to start up automatically on server reboot.
+
+5. Install [Docker Compose for Linux](https://docs.docker.com/compose/install/#install-compose) (v1.25.0 or higher) by running the commands below.
+
+   `curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`
+
+   `chmod +x /usr/local/bin/docker-compose`
+
+   `ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose`
+
+6. Verify that Docker Compose is correctly installed.
+
+   `docker-compose --version`
+
+   _Example output_
+   ```json
+   docker-compose version 1.25.0, build 1110ad01
+   ```
+
+### Prepare storage for docker images
+
+The steps in this section can only be performed if docker is installed and the `/datadrive` partition was created as per the prerequisites.
+
+1. Copy the contents of the Docker directory whilst retaining permissions.
+
+   `cp -Rp /var/lib/docker /datadrive/`
+
+2. Delete the original directory and creating a symlink to the new location.
+
+   `rm -rf /var/lib/docker`
+
+   `ln -s /datadrive/docker /var/lib/docker`
+
+## Installation
+
+### Initial Setup for HDP Sandbox (Steps TBC)
+
+1. Download the HDP sandbox script.
+
+2. Run the script.
+
+3. TBD
+
+### Add temporary entry to hosts file
+
+1. Edit the hosts file so that the correct hostname variables will be set during the Fusion setup.
+
+   `vi /etc/hosts`
+
+   Add an additional line as below:
+
+   `127.0.0.1   manager fusion-nn-proxy-hdp fusion-server-hdp fusion-livehive-proxy-hdp`
+
+   Once complete, save and quit the file (e.g. `:wq!`).
+
+### Initial Setup for Fusion
 
 1. Clone the Fusion docker repository to your Azure VM instance:
 
@@ -40,41 +158,11 @@ All the commands within this guidance should be run as **root** user. To switch 
 
    `cd fusion-docker-compose`
 
-3. Edit the Common configuration file for the purposes of this demo:
-
-   `vi common.conf`
-
-   Change:
-
-   ```json
-   # save versions
-   save_var FUSION_BASE_VERSION           "2.14.2.1" "$SAVE_ENV"
-   save_var FUSION_IMAGE_RELEASE          "3594"     "$SAVE_ENV"
-   save_var FUSION_NN_PROXY_VERSION       "4.0.0.6"  "$SAVE_ENV"
-   save_var FUSION_NN_PROXY_IMAGE_RELEASE "3594"     "$SAVE_ENV"
-   save_var FUSION_ONEUI_VERSION          "1.0.0"    "$SAVE_ENV"
-   save_var FUSION_LIVEHIVE_VERSION       "5.0.0.0"  "$SAVE_ENV"
-   ```
-
-   To:
-
-   ```json
-   # save versions
-   save_var FUSION_BASE_VERSION           "2.14.2.1" "$SAVE_ENV"
-   save_var FUSION_IMAGE_RELEASE          "3600"     "$SAVE_ENV"
-   save_var FUSION_NN_PROXY_VERSION       "4.0.0.6"  "$SAVE_ENV"
-   save_var FUSION_NN_PROXY_IMAGE_RELEASE "3600"     "$SAVE_ENV"
-   save_var FUSION_ONEUI_VERSION          "1.0.0"    "$SAVE_ENV"
-   save_var FUSION_LIVEHIVE_VERSION       "5.0.0.1"  "$SAVE_ENV"
-   ```
-
-   Once complete, save and quit the file (e.g. `:wq!`).
-
-4. Run the setup script:
+3. Run the setup script:
 
    `./setup-env.sh`
 
-5. Follow the prompts to configure your zones, see the next section below for guidance on this.
+4. Follow the prompts to configure your zones, see the next section below for guidance on this.
 
 ### Setup prompts
 
@@ -94,27 +182,29 @@ All the commands within this guidance should be run as **root** user. To switch 
 
   * For the purposes of this quickstart, this can be changed to the IP address of your docker host.
 
-  _Example entries for HDP_
+  _Entries for HDP_
 
   * HDP version: `2.6.5`
 
-  * Hadoop NameNode IP/hostname: `namenode.example.com` - The value will be the hostname defined in the `fs.defaultFS` property in the HDFS config, but not including the `hdfs://` prefix.
+  * Hadoop NameNode IP/hostname: `manager.hdp265` - The value will be the hostname defined in the `fs.defaultFS` property in the HDFS config, but does not include the `hdfs://` prefix or port `8020`.
 
   * NameNode port: `8020` - The value will be the port defined in the `fs.defaultFS` property in the HDFS config.
 
-  * NameNode Service Name: `<namenode_hostname>:8020` - Press adjust this property so that it references the HDP cluster's NameNode hostname on port 8020.
+  * NameNode Service Name: `manager.hdp265:8020` - The value will be the hostname and port combined in the `fs.defaultFS` property in the HDFS config, but not including the `hdfs://` prefix.
 
-  _Example entries for Live Hive_
+  _Entries for Live Hive_
 
   * Enter `livehive` for the HDP zone when prompted to select a plugin.
 
-  * Hive Metastore hostname: `metastore.hostname.com` - The HDP cluster's Hive Metastore hostname, can be seen by hovering over the Hive Metastore in the Hive summary page.
+  * Hive Metastore hostname: `manager.hdp265` - The HDP cluster's Hive Metastore hostname, can be seen by hovering over the Hive Metastore in the Hive summary page. As this is a one node cluster, the value will be the same as the NameNode.
 
-  * Hive Metastore port: `9083` - This value can be left as default.
+  * Hive Metastore port: `9083` - Press enter to leave this as the default value.
 
-  _Example entries for ADLS Gen2_
+  _Entries for ADLS Gen2_
 
   * HDI version: `3.6`
+
+  Please ensure to enter your details for the **Storage account**, **Storage container** and **Account Key** values so that they match your account in Azure. The examples shown below are for guidance only.
 
   * Storage account: `adlsg2storage`
 
@@ -127,6 +217,20 @@ All the commands within this guidance should be run as **root** user. To switch 
   * underlying FS: `abfs://fusionreplication@adlsg2storage.dfs.core.windows.net/` - press enter for the default value.
 
   * Enter `NONE` for the adls2 zone when prompted to select a plugin.
+
+At this point, the setup prompts will be complete and the script will exit out with an informational message. Please ignore this for now and continue following the steps below.
+
+### Remove temporary entry to hosts file
+
+1. Edit the hosts file as the additional entry is no longer required and will create problems with the internal network if not removed.
+
+   `vi /etc/hosts`
+
+   Remove the line below:
+
+   `127.0.0.1   manager fusion-nn-proxy-hdp fusion-server-hdp fusion-livehive-proxy-hdp`
+
+   Once complete, save and quit the file (e.g. `:wq!`).
 
 ### Startup
 
@@ -158,6 +262,8 @@ After all the prompts have been completed, you will be able to start the contain
 4. If the Induction container comes up before all other containers, please run the previous command again to ensure the zones are inducted together.
 
    `docker-compose up -d`
+
+## Configuration
 
 ### Live Hive config changes
 
@@ -613,6 +719,21 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
    id         name
    1          words
    ```
+
+## Troubleshooting
+
+### Error relating to system_dbus_socket
+
+If encountering a `system_dbus_socket` error when attempting to start containers, run the following commands below on the docker host:
+
+```json
+mkdir -p /run /run/lock
+mv /var/run/* /run/
+mv /var/lock/* /run/lock/
+rm -rf /var/run /var/lock
+ln -s /run /var/run
+ln -s /run/lock /var/lock
+```
 
 ## Advanced options
 

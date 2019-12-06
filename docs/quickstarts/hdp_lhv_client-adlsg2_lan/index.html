@@ -7,10 +7,11 @@
 <li>Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7.7).
 <ul>
 <li><p>(TBC) Minimum size VM recommendation = <strong>Standard A4m v2 (4 vcpus, 32 GiB memory).</strong></p>
-<p>A mininum of 100GB storage is required for the <code>/var</code> partition.</p></li>
+<p>A minimum of 100GB storage is required for the <code>/var</code> partition.</p></li>
 <li><p><a href="https://docs.docker.com/install/">Docker</a> (v19.03.3 or higher), <a href="https://docs.docker.com/compose/install/">Docker Compose</a> (v1.24.1 or higher), and <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Git</a> installed on instance.</p></li>
 <li><p><code>wget</code>, <code>tar</code> and <code>unzip</code> utilities installed on the instance, including a CLI text editor (such as <code>vi</code>).</p></li>
 <li><p>Java v1.8 installed on the instance (run <code>yum install -y java-1.8.0-openjdk.x86_64</code> on the VM).</p></li>
+<li><p>Iptables and selinux are disabled.</p></li>
 </ul></li>
 <li>Administrator credentials for the HDP Ambari Manager and root access via terminal.</li>
 <li>Network connectivity to the Ambari Manager and NameNode.</li>
@@ -25,27 +26,6 @@
 <p><code>git clone -b features/livehive-merge https://github.com/WANdisco/fusion-docker-compose.git</code></p></li>
 <li><p>Change to the repository directory:</p>
 <p><code>cd fusion-docker-compose</code></p></li>
-<li><p>Edit the Common configuration file for the purposes of this demo:</p>
-<p><code>vi common.conf</code></p>
-<p>Change:</p>
-<pre><code class="hljs css language-json"># save versions
-save_var FUSION_BASE_VERSION           "2.14.2.1" "$SAVE_ENV"
-save_var FUSION_IMAGE_RELEASE          "3594"     "$SAVE_ENV"
-save_var FUSION_NN_PROXY_VERSION       "4.0.0.6"  "$SAVE_ENV"
-save_var FUSION_NN_PROXY_IMAGE_RELEASE "3594"     "$SAVE_ENV"
-save_var FUSION_ONEUI_VERSION          "1.0.0"    "$SAVE_ENV"
-save_var FUSION_LIVEHIVE_VERSION       "5.0.0.0"  "$SAVE_ENV"
-</code></pre>
-<p>To:</p>
-<pre><code class="hljs css language-json"># save versions
-save_var FUSION_BASE_VERSION           "2.14.2.1" "$SAVE_ENV"
-save_var FUSION_IMAGE_RELEASE          "3600"     "$SAVE_ENV"
-save_var FUSION_NN_PROXY_VERSION       "4.0.0.6"  "$SAVE_ENV"
-save_var FUSION_NN_PROXY_IMAGE_RELEASE "3600"     "$SAVE_ENV"
-save_var FUSION_ONEUI_VERSION          "1.0.0"    "$SAVE_ENV"
-save_var FUSION_LIVEHIVE_VERSION       "5.0.0.1"  "$SAVE_ENV"
-</code></pre>
-<p>Once complete, save and quit the file (e.g. <code>:wq!</code>).</p></li>
 <li><p>Run the setup script:</p>
 <p><code>./setup-env.sh</code></p></li>
 <li><p>Follow the prompts to configure your zones, see the next section below for guidance on this.</p></li>

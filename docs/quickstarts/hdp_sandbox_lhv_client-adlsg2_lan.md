@@ -19,7 +19,7 @@ Please see the [Useful information](https://wandisco.github.io/wandisco-document
 
 To complete this lab exercise, you will need:
 
-* Azure VM server set up and running on RHEL 7.7 or higher (instructions were tested on this release).
+* Azure VM server set up and running on CentOS-based 7.7 or higher (instructions were tested on this release).
   * (TBC) Minimum size VM recommendation = **Standard D8 v3 (8 vcpus, 32 GiB memory).**
   * A minimum of 100GB storage is required for the `/datadrive` partition. See the [Microsoft documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal) for steps on how to attach a disk to a Linux VM.
   * Root access on server (this is normally available by default).
@@ -79,6 +79,8 @@ For the purposes of this lab, iptables and selinux will be disabled.
    `ssh <docker_host>`
 
    `sudo -i`
+
+[//]: <JDK dependency for the 'wandocker.run' script>
 
 2. Run the command below to install Java 1.8 and Git.
 

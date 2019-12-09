@@ -14,7 +14,7 @@ Please see the [Useful information](https://wandisco.github.io/wandisco-document
 
 To complete this lab exercise, you will need:
 
-* Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7.7).
+* Azure VM instance set up and running, with root access available (instructions were tested on CentOS-based 7.7).
   * (TBC) Minimum size VM recommendation = **Standard A4m v2 (4 vcpus, 32 GiB memory).**
 
     A minimum of 100GB storage is required for the `/var` partition.

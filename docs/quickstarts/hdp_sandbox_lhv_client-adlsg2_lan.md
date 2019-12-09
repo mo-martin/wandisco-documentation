@@ -6,11 +6,16 @@ sidebar_label: Hortonworks (HDP) Sandbox with Live Hive & Client to ADLS Gen2 wi
 
 _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_
 
+[//]: <This quickstart is work in progress, and new items are still being added. The development approach is that all known workarounds/configuration steps will be kept in the document until we have fully confirmed their fix (see MTC label). At which point, they will be removed. The same will apply for configuration/installation steps when blueprints for HDP or Fusion have been completed (see DAP-144).>
+
 Use this quickstart if you want to configure Fusion to connect to Hortonworks (HDP) and ADLS Gen2 storage/Databricks cluster. This guide will also include Live Hive on the HDP cluster, and Live Analytics on the ADLS Gen2/Databricks cluster.
 
 Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/troubleshooting/useful_info) section for additional commands and help.
 
 ## Prerequisites
+
+[//]: <We are still working out the minimum VM requirements, at the moment, we are with Standard D8 v3 ones.>
+[//]: <Issues with running out of disk space because of docker images filling up the root partition (see DAP-134). As such, we suggest adding a data disk for storage. Additional step is mentioned further down as to when this must be mounted with link to Microsoft documentation. If there is time, we could look to include all of these steps within this document.>
 
 To complete this lab exercise, you will need:
 
@@ -114,6 +119,8 @@ For the purposes of this lab, iptables and selinux will be disabled.
 
 ### Prepare storage for docker images
 
+[//]: <As referenced in prerequisites, these steps will prevent the root partition from filling up.>
+
 The steps in this section can only be performed if docker is installed and the `/datadrive` partition was created as per the prerequisites.
 
 1. Copy the contents of the Docker directory whilst retaining permissions.
@@ -128,15 +135,77 @@ The steps in this section can only be performed if docker is installed and the `
 
 ## Installation
 
-### Initial Setup for HDP Sandbox (Steps TBC)
+### Initial Setup for HDP Sandbox - WiP
+
+[//]: <DAP-142>
+
+[//]: <These steps are being performed using the 'wandocker.run' script. This script allows for the creation of a custom network name, as well as selecting existing ones. It is also using Ambari 2.7.3, which will allow us to export blueprints via the UI when we have configured everything on the cluster. There is also expansion planned to the script capabilities (on the side) for multiple node HDP clusters, so that future testing could be done with NameNode HA.>
 
 1. Download the HDP sandbox script.
 
-2. Run the script.
+   `wget wandocker.run`
 
-3. TBD
+2. Run the script and change directory.
+
+   `./wandocker.run`
+
+   `cd wandocker`
+
+[//]: <DAP-151 workaround>
+
+3. Edit the `hdp265_docker.ini` file to change port 9083 to 9084 in order to resolve a port conflict.
+
+   `vi hdp265_docker.ini`
+
+   Change:
+
+   `ports=8080,8088,8042,8020,9083,50010,50070`
+
+   To:
+
+   `ports=8080,8088,8042,8020,9084,50010,50070`
+
+   Once complete, save and quit the file (e.g. `:wq!`).
+
+4. Run the wandocker script.
+
+   `./wandocker.sh -i hdp265_docker.ini`
+
+5. Choose Option 1 to set up all the required images for the HDP sandbox and repository.
+
+   `1` - Build All Images (Repo, Agent, Server)
+
+   This may take some time so feel free to take a 15-20min break at this point.
+
+   Once the stream has finished, press enter to return to the Main Menu.
+
+6. Select option 2 to create the HDP repository.
+
+   `2` - Create and start Local Repo Container
+
+   Press `n` to create a new network.
+
+   Type `fusion_fusion` as the new network name, followed by enter.
+
+7. Select option 3 to create the HDP sandbox.
+
+   `3` - Create and start Sandbox Container(s)
+
+   Enter the appropriate number to use the `fusion_fusion` network (previously created for the HDP repository).
+
+   Enter the appropriate number to use the `ambari_agent_node:2.7.3.0` image.
+
+8. Start the Ambari Manager by selecting option 3a.
+
+   `3a` - Start Manager on Server Container
+
+9. Install the Cluster blueprint by selectin option 4.
+
+   `4` - Install Cluster from Blueprint
 
 ### Add temporary entry to hosts file
+
+[//]: <This is required to get the Fusion docker setup script to pass verification when entering the HDP NameNode/Metastore hostnames. It is removed after the setup script is done.>
 
 1. Edit the hosts file so that the correct hostname variables will be set during the Fusion setup.
 
@@ -236,6 +305,8 @@ At this point, the setup prompts will be complete and the script will exit out w
 
 After all the prompts have been completed, you will be able to start the containers.
 
+[//]: <DAP-144 workaround, should be fixed now, but not tested yet.>
+
 1. Perform a docker image pull of specific images to be used for this quickstart:
 
    ```json
@@ -259,6 +330,8 @@ After all the prompts have been completed, you will be able to start the contain
 
    `docker-compose up -d`
 
+[//]: <DAP-136 workaround>
+
 4. If the Induction container comes up before all other containers, please run the previous command again to ensure the zones are inducted together.
 
    `docker-compose up -d`
@@ -277,6 +350,8 @@ After all the prompts have been completed, you will be able to start the contain
 
    `docker exec -it fusion-docker-compose_fusion-ui-server-hdp_1 bash`
 
+[//]: <DAP-130 workaround>
+
 2. Symlink the Live Hive config files to the Fusion Server config path:
 
    `ln -s /etc/wandisco/fusion/plugins/hive/* /etc/wandisco/fusion/server/`
@@ -286,6 +361,8 @@ After all the prompts have been completed, you will be able to start the contain
    ```json
    ln: failed to create symbolic link ‘/etc/wandisco/fusion/server/logger.properties’: File exists
    ```
+
+[//]: <INC-684 workaround>
 
 3. Edit the UI properties file and adjust the following properties:
 
@@ -324,13 +401,38 @@ After all the prompts have been completed, you will be able to start the contain
 
    Once complete, save and quit the file (e.g. `:wq!`).
 
-5. Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.
+5. Add an additional property to the core-site file.
+
+   `vi /etc/hadoop/conf/core-site.xml`
+
+   Add the following property and value below:
+
+   ```json
+     <property>
+       <name>fusion.replicated.dir.exchange</name>
+       <value>/wandisco/exchange_dir</value>
+     </property>
+   ```
+
+   Once complete, save and quit the file (e.g. `:wq!`).
+
+6. Add the same property except to the application properties file.
+
+   `vi /etc/wandisco/fusion/server/application.properties`
+
+   Add the following property and value below as a new line:
+
+   `fusion.replicated.dir.exchange=/wandisco/exchange_dir`
+
+   Once complete, save and quit the file (e.g. `:wq!`).
+
+7. Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.
 
    `exit`
 
    `docker-compose restart`
 
-6. Log into the Fusion UI for the HDP zone, and activate the Live Hive plugin.
+8. Log into the Fusion UI for the HDP zone, and activate the Live Hive plugin.
 
    `http://<docker_hostname/IP>:8083`
 
@@ -341,9 +443,11 @@ After all the prompts have been completed, you will be able to start the contain
 
    Click on the *Activate* option.
 
-7. Log out of the UI afterwards by clicking on the **admin** text on the top-right of the UI and selecting **Log out** on the dropdown.
+9. Log out of the UI afterwards by clicking on the **admin** text on the top-right of the UI and selecting **Log out** on the dropdown.
 
 ### Install Fusion Client on HDP nodes
+
+[//]: <INC-681 workaround>
 
 1. Log into the Ambari Server via a terminal session.
 
@@ -381,6 +485,8 @@ After all the prompts have been completed, you will be able to start the contain
 
 ### Install the Live Hiveserver2 template on the HDP cluster
 
+[//]: <DAP-137 referenced for this work>
+
 1. Log into the Ambari Server via a terminal session.
 
 2. Download the Live Hiveserver2 template stack from the docker host.
@@ -416,6 +522,8 @@ After all the prompts have been completed, you will be able to start the contain
 12. On the **Summary** page, click Complete.
 
 ### Activate Fusion Client on the HDP cluster
+
+[//]: <INC-681 workaround due to Fusion Client requirements for Hadoop services.>
 
 1. Log into the Ambari UI for the HDP cluster.
 
@@ -522,6 +630,24 @@ After all the prompts have been completed, you will be able to start the contain
 
 4. **Save** the Hive config after making these adjustments.
 
+### Create a Fusion specific directory in HDFS
+
+[//]: <May not be required, testing has not yet been completed for when the replicated exchange directory has been defined in both core-site and application.properties. In other words, the directory may be created automatically by the Fusion Server when these are set.>
+
+1. Log into the Ambari Server via a terminal session.
+
+2. Switch to `hdfs` user and create the specified HDFS directory.
+
+   `su - hdfs`
+
+   `hdfs dfs -mkdir -p /wandisco/exchange_dir`
+
+   `hdfs dfs -ls /wandisco` - Verify that the directory exists.
+
+3. Exit the HDFS user terminal once complete.
+
+   `exit`
+
 ### Restart required services
 
 1. Restart the **HDFS**, **YARN**, **MapReduce2**, **Tez** and **Hive** services in that order.
@@ -572,6 +698,8 @@ After all the prompts have been completed, you will be able to start the contain
    Utilise a container name from the ADLS Gen2 zone in the command below, for example, `fusion-docker-compose_fusion-ui-server-adls2_1`.
 
    `docker exec -u root -it fusion-docker-compose_fusion-ui-server-adls2_1 bash`
+
+[//]: <DAP-135 workaround>
 
 4. Upload the Live Analytics "datatransformer" jar using a curl command.
 
@@ -723,6 +851,8 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 ## Troubleshooting
 
 ### Error relating to system_dbus_socket
+
+[//]: <May not be included but a few people have hit this when using docker. It is apparently due to an incompatibility with Ubuntu, see https://bugs.freedesktop.org/show_bug.cgi?id=75515 for detail.>
 
 If encountering a `system_dbus_socket` error when attempting to start containers, run the following commands below on the docker host:
 

@@ -73,11 +73,40 @@
 <p><code>ln -s /datadrive/docker /var/lib/docker</code></p></li>
 </ol>
 <h2><a class="anchor" aria-hidden="true" id="installation"></a><a href="#installation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
-<h3><a class="anchor" aria-hidden="true" id="initial-setup-for-hdp-sandbox-steps-tbc"></a><a href="#initial-setup-for-hdp-sandbox-steps-tbc" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Initial Setup for HDP Sandbox (Steps TBC)</h3>
+<h3><a class="anchor" aria-hidden="true" id="initial-setup-for-hdp-sandbox-wip"></a><a href="#initial-setup-for-hdp-sandbox-wip" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Initial Setup for HDP Sandbox - WiP</h3>
 <ol>
-<li><p>Download the HDP sandbox script.</p></li>
-<li><p>Run the script.</p></li>
-<li><p>TBD</p></li>
+<li><p>Download the HDP sandbox script.</p>
+<p><code>wget wandocker.run</code></p></li>
+<li><p>Run the script and change directory.</p>
+<p><code>./wandocker.run</code></p>
+<p><code>cd wandocker</code></p></li>
+</ol>
+<ol start="3">
+<li><p>Edit the <code>hdp265_docker.ini</code> file to change port 9083 to 9084 in order to resolve a port conflict.</p>
+<p><code>vi hdp265_docker.ini</code></p>
+<p>Change:</p>
+<p><code>ports=8080,8088,8042,8020,9083,50010,50070</code></p>
+<p>To:</p>
+<p><code>ports=8080,8088,8042,8020,9084,50010,50070</code></p>
+<p>Once complete, save and quit the file (e.g. <code>:wq!</code>).</p></li>
+<li><p>Run the wandocker script.</p>
+<p><code>./wandocker.sh -i hdp265_docker.ini</code></p></li>
+<li><p>Choose Option 1 to set up all the required images for the HDP sandbox and repository.</p>
+<p><code>1</code> - Build All Images (Repo, Agent, Server)</p>
+<p>This may take some time so feel free to take a 15-20min break at this point.</p>
+<p>Once the stream has finished, press enter to return to the Main Menu.</p></li>
+<li><p>Select option 2 to create the HDP repository.</p>
+<p><code>2</code> - Create and start Local Repo Container</p>
+<p>Press <code>n</code> to create a new network.</p>
+<p>Type <code>fusion_fusion</code> as the new network name, followed by enter.</p></li>
+<li><p>Select option 3 to create the HDP sandbox.</p>
+<p><code>3</code> - Create and start Sandbox Container(s)</p>
+<p>Enter the appropriate number to use the <code>fusion_fusion</code> network (previously created for the HDP repository).</p>
+<p>Enter the appropriate number to use the <code>ambari_agent_node:2.7.3.0</code> image.</p></li>
+<li><p>Start the Ambari Manager by selecting option 3a.</p>
+<p><code>3a</code> - Start Manager on Server Container</p></li>
+<li><p>Install the Cluster blueprint by selectin option 4.</p>
+<p><code>4</code> - Install Cluster from Blueprint</p></li>
 </ol>
 <h3><a class="anchor" aria-hidden="true" id="add-temporary-entry-to-hosts-file"></a><a href="#add-temporary-entry-to-hosts-file" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Add temporary entry to hosts file</h3>
 <ol>
@@ -166,6 +195,8 @@ docker image tag registry.wandisco.com:8423/wandisco/fusion-ihc-server-hcfs-azur
 <p><code>systemctl start docker</code></p></li>
 <li><p>Start the Fusion containers with:</p>
 <p><code>docker-compose up -d</code></p></li>
+</ol>
+<ol start="4">
 <li><p>If the Induction container comes up before all other containers, please run the previous command again to ensure the zones are inducted together.</p>
 <p><code>docker-compose up -d</code></p></li>
 </ol>
@@ -177,11 +208,15 @@ docker image tag registry.wandisco.com:8423/wandisco/fusion-ihc-server-hcfs-azur
 <p><code>docker-compose ps</code> <em>- obtain list of container names.</em></p>
 <p>Utilise a container name from the HDP zone in the command below, for example, <code>fusion-docker-compose_fusion-ui-server-hdp_1</code>.</p>
 <p><code>docker exec -it fusion-docker-compose_fusion-ui-server-hdp_1 bash</code></p></li>
+</ol>
+<ol start="2">
 <li><p>Symlink the Live Hive config files to the Fusion Server config path:</p>
 <p><code>ln -s /etc/wandisco/fusion/plugins/hive/* /etc/wandisco/fusion/server/</code></p>
 <p>You will see the following error message afterwards, please ignore as it is benign:</p>
 <pre><code class="hljs css language-json">ln: failed to create symbolic link ‘/etc/wandisco/fusion/server/logger.properties’: File exists
 </code></pre></li>
+</ol>
+<ol start="3">
 <li><p>Edit the UI properties file and adjust the following properties:</p>
 <p><code>vi /opt/wandisco/fusion-ui-server/properties/ui.properties</code></p>
 <p>Change:</p>
@@ -203,6 +238,20 @@ manager.type=UNMANAGED_BIGINSIGHTS
     &lt;value&gt;5&lt;/value&gt;
   &lt;/property&gt;
 </code></pre>
+<p>Once complete, save and quit the file (e.g. <code>:wq!</code>).</p></li>
+<li><p>Add an additional property to the core-site file.</p>
+<p><code>vi /etc/hadoop/conf/core-site.xml</code></p>
+<p>Add the following property and value below:</p>
+<pre><code class="hljs css language-json">  &lt;property&gt;
+    &lt;name&gt;fusion.replicated.dir.exchange&lt;/name&gt;
+    &lt;value&gt;/wandisco/exchange_dir&lt;/value&gt;
+  &lt;/property&gt;
+</code></pre>
+<p>Once complete, save and quit the file (e.g. <code>:wq!</code>).</p></li>
+<li><p>Add the same property except to the application properties file.</p>
+<p><code>vi /etc/wandisco/fusion/server/application.properties</code></p>
+<p>Add the following property and value below as a new line:</p>
+<p><code>fusion.replicated.dir.exchange=/wandisco/exchange_dir</code></p>
 <p>Once complete, save and quit the file (e.g. <code>:wq!</code>).</p></li>
 <li><p>Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.</p>
 <p><code>exit</code></p>
@@ -318,6 +367,16 @@ fi
 </code></pre></li>
 <li><p><strong>Save</strong> the Hive config after making these adjustments.</p></li>
 </ol>
+<h3><a class="anchor" aria-hidden="true" id="create-a-fusion-specific-directory-in-hdfs"></a><a href="#create-a-fusion-specific-directory-in-hdfs" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Create a Fusion specific directory in HDFS</h3>
+<ol>
+<li><p>Log into the Ambari Server via a terminal session.</p></li>
+<li><p>Switch to <code>hdfs</code> user and create the specified HDFS directory.</p>
+<p><code>su - hdfs</code></p>
+<p><code>hdfs dfs -mkdir -p /wandisco/exchange_dir</code></p>
+<p><code>hdfs dfs -ls /wandisco</code> - Verify that the directory exists.</p></li>
+<li><p>Exit the HDFS user terminal once complete.</p>
+<p><code>exit</code></p></li>
+</ol>
 <h3><a class="anchor" aria-hidden="true" id="restart-required-services"></a><a href="#restart-required-services" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Restart required services</h3>
 <ol>
 <li><p>Restart the <strong>HDFS</strong>, <strong>YARN</strong>, <strong>MapReduce2</strong>, <strong>Tez</strong> and <strong>Hive</strong> services in that order.</p>
@@ -349,6 +408,8 @@ Password: <code>admin</code></p></li>
 <p><code>docker-compose ps</code> <em>- obtain list of container names.</em></p>
 <p>Utilise a container name from the ADLS Gen2 zone in the command below, for example, <code>fusion-docker-compose_fusion-ui-server-adls2_1</code>.</p>
 <p><code>docker exec -u root -it fusion-docker-compose_fusion-ui-server-adls2_1 bash</code></p></li>
+</ol>
+<ol start="4">
 <li><p>Upload the Live Analytics &quot;datatransformer&quot; jar using a curl command.</p>
 <p><em>Example</em></p>
 <ul>
@@ -460,7 +521,7 @@ ln -s /run/lock /var/lock
 <li>This guide does not currently offer configuration of Fusion to a NameNode HA HDP cluster.</li>
 </ul>
 <p>Please contact <a href="https://wandisco.com/contact">WANdisco</a> for further information on Fusion with docker.</p>
-</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#prerequisites">Prerequisites</a><ul class="toc-headings"><li><a href="#note-on-command-line-editing">Note on command line editing</a></li></ul></li><li><a href="#preparation">Preparation</a><ul class="toc-headings"><li><a href="#disable-iptables-and-selinux">Disable iptables and selinux</a></li><li><a href="#install-utilities">Install utilities</a></li><li><a href="#prepare-storage-for-docker-images">Prepare storage for docker images</a></li></ul></li><li><a href="#installation">Installation</a><ul class="toc-headings"><li><a href="#initial-setup-for-hdp-sandbox-steps-tbc">Initial Setup for HDP Sandbox (Steps TBC)</a></li><li><a href="#add-temporary-entry-to-hosts-file">Add temporary entry to hosts file</a></li><li><a href="#initial-setup-for-fusion">Initial Setup for Fusion</a></li><li><a href="#setup-prompts">Setup prompts</a></li><li><a href="#remove-temporary-entry-to-hosts-file">Remove temporary entry to hosts file</a></li><li><a href="#startup">Startup</a></li></ul></li><li><a href="#configuration">Configuration</a><ul class="toc-headings"><li><a href="#live-hive-config-changes">Live Hive config changes</a></li><li><a href="#install-fusion-client-on-hdp-nodes">Install Fusion Client on HDP nodes</a></li><li><a href="#install-the-live-hiveserver2-template-on-the-hdp-cluster">Install the Live Hiveserver2 template on the HDP cluster</a></li><li><a href="#activate-fusion-client-on-the-hdp-cluster">Activate Fusion Client on the HDP cluster</a></li><li><a href="#activate-live-hive-proxy-on-the-hdp-cluster">Activate Live Hive Proxy on the HDP cluster</a></li><li><a href="#restart-required-services">Restart required services</a></li><li><a href="#setup-databricks-on-adls-gen2-zone">Setup Databricks on ADLS Gen2 zone</a></li></ul></li><li><a href="#replication">Replication</a><ul class="toc-headings"><li><a href="#create-replication-rules">Create replication rules</a></li><li><a href="#test-replication">Test replication</a></li><li><a href="#verify-replication">Verify replication</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul class="toc-headings"><li><a href="#error-relating-to-system_dbus_socket">Error relating to system_dbus_socket</a></li></ul></li><li><a href="#advanced-options">Advanced options</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://wandisco.github.io/wandisco-documentation/" class="nav-home"></a><div><h5>Docs</h5><a href="https://wandisco.github.io/wandisco-documentation/docs/en/quickstarts/quickstart-config.html">Getting Started</a><a href="https://docs.wandisco.com">Product User Guides</a><a href="https://community.wandisco.com/s/knowledge-base">Knowledge Base</a></div><div><h5>Community</h5><a href="https://community.wandisco.com/">WANdisco Community</a><a href="//wandisco.com/partners/find">Partners</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://wandisco.com/blog">Blog</a><a href="https://blogs.wandisco.com/">Developer Blog</a><a href="https://github.com/wandisco">GitHub</a></div></section><section class="copyright">Copyright © 2019 WANdisco, Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#prerequisites">Prerequisites</a><ul class="toc-headings"><li><a href="#note-on-command-line-editing">Note on command line editing</a></li></ul></li><li><a href="#preparation">Preparation</a><ul class="toc-headings"><li><a href="#disable-iptables-and-selinux">Disable iptables and selinux</a></li><li><a href="#install-utilities">Install utilities</a></li><li><a href="#prepare-storage-for-docker-images">Prepare storage for docker images</a></li></ul></li><li><a href="#installation">Installation</a><ul class="toc-headings"><li><a href="#initial-setup-for-hdp-sandbox-wip">Initial Setup for HDP Sandbox - WiP</a></li><li><a href="#add-temporary-entry-to-hosts-file">Add temporary entry to hosts file</a></li><li><a href="#initial-setup-for-fusion">Initial Setup for Fusion</a></li><li><a href="#setup-prompts">Setup prompts</a></li><li><a href="#remove-temporary-entry-to-hosts-file">Remove temporary entry to hosts file</a></li><li><a href="#startup">Startup</a></li></ul></li><li><a href="#configuration">Configuration</a><ul class="toc-headings"><li><a href="#live-hive-config-changes">Live Hive config changes</a></li><li><a href="#install-fusion-client-on-hdp-nodes">Install Fusion Client on HDP nodes</a></li><li><a href="#install-the-live-hiveserver2-template-on-the-hdp-cluster">Install the Live Hiveserver2 template on the HDP cluster</a></li><li><a href="#activate-fusion-client-on-the-hdp-cluster">Activate Fusion Client on the HDP cluster</a></li><li><a href="#activate-live-hive-proxy-on-the-hdp-cluster">Activate Live Hive Proxy on the HDP cluster</a></li><li><a href="#create-a-fusion-specific-directory-in-hdfs">Create a Fusion specific directory in HDFS</a></li><li><a href="#restart-required-services">Restart required services</a></li><li><a href="#setup-databricks-on-adls-gen2-zone">Setup Databricks on ADLS Gen2 zone</a></li></ul></li><li><a href="#replication">Replication</a><ul class="toc-headings"><li><a href="#create-replication-rules">Create replication rules</a></li><li><a href="#test-replication">Test replication</a></li><li><a href="#verify-replication">Verify replication</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul class="toc-headings"><li><a href="#error-relating-to-system_dbus_socket">Error relating to system_dbus_socket</a></li></ul></li><li><a href="#advanced-options">Advanced options</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://wandisco.github.io/wandisco-documentation/" class="nav-home"></a><div><h5>Docs</h5><a href="https://wandisco.github.io/wandisco-documentation/docs/en/quickstarts/quickstart-config.html">Getting Started</a><a href="https://docs.wandisco.com">Product User Guides</a><a href="https://community.wandisco.com/s/knowledge-base">Knowledge Base</a></div><div><h5>Community</h5><a href="https://community.wandisco.com/">WANdisco Community</a><a href="//wandisco.com/partners/find">Partners</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://wandisco.com/blog">Blog</a><a href="https://blogs.wandisco.com/">Developer Blog</a><a href="https://github.com/wandisco">GitHub</a></div></section><section class="copyright">Copyright © 2019 WANdisco, Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

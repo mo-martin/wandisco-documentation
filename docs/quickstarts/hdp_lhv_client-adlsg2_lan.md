@@ -189,38 +189,13 @@ After all the prompts have been completed, you will be able to start the contain
 
    Once complete, save and quit the file (e.g. `:wq!`).
 
-5. Add an additional property to the core-site file.
-
-   `vi /etc/hadoop/conf/core-site.xml`
-
-   Add the following property and value below:
-
-   ```json
-     <property>
-       <name>fusion.replicated.dir.exchange</name>
-       <value>/wandisco/exchange_dir</value>
-     </property>
-   ```
-
-   Once complete, save and quit the file (e.g. `:wq!`).
-
-6. Add the same property except to the application properties file.
-
-   `vi /etc/wandisco/fusion/server/application.properties`
-
-   Add the following property and value below as a new line:
-
-   `fusion.replicated.dir.exchange=/wandisco/exchange_dir`
-
-   Once complete, save and quit the file (e.g. `:wq!`).
-
-7. Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.
+5. Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.
 
    `exit`
 
    `docker-compose restart`
 
-8. Log into the Fusion UI for the HDP zone, and activate the Live Hive plugin.
+6. Log into the Fusion UI for the HDP zone, and activate the Live Hive plugin.
 
    `http://<docker_hostname/IP>:8083`
 
@@ -231,7 +206,7 @@ After all the prompts have been completed, you will be able to start the contain
 
    Click on the *Activate* option.
 
-9. Log out of the UI afterwards by clicking on the **admin** text on the top-right of the UI and selecting **Log out** on the dropdown.
+7. Log out of the UI afterwards by clicking on the **admin** text on the top-right of the UI and selecting **Log out** on the dropdown.
 
 ### Install Fusion Client on HDP nodes
 
@@ -321,7 +296,6 @@ After all the prompts have been completed, you will be able to start the contain
    fusion.client.ssl.enabled=false
    fusion.http.authentication.enabled=false
    fusion.http.authorization.enabled=false
-   fusion.replicated.dir.exchange=/wandisco/exchange_dir
    fusion.server=<docker_hostname/IP>:8023
    hadoop.proxyuser.hdfs.hosts=<docker_hostname/IP>
    hadoop.proxyuser.hdfs.groups=*
@@ -411,22 +385,6 @@ After all the prompts have been completed, you will be able to start the contain
    ```
 
 4. **Save** the Hive config after making these adjustments.
-
-### Create a Fusion specific directory in HDFS
-
-1. Log into the Ambari Server via a terminal session.
-
-2. Switch to `hdfs` user and create the specified HDFS directory.
-
-   `su - hdfs`
-
-   `hdfs dfs -mkdir -p /wandisco/exchange_dir`
-
-   `hdfs dfs -ls /wandisco` - Verify that the directory exists.
-
-3. Exit the HDFS user terminal once complete.
-
-   `exit`
 
 ### Restart required services
 

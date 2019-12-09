@@ -187,29 +187,62 @@ The steps in this section can only be performed if docker is installed and the `
 
    Press `n` to create a new network.
 
-   Type `fusion_fusion` as the new network name, followed by enter.
+   Type `fusion-docker-compose_fusion` as the new network name, followed by enter.
 
 7. Select option 3 to create the HDP sandbox.
 
    `3` - Create and start Sandbox Container(s)
 
-   Enter the appropriate number to use the `fusion_fusion` network (previously created for the HDP repository).
-
-   Enter the appropriate number to use the `ambari_agent_node:2.7.3.0` image.
+   Enter the appropriate number to use the `fusion-docker-compose_fusion` network (previously created for the HDP repository).
 
 8. Start the Ambari Manager by selecting option 3a.
 
    `3a` - Start Manager on Server Container
 
-9. Install the Cluster blueprint by selectin option 4.
+   Before continuing, wait until the Ambari UI is accessible on http://<docker_IP_address>:8080 before continuing (you do not need to log in at this time). It will take a few minutes until the UI is available.
+
+9. Install the Cluster blueprint by selecting option 4.
 
    `4` - Install Cluster from Blueprint
+
+10. Log into the Ambari UI.
+
+    Username = `admin`
+    Password = `admin`
+
+    Two automated jobs will automatically be started for installing and starting components, observable in **Background Operations**. Wait until these are complete before continuing (~10mins).
+
+### Adjust default Hive Metastore port
+
+[//]: <DAP-151 workaround.>
+
+1. Adjust two properties in the Hive config so that it references the `9084` port.
+
+   **Hive -> Configs -> Filter for "hive.metastore.uris"**
+
+   Adjust the value of `hive.metastore.uris` from port 9083 to 9084 in the following sub-sections:
+
+   _General_
+
+   ```json
+   thrift://manager:9084
+   ```
+
+   _Advanced webhcat-site_
+
+   ```json
+   hive.metastore.local=false,hive.metastore.uris=thrift://manager:9084,hive.metastore.sasl.enabled=false
+   ```
+
+2. **Save** the Hive config after making these adjustments.
+
+3. **Restart** the Hive service after completing this.
 
 ### Add temporary entry to hosts file
 
 [//]: <This is required to get the Fusion docker setup script to pass verification when entering the HDP NameNode/Metastore hostnames. It is removed after the setup script is done.>
 
-1. Edit the hosts file so that the correct hostname variables will be set during the Fusion setup.
+1. On the docker host, edit the hosts file so that the correct hostname variables will be set during the Fusion setup.
 
    `vi /etc/hosts`
 
@@ -222,6 +255,8 @@ The steps in this section can only be performed if docker is installed and the `
 ### Initial Setup for Fusion
 
 1. Clone the Fusion docker repository to your Azure VM instance:
+
+   `cd ~`
 
    `git clone -b features/livehive-merge https://github.com/WANdisco/fusion-docker-compose.git`
 
@@ -257,19 +292,21 @@ The steps in this section can only be performed if docker is installed and the `
 
   * HDP version: `2.6.5`
 
-  * Hadoop NameNode IP/hostname: `manager.hdp265` - The value will be the hostname defined in the `fs.defaultFS` property in the HDFS config, but does not include the `hdfs://` prefix or port `8020`.
+  * Hadoop NameNode IP/hostname: `manager` - The value will be the hostname defined in the `fs.defaultFS` property in the HDFS config, but does not include the `hdfs://` prefix or port `8020`.
 
   * NameNode port: `8020` - The value will be the port defined in the `fs.defaultFS` property in the HDFS config.
 
-  * NameNode Service Name: `manager.hdp265:8020` - The value will be the hostname and port combined in the `fs.defaultFS` property in the HDFS config, but not including the `hdfs://` prefix.
+  * NameNode Service Name: `manager:8020` - The value will be the hostname and port combined in the `fs.defaultFS` property in the HDFS config, but not including the `hdfs://` prefix.
 
   _Entries for Live Hive_
 
   * Enter `livehive` for the HDP zone when prompted to select a plugin.
 
-  * Hive Metastore hostname: `manager.hdp265` - The HDP cluster's Hive Metastore hostname, can be seen by hovering over the Hive Metastore in the Hive summary page. As this is a one node cluster, the value will be the same as the NameNode.
+  * Hive Metastore hostname: `manager` - The HDP cluster's Hive Metastore hostname, can be seen by hovering over the Hive Metastore in the Hive summary page. As this is a one node cluster, the value will be the same as the NameNode.
 
-  * Hive Metastore port: `9083` - Press enter to leave this as the default value.
+[//]: <DAP-151 workaround.>
+
+  * Hive Metastore port: `9084` - Please type `9084` and press enter.
 
   _Entries for ADLS Gen2_
 
@@ -307,20 +344,7 @@ At this point, the setup prompts will be complete and the script will exit out w
 
 After all the prompts have been completed, you will be able to start the containers.
 
-[//]: <DAP-144 workaround, should be fixed now, but not tested yet.>
-
-1. Perform a docker image pull of specific images to be used for this quickstart:
-
-   ```json
-   docker image pull registry.wandisco.com:8423/wandisco/fusion-ui-server-hcfs-azure-hdi-3.6:2.14.2.1-3594
-   docker image tag registry.wandisco.com:8423/wandisco/fusion-ui-server-hcfs-azure-hdi-3.6:2.14.2.1-3594 wandisco/fusion-ui-server-hcfs-azure-hdi-3.6:2.14.2.1-3600
-   docker image pull registry.wandisco.com:8423/wandisco/fusion-server-hcfs-azure-hdi-3.6:2.14.2.1-3594
-   docker image tag registry.wandisco.com:8423/wandisco/fusion-server-hcfs-azure-hdi-3.6:2.14.2.1-3594 wandisco/fusion-server-hcfs-azure-hdi-3.6:2.14.2.1-3600
-   docker image pull registry.wandisco.com:8423/wandisco/fusion-ihc-server-hcfs-azure-hdi-3.6:2.14.2.1-3594
-   docker image tag registry.wandisco.com:8423/wandisco/fusion-ihc-server-hcfs-azure-hdi-3.6:2.14.2.1-3594 wandisco/fusion-ihc-server-hcfs-azure-hdi-3.6:2.14.2.1-3600
-   ```
-
-2. Ensure that Docker is started:
+1. Ensure that Docker is started:
 
    `systemctl status docker`
 
@@ -328,13 +352,7 @@ After all the prompts have been completed, you will be able to start the contain
 
    `systemctl start docker`
 
-3. Start the Fusion containers with:
-
-   `docker-compose up -d`
-
-[//]: <DAP-136 workaround>
-
-4. If the Induction container comes up before all other containers, please run the previous command again to ensure the zones are inducted together.
+2. Start the Fusion containers with:
 
    `docker-compose up -d`
 
@@ -344,51 +362,9 @@ After all the prompts have been completed, you will be able to start the contain
 
 1. Log into one of the containers for the HDP zone.
 
-   You will first need to obtain the name of a suitable container, this can be done by running the command below.
-
-   `docker-compose ps` _- obtain list of container names._
-
-   Utilise a container name from the HDP zone in the command below, for example, `fusion-docker-compose_fusion-ui-server-hdp_1`.
-
    `docker exec -it fusion-docker-compose_fusion-ui-server-hdp_1 bash`
 
-[//]: <DAP-130 workaround>
-
-2. Symlink the Live Hive config files to the Fusion Server config path:
-
-   `ln -s /etc/wandisco/fusion/plugins/hive/* /etc/wandisco/fusion/server/`
-
-   You will see the following error message afterwards, please ignore as it is benign:
-
-   ```json
-   ln: failed to create symbolic link ‘/etc/wandisco/fusion/server/logger.properties’: File exists
-   ```
-
-[//]: <INC-684 workaround>
-
-3. Edit the UI properties file and adjust the following properties:
-
-   `vi /opt/wandisco/fusion-ui-server/properties/ui.properties`
-
-   Change:
-
-   ```json
-   user.username=
-   user.password=
-   manager.type=AMBARI
-   ```
-
-   To:
-
-   ```json
-   user.username=admin
-   user.password=$2a$10$jQH1VJ/zBByUD8d0prf0A.Uh9FDKuW/AWUUEayefsP/owiIuFrRAW
-   manager.type=UNMANAGED_BIGINSIGHTS
-   ```
-
-   Once complete, save and quit the file (e.g. `:wq!`).
-
-4. Add an additional property to the Live Hive config:
+2. Add an additional property to the Live Hive config:
 
    `vi /etc/wandisco/fusion/plugins/hive/live-hive-site.xml`
 
@@ -403,51 +379,26 @@ After all the prompts have been completed, you will be able to start the contain
 
    Once complete, save and quit the file (e.g. `:wq!`).
 
-5. Add an additional property to the core-site file.
-
-   `vi /etc/hadoop/conf/core-site.xml`
-
-   Add the following property and value below:
-
-   ```json
-     <property>
-       <name>fusion.replicated.dir.exchange</name>
-       <value>/wandisco/exchange_dir</value>
-     </property>
-   ```
-
-   Once complete, save and quit the file (e.g. `:wq!`).
-
-6. Add the same property except to the application properties file.
-
-   `vi /etc/wandisco/fusion/server/application.properties`
-
-   Add the following property and value below as a new line:
-
-   `fusion.replicated.dir.exchange=/wandisco/exchange_dir`
-
-   Once complete, save and quit the file (e.g. `:wq!`).
-
-7. Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.
+3. Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.
 
    `exit`
 
    `docker-compose restart`
 
-8. Log into the Fusion UI for the HDP zone, and activate the Live Hive plugin.
+4. Log into the Fusion UI for the HDP zone, and activate the Live Hive plugin.
 
    `http://<docker_hostname/IP>:8083`
 
    Username: `admin`
-   Password: `wandisco`
+   Password: `admin`
 
    Proceed to the Settings tab and select the *Live Hive: Plugin Activation* option on the left-hand panel.
 
    Click on the *Activate* option.
 
-9. Log out of the UI afterwards by clicking on the **admin** text on the top-right of the UI and selecting **Log out** on the dropdown.
-
 ### Install Fusion Client on HDP nodes
+
+[//]: <BR_2019-12-09 - up to here on testing>
 
 [//]: <INC-681 workaround>
 
@@ -541,7 +492,6 @@ After all the prompts have been completed, you will be able to start the contain
    fusion.client.ssl.enabled=false
    fusion.http.authentication.enabled=false
    fusion.http.authorization.enabled=false
-   fusion.replicated.dir.exchange=/wandisco/exchange_dir
    fusion.server=<docker_hostname/IP>:8023
    hadoop.proxyuser.hdfs.hosts=<docker_hostname/IP>
    hadoop.proxyuser.hdfs.groups=*
@@ -632,24 +582,6 @@ After all the prompts have been completed, you will be able to start the contain
 
 4. **Save** the Hive config after making these adjustments.
 
-### Create a Fusion specific directory in HDFS
-
-[//]: <May not be required, testing has not yet been completed for when the replicated exchange directory has been defined in both core-site and application.properties. In other words, the directory may be created automatically by the Fusion Server when these are set.>
-
-1. Log into the Ambari Server via a terminal session.
-
-2. Switch to `hdfs` user and create the specified HDFS directory.
-
-   `su - hdfs`
-
-   `hdfs dfs -mkdir -p /wandisco/exchange_dir`
-
-   `hdfs dfs -ls /wandisco` - Verify that the directory exists.
-
-3. Exit the HDFS user terminal once complete.
-
-   `exit`
-
 ### Restart required services
 
 1. Restart the **HDFS**, **YARN**, **MapReduce2**, **Tez** and **Hive** services in that order.
@@ -730,8 +662,6 @@ After all the prompts have been completed, you will be able to start the contain
 
 9. Select **Install** once the details are entered. Wait for the **Status** of the jar to display as **Installed** before continuing.
 
-10. Log out of the UI afterwards by clicking on the **admin** text on the top-right of the UI and selecting **Log out** on the dropdown.
-
 ## Replication
 
 In this section, follow the steps detailed to perform live replication of HCFS data and Hive metadata from the HDP cluster to the Azure Databricks cluster.
@@ -743,7 +673,7 @@ In this section, follow the steps detailed to perform live replication of HCFS d
    `http://<docker_hostname/IP>:8083`
 
    Username: `admin`
-   Password: `wandisco`
+   Password: `admin`
 
 2. Enter the Replication tab, and select to **+ Create** a replication rule.
 
@@ -852,7 +782,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
 ## Troubleshooting
 
-### Error relating to system_dbus_socket
+### Error relating to 'system_dbus_socket'
 
 [//]: <May not be included but a few people have hit this when using docker. It is apparently due to an incompatibility with Ubuntu, see https://bugs.freedesktop.org/show_bug.cgi?id=75515 for detail.>
 
@@ -866,6 +796,24 @@ rm -rf /var/run /var/lock
 ln -s /run /var/run
 ln -s /run/lock /var/lock
 ```
+
+### Error relating to 'connection refused' after starting Fusion for the first time
+
+You may see the following error occur when running `docker-compose up -d` for the first time inside the fusion-docker-compose repository:
+
+```json
+ERROR: Get https://registry-1.docker.io/v2/: dial tcp: lookup registry-1.docker.io on [::1]:53: read udp [::1]:52155->[::1]:53: read: connection refused
+```
+
+If encountering this error, run the `docker-compose up -d` command again, and this should initiate the download of the docker images.
+
+### Fusion zones not inducted together after initial start-up
+
+[//]: <DAP-136 workaround>
+
+If the Fusion zones are not inducted together after starting Fusion for the first time (`docker-compose up -d`), you can simply run the same command again to start the induction container:
+
+   `docker-compose up -d`
 
 ## Advanced options
 

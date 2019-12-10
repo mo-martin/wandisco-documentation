@@ -103,18 +103,7 @@ All the commands within this guidance should be run as **root** user. To switch 
 
 After all the prompts have been completed, you will be able to start the containers.
 
-1. Perform a docker image pull of specific images to be used for this quickstart:
-
-   ```json
-   docker image pull registry.wandisco.com:8423/wandisco/fusion-ui-server-hcfs-azure-hdi-3.6:2.14.2.1-3594
-   docker image tag registry.wandisco.com:8423/wandisco/fusion-ui-server-hcfs-azure-hdi-3.6:2.14.2.1-3594 wandisco/fusion-ui-server-hcfs-azure-hdi-3.6:2.14.2.1-3600
-   docker image pull registry.wandisco.com:8423/wandisco/fusion-server-hcfs-azure-hdi-3.6:2.14.2.1-3594
-   docker image tag registry.wandisco.com:8423/wandisco/fusion-server-hcfs-azure-hdi-3.6:2.14.2.1-3594 wandisco/fusion-server-hcfs-azure-hdi-3.6:2.14.2.1-3600
-   docker image pull registry.wandisco.com:8423/wandisco/fusion-ihc-server-hcfs-azure-hdi-3.6:2.14.2.1-3594
-   docker image tag registry.wandisco.com:8423/wandisco/fusion-ihc-server-hcfs-azure-hdi-3.6:2.14.2.1-3594 wandisco/fusion-ihc-server-hcfs-azure-hdi-3.6:2.14.2.1-3600
-   ```
-
-2. Ensure that Docker is started:
+1. Ensure that Docker is started:
 
    `systemctl status docker`
 
@@ -122,11 +111,7 @@ After all the prompts have been completed, you will be able to start the contain
 
    `systemctl start docker`
 
-3. Start the Fusion containers with:
-
-   `docker-compose up -d`
-
-4. If the Induction container comes up before all other containers, please run the previous command again to ensure the zones are inducted together.
+2. Start the Fusion containers with:
 
    `docker-compose up -d`
 
@@ -134,47 +119,9 @@ After all the prompts have been completed, you will be able to start the contain
 
 1. Log into one of the containers for the HDP zone.
 
-   You will first need to obtain the name of a suitable container, this can be done by running the command below.
-
-   `docker-compose ps` _- obtain list of container names._
-
-   Utilise a container name from the HDP zone in the command below, for example, `fusion-docker-compose_fusion-ui-server-hdp_1`.
-
    `docker exec -it fusion-docker-compose_fusion-ui-server-hdp_1 bash`
 
-2. Symlink the Live Hive config files to the Fusion Server config path:
-
-   `ln -s /etc/wandisco/fusion/plugins/hive/* /etc/wandisco/fusion/server/`
-
-   You will see the following error message afterwards, please ignore as it is benign:
-
-   ```json
-   ln: failed to create symbolic link ‘/etc/wandisco/fusion/server/logger.properties’: File exists
-   ```
-
-3. Edit the UI properties file and adjust the following properties:
-
-   `vi /opt/wandisco/fusion-ui-server/properties/ui.properties`
-
-   Change:
-
-   ```json
-   user.username=
-   user.password=
-   manager.type=AMBARI
-   ```
-
-   To:
-
-   ```json
-   user.username=admin
-   user.password=$2a$10$jQH1VJ/zBByUD8d0prf0A.Uh9FDKuW/AWUUEayefsP/owiIuFrRAW
-   manager.type=UNMANAGED_BIGINSIGHTS
-   ```
-
-   Once complete, save and quit the file (e.g. `:wq!`).
-
-4. Add an additional property to the Live Hive config:
+2. Add an additional property to the Live Hive config:
 
    `vi /etc/wandisco/fusion/plugins/hive/live-hive-site.xml`
 
@@ -189,24 +136,22 @@ After all the prompts have been completed, you will be able to start the contain
 
    Once complete, save and quit the file (e.g. `:wq!`).
 
-5. Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.
+3. Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.
 
    `exit`
 
    `docker-compose restart`
 
-6. Log into the Fusion UI for the HDP zone, and activate the Live Hive plugin.
+4. Log into the Fusion UI for the HDP zone, and activate the Live Hive plugin.
 
    `http://<docker_hostname/IP>:8083`
 
    Username: `admin`
-   Password: `wandisco`
+   Password: `admin`
 
    Proceed to the Settings tab and select the *Live Hive: Plugin Activation* option on the left-hand panel.
 
    Click on the *Activate* option.
-
-7. Log out of the UI afterwards by clicking on the **admin** text on the top-right of the UI and selecting **Log out** on the dropdown.
 
 ### Install Fusion Client on HDP nodes
 
@@ -464,8 +409,6 @@ After all the prompts have been completed, you will be able to start the contain
 
 9. Select **Install** once the details are entered. Wait for the **Status** of the jar to display as **Installed** before continuing.
 
-10. Log out of the UI afterwards by clicking on the **admin** text on the top-right of the UI and selecting **Log out** on the dropdown.
-
 ## Replication
 
 In this section, follow the steps detailed to perform live replication of HCFS data and Hive metadata from the HDP cluster to the Azure Databricks cluster.
@@ -477,7 +420,7 @@ In this section, follow the steps detailed to perform live replication of HCFS d
    `http://<docker_hostname/IP>:8083`
 
    Username: `admin`
-   Password: `wandisco`
+   Password: `admin`
 
 2. Enter the Replication tab, and select to **+ Create** a replication rule.
 
@@ -583,6 +526,37 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
    id         name
    1          words
    ```
+
+## Troubleshooting
+
+### Error relating to 'system_dbus_socket'
+
+If encountering a `system_dbus_socket` error when attempting to start containers, run the following commands below on the docker host:
+
+```json
+mkdir -p /run /run/lock
+mv /var/run/* /run/
+mv /var/lock/* /run/lock/
+rm -rf /var/run /var/lock
+ln -s /run /var/run
+ln -s /run/lock /var/lock
+```
+
+### Error relating to 'connection refused' after starting Fusion for the first time
+
+You may see the following error occur when running `docker-compose up -d` for the first time inside the fusion-docker-compose repository:
+
+```json
+ERROR: Get https://registry-1.docker.io/v2/: dial tcp: lookup registry-1.docker.io on [::1]:53: read udp [::1]:52155->[::1]:53: read: connection refused
+```
+
+If encountering this error, run the `docker-compose up -d` command again, and this should initiate the download of the docker images.
+
+### Fusion zones not inducted together after initial start-up
+
+If the Fusion zones are not inducted together after starting Fusion for the first time (`docker-compose up -d`), you can simply run the same command again to start the induction container:
+
+`docker-compose up -d`
 
 ## Advanced options
 

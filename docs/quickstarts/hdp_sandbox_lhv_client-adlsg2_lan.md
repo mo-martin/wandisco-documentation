@@ -195,22 +195,18 @@ The steps in this section can only be performed if docker is installed and the `
 
    Enter the appropriate number to use the `fusion-docker-compose_fusion` network (previously created for the HDP repository).
 
-8. Start the Ambari Manager by selecting option 3a.
+   Before continuing, wait until the Ambari UI is accessible on `http://<docker_IP_address>:8080` before continuing (you do not need to log in at this time). It will take a few minutes until the UI is available.
 
-   `3a` - Start Manager on Server Container
-
-   Before continuing, wait until the Ambari UI is accessible on http://<docker_IP_address>:8080 before continuing (you do not need to log in at this time). It will take a few minutes until the UI is available.
-
-9. Install the Cluster blueprint by selecting option 4.
+8. Install the Cluster blueprint by selecting option 4.
 
    `4` - Install Cluster from Blueprint
 
-10. Log into the Ambari UI.
+9. Log into the Ambari UI.
 
-    Username = `admin`
-    Password = `admin`
+   Username = `admin`
+   Password = `admin`
 
-    Two automated jobs will automatically be started for installing and starting components, observable in **Background Operations**. Wait until these are complete before continuing (~10mins).
+   Two automated jobs will automatically be started for installing and starting components, observable in **Background Operations**. Wait until these are complete before continuing (~10mins).
 
 ### Adjust default Hive Metastore port
 
@@ -387,50 +383,59 @@ After all the prompts have been completed, you will be able to start the contain
 
 4. Log into the Fusion UI for the HDP zone, and activate the Live Hive plugin.
 
-   `http://<docker_hostname/IP>:8083`
+   `http://<docker_IP_address>:8083`
 
    Username: `admin`
    Password: `admin`
 
    Proceed to the Settings tab and select the *Live Hive: Plugin Activation* option on the left-hand panel.
 
-   Click on the *Activate* option.
+   Click on the *Activate* option. Wait for the **Reload this window** message to appear and refresh the page.
 
 ### Install Fusion Client on HDP nodes
 
-[//]: <BR_2019-12-09 - up to here on testing>
-
 [//]: <INC-681 workaround>
 
-1. Log into the Ambari Server via a terminal session.
+1. Log into the Ambari Server container on the docker host.
+
+   `docker exec -it manager bash`
 
 2. Download the Fusion Client stack package located here:
 
-   `wget http://<docker_hostname/IP>:8083/ui/downloads/stack_packages/fusion-hcfs-hdp-2.6.5-2.14.2.1.stack.tar.gz`
+   `wget http://fusion-ui-server-hdp:8083/ui/downloads/stack_packages/fusion-hcfs-hdp-2.6.5-2.14.2.2.stack.tar.gz`
 
 3. Decompress the stack to the Ambari services directory.
 
-   `tar -xf fusion-hcfs-hdp-2.6.5-2.14.2.1.stack.tar.gz -C /var/lib/ambari-server/resources/stacks/HDP/2.6/services/`
+   `tar -xf fusion-hcfs-hdp-2.6.5-2.14.2.2.stack.tar.gz -C /var/lib/ambari-server/resources/stacks/HDP/2.6/services/`
 
 4.  Delete the compressed file afterwards.
 
-    `rm -f fusion-hcfs-hdp-2.6.5-2.14.2.1.stack.tar.gz`
+    `rm -f fusion-hcfs-hdp-2.6.5-2.14.2.2.stack.tar.gz`
 
 5. Restart the Ambari Server so that the new stack will be available to install.
 
    `ambari-server restart`
 
-6. Log into the Ambari UI once it is available after the restart.
+6. Log back into the Ambari UI once it is available after the restart.
+
+   Username = `admin`
+   Password = `admin`
 
 7. In the Dashboard, select to **Add Service** in the Actions.
 
-8. Select the **Wandisco Fusion Client** and click Next.
+8. Select the checkbox for **Wandisco Fusion** and click Next.
 
-9. Ensure the **Wandisco Fusion Client** is assigned to all nodes. Click Next once confirmed.
+9. Ensure the **Client** is assigned to all nodes. Click Next once confirmed.
 
-10. On the **Customize Services** page, insert the URL for the Wandisco Fusion UI for the HDP zone - `http://<dockerip>:8083`. Click Next once complete.
+10. On the **Customize Services** page, provide two configuration values as guided below:
 
-    _Please ignore any Recommended Changes if they are suggested by Ambari. This can be done by unticking the checkbox left of the Property column header, and clicking OK._
+    WANDISCO FUSION -> Advanced fusion-client-config -> Provide the value of `fusion.ui.server.url` as `http://<docker_IP_address>:8083`.
+
+    HDFS -> Advanced -> Advanced core-site -> Provide the value of `hadoop.proxyuser.*` as `hdfs`.
+
+    Click Next once complete.
+
+    _Select to **Proceed anyway** if prompted by Ambari due to any warnings._
 
 11. On the **Review** page, click Deploy. After the **Install, Start and Test** operation is complete, click Next.
 
@@ -440,11 +445,13 @@ After all the prompts have been completed, you will be able to start the contain
 
 [//]: <DAP-137 referenced for this work>
 
-1. Log into the Ambari Server via a terminal session.
+1. Log into the Ambari Server container on the docker host (or return to the terminal session if you are still logged into the manager container).
+
+   `docker exec -it manager bash`
 
 2. Download the Live Hiveserver2 template stack from the docker host.
 
-   `wget http://<docker_hostname/IP>:8083/ui/downloads/core_plugins/live-hive/stack_packages/live-hiveserver2-template-5.0.0.1.stack.tar.gz`
+   `wget http://fusion-ui-server-hdp:8083/ui/downloads/core_plugins/live-hive/stack_packages/live-hiveserver2-template-5.0.0.1.stack.tar.gz`
 
 3. Decompress the stack to the Ambari services directory.
 
@@ -458,17 +465,24 @@ After all the prompts have been completed, you will be able to start the contain
 
    `ambari-server restart`
 
-6. Log into the Ambari UI once it is available after the restart.
+   Once the Ambari Server has finished restarting, exit the container:
+
+   `exit`
+
+6. Log back into the Ambari UI once it is available after the restart.
+
+   Username = `admin`
+   Password = `admin`
 
 7. In the Dashboard, select to **Add Service** in the Actions.
 
-8. Select the **Live Hiveserver2 Template** and click Next.
+8. Select the checkbox for **Live Hiveserver2 Template** and click Next.
 
 9. Ensure the **Live Hiveserver2 Template Master** is assigned to the host on which the **Hiveserver2** component is installed. Click Next once confirmed.
 
 10. On the **Customize Services** page, click Next.
 
-    _Please ignore any Recommended Changes if they are suggested by Ambari. This can be done by unticking the checkbox left of the Property column header, and clicking OK._
+    _Select to **Proceed anyway** if prompted by Ambari due to any warnings._
 
 11. On the **Review** page, click Deploy. After the **Install, Start and Test** operation is complete, click Next.
 
@@ -478,30 +492,26 @@ After all the prompts have been completed, you will be able to start the contain
 
 [//]: <INC-681 workaround due to Fusion Client requirements for Hadoop services.>
 
-1. Log into the Ambari UI for the HDP cluster.
+_If this section, select to **Proceed anyway** if prompted by Ambari due to any warnings after saving config._
 
-2. Add the following properties to the HDFS config so that the Fusion Client is used on the cluster.
+1. On the Ambari UI, add the following properties to the HDFS config so that the Fusion Client is used on the cluster.
 
    **HDFS -> Configs -> Advanced -> Custom core-site**
 
    Click **Add Property ...** and add the following below in **Bulk property add mode**.
 
    ```json
-   fs.fusion.underlyingFs=hdfs://<namenode_hostname>:8020
+   fs.fusion.underlyingFs=hdfs://manager:8020
    fs.hdfs.impl=com.wandisco.fs.client.FusionHdfs
    fusion.client.ssl.enabled=false
    fusion.http.authentication.enabled=false
    fusion.http.authorization.enabled=false
-   fusion.server=<docker_hostname/IP>:8023
-   hadoop.proxyuser.hdfs.hosts=<docker_hostname/IP>
-   hadoop.proxyuser.hdfs.groups=*
+   fusion.server=fusion-server-hdp:8023
    ```
-
-   Please ensure to adjust the `<namenode_hostname>` and `<docker_hostname/IP>` values to your environment.
 
    Select **Add** and then **Save** the HDFS config.
 
-3. Adjust the following property in YARN.
+2. Add the following entry to the YARN config.
 
    **YARN -> Configs -> Advanced -> Advanced yarn-log4j**
 
@@ -514,7 +524,7 @@ After all the prompts have been completed, you will be able to start the contain
 
    **Save** the YARN config afterwards.
 
-4. Adjust the following property in MapReduce2.
+3. Adjust the following property in MapReduce2.
 
    **MapReduce2 -> Configs -> Filter for "mapreduce.application.classpath"**
 
@@ -530,7 +540,7 @@ After all the prompts have been completed, you will be able to start the contain
 
    **Save** the MapReduce2 config afterwards.
 
-5. Adjust the following property in Tez.
+4. Adjust the following property in Tez.
 
    **Tez -> Configs -> Filter for "tez.cluster.additional.classpath.prefix"**
 
@@ -546,11 +556,21 @@ After all the prompts have been completed, you will be able to start the contain
 
    **Save** the Tez config afterwards.
 
+5. Add the following entry to the Slider config.
+
+   **Slider -> Configs -> Advanced slider-env: slider-env template**
+
+   Add the following new line to the bottom of the text window:
+
+   ```json
+   export SLIDER_CLASSPATH_EXTRA=$SLIDER_CLASSPATH_EXTRA:`for i in /opt/wandisco/fusion/client/lib/*;do echo -n "$i:" ; done`
+   ```
+
+   **Save** the Slider config afterwards.
+
 ### Activate Live Hive Proxy on the HDP cluster
 
-1. Log into the Ambari UI for the HDP cluster.
-
-2. Adjust two properties in the Hive config so that it references the Live Hive Proxy.
+1. On the Ambari UI, adjust two properties in the Hive config so that it references the Live Hive Proxy.
 
    **Hive -> Configs -> Filter for "hive.metastore.uris"**
 
@@ -559,16 +579,16 @@ After all the prompts have been completed, you will be able to start the contain
    _General_
 
    ```json
-   thrift://<docker_IP_address>:9083
+   thrift://fusion-livehive-proxy-hdp:9083
    ```
 
    _Advanced webhcat-site_
 
    ```json
-   hive.metastore.local=false,hive.metastore.uris=thrift://<docker_IP_address>:9083,hive.metastore.sasl.enabled=false
+   hive.metastore.local=false,hive.metastore.uris=thrift://fusion-livehive-proxy-hdp:9083,hive.metastore.sasl.enabled=false
    ```
 
-3. Adjust a property so that the Live Hive Proxy will handle both data and metadata changes.
+2. Adjust a property so that the Live Hive Proxy will handle both data and metadata changes.
 
    **Hive -> Configs -> Filter for "hive-env template"**
 
@@ -580,23 +600,33 @@ After all the prompts have been completed, you will be able to start the contain
    fi
    ```
 
-4. **Save** the Hive config after making these adjustments.
+3. **Save** the Hive config after making these adjustments.
+
+   _Select to **Proceed anyway** if prompted by Ambari due to any warnings._
 
 ### Restart required services
 
-1. Restart the **HDFS**, **YARN**, **MapReduce2**, **Tez** and **Hive** services in that order.
+1. On the Ambari UI, select the option to **Restart All Required** services.
 
-   If any other services are designated with a stale configuration, please restart them as well.
+   **Ambari UI -> Services -> Select the "..." for the drop-down list -> Restart All Required -> Confirm Restart All**
 
-2. After all the HDP cluster services have finished restarting, log onto the docker host and restart the Fusion containers:
+2. Select to **Restart All** for the Spark2 service as well.
+
+   **Spark2 -> Actions -> Restart All -> Confirm Restart All**
+
+   You do not have to wait for the previous operation to finish to initiate this. The Spark2 restart job will be queued and started automatically once the Restart All Required has completed.
+
+3. After all the HDP cluster services have finished restarting, return to the docker host terminal and restart the Fusion containers:
 
    `docker-compose restart`
 
 ### Setup Databricks on ADLS Gen2 zone
 
+Prior to performing these tasks, the Databricks cluster must be in a **running** state. Please access the Azure portal and check the status of the cluster. If it is not running, select to start the cluster and wait until it is **running** before continuing.
+
 1. Log into the Fusion UI for the ADLS Gen2 zone.
 
-   `http://<docker_hostname/IP>:8583`
+   `http://<docker_IP_address>:8583`
 
    Username: `admin`
    Password: `admin`
@@ -619,17 +649,7 @@ After all the prompts have been completed, you will be able to start the contain
 
    Click **Update** once complete.
 
-3. Log into one of the containers for the ADLS Gen2 zone.
-
-   `ssh <docker_hostname/IP>`
-
-   `cd fusion-docker-compose`
-
-   You will first need to obtain the name of a suitable container, this can be done by running the command below.
-
-   `docker-compose ps` _- obtain list of container names._
-
-   Utilise a container name from the ADLS Gen2 zone in the command below, for example, `fusion-docker-compose_fusion-ui-server-adls2_1`.
+3. On the docker host, log into one of the containers for the ADLS Gen2 zone as root user.
 
    `docker exec -u root -it fusion-docker-compose_fusion-ui-server-adls2_1 bash`
 
@@ -637,14 +657,29 @@ After all the prompts have been completed, you will be able to start the contain
 
 4. Upload the Live Analytics "datatransformer" jar using a curl command.
 
-   _Example_
+   `curl -v -H "Authorization: Bearer <bearer_token>"  -F contents=@/opt/wandisco/fusion/plugins/databricks/live-analytics-databricks-etl-5.0.0.0.jar -F path="/datatransformer.jar" https://<databricks_service_address>/api/2.0/dbfs/put`
+
+   You will need to adjust the `curl` command so that your **Bearer Token** and **Databricks Service Address** is referenced.
+
+   _Example values_
 
    * Bearer Token: `dapicd7689jkb25473c765ghty78bb299a83`
    * Databricks Service Address: `westeurope.azuredatabricks.net`
 
+   _Example command_
+
    `curl -v -H "Authorization: Bearer dapicd7689jkb25473c765ghty78bb299a83"  -F contents=@/opt/wandisco/fusion/plugins/databricks/live-analytics-databricks-etl-5.0.0.0.jar -F path="/datatransformer.jar" https://westeurope.azuredatabricks.net/api/2.0/dbfs/put`
 
-   You will need to adjust the command so that your Bearer Token and Databricks Service Address is referenced.
+   If the command is successful, you will see that the message output contains the following text below:
+
+   ```json
+   < HTTP/1.1 100 Continue
+   < HTTP/1.1 200 OK
+   ```
+
+   Once complete, exit the container:
+
+   `exit`
 
 5. Log into the Azure portal and Launch Workspace for your Databricks cluster.
 
@@ -670,7 +705,7 @@ In this section, follow the steps detailed to perform live replication of HCFS d
 
 1. Log into the Fusion UI for the HDP zone.
 
-   `http://<docker_hostname/IP>:8083`
+   `http://<docker_IP_address:8083`
 
    Username: `admin`
    Password: `admin`
@@ -717,11 +752,11 @@ In this section, follow the steps detailed to perform live replication of HCFS d
 
 Prior to performing these tasks, the Databricks cluster must be in a **running** state. Please access the Azure portal and check the status of the cluster. If it is not running, select to start the cluster and wait until it is **running** before continuing.
 
-1. Log into a HDP cluster node with the Hive client available.
+1. On the docker host, log into a HDP cluster node with the Hive client available.
 
    You can confirm the Hive client is installed by switching to the `hdfs` user and running `hive` on the command line.
 
-   `ssh <hdp-cluster-node>`
+   `docker exec -it manager bash`
 
    `su - hdfs`
 

@@ -73,48 +73,17 @@
 <h3><a class="anchor" aria-hidden="true" id="startup"></a><a href="#startup" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Startup</h3>
 <p>After all the prompts have been completed, you will be able to start the containers.</p>
 <ol>
-<li><p>Perform a docker image pull of specific images to be used for this quickstart:</p>
-<pre><code class="hljs css language-json">docker image pull registry.wandisco.com:8423/wandisco/fusion-ui-server-hcfs-azure-hdi-3.6:2.14.2.1-3594
-docker image tag registry.wandisco.com:8423/wandisco/fusion-ui-server-hcfs-azure-hdi-3.6:2.14.2.1-3594 wandisco/fusion-ui-server-hcfs-azure-hdi-3.6:2.14.2.1-3600
-docker image pull registry.wandisco.com:8423/wandisco/fusion-server-hcfs-azure-hdi-3.6:2.14.2.1-3594
-docker image tag registry.wandisco.com:8423/wandisco/fusion-server-hcfs-azure-hdi-3.6:2.14.2.1-3594 wandisco/fusion-server-hcfs-azure-hdi-3.6:2.14.2.1-3600
-docker image pull registry.wandisco.com:8423/wandisco/fusion-ihc-server-hcfs-azure-hdi-3.6:2.14.2.1-3594
-docker image tag registry.wandisco.com:8423/wandisco/fusion-ihc-server-hcfs-azure-hdi-3.6:2.14.2.1-3594 wandisco/fusion-ihc-server-hcfs-azure-hdi-3.6:2.14.2.1-3600
-</code></pre></li>
 <li><p>Ensure that Docker is started:</p>
 <p><code>systemctl status docker</code></p>
 <p>If not, start the Docker service:</p>
 <p><code>systemctl start docker</code></p></li>
 <li><p>Start the Fusion containers with:</p>
 <p><code>docker-compose up -d</code></p></li>
-<li><p>If the Induction container comes up before all other containers, please run the previous command again to ensure the zones are inducted together.</p>
-<p><code>docker-compose up -d</code></p></li>
 </ol>
 <h3><a class="anchor" aria-hidden="true" id="live-hive-config-changes"></a><a href="#live-hive-config-changes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Live Hive config changes</h3>
 <ol>
 <li><p>Log into one of the containers for the HDP zone.</p>
-<p>You will first need to obtain the name of a suitable container, this can be done by running the command below.</p>
-<p><code>docker-compose ps</code> <em>- obtain list of container names.</em></p>
-<p>Utilise a container name from the HDP zone in the command below, for example, <code>fusion-docker-compose_fusion-ui-server-hdp_1</code>.</p>
 <p><code>docker exec -it fusion-docker-compose_fusion-ui-server-hdp_1 bash</code></p></li>
-<li><p>Symlink the Live Hive config files to the Fusion Server config path:</p>
-<p><code>ln -s /etc/wandisco/fusion/plugins/hive/* /etc/wandisco/fusion/server/</code></p>
-<p>You will see the following error message afterwards, please ignore as it is benign:</p>
-<pre><code class="hljs css language-json">ln: failed to create symbolic link ‘/etc/wandisco/fusion/server/logger.properties’: File exists
-</code></pre></li>
-<li><p>Edit the UI properties file and adjust the following properties:</p>
-<p><code>vi /opt/wandisco/fusion-ui-server/properties/ui.properties</code></p>
-<p>Change:</p>
-<pre><code class="hljs css language-json">user.username=
-user.password=
-manager.type=AMBARI
-</code></pre>
-<p>To:</p>
-<pre><code class="hljs css language-json">user.username=admin
-user.password=$2a$10$jQH1VJ/zBByUD8d0prf0A.Uh9FDKuW/AWUUEayefsP/owiIuFrRAW
-manager.type=UNMANAGED_BIGINSIGHTS
-</code></pre>
-<p>Once complete, save and quit the file (e.g. <code>:wq!</code>).</p></li>
 <li><p>Add an additional property to the Live Hive config:</p>
 <p><code>vi /etc/wandisco/fusion/plugins/hive/live-hive-site.xml</code></p>
 <p>Add the following property and value below:</p>
@@ -130,10 +99,9 @@ manager.type=UNMANAGED_BIGINSIGHTS
 <li><p>Log into the Fusion UI for the HDP zone, and activate the Live Hive plugin.</p>
 <p><code>http://&lt;docker_hostname/IP&gt;:8083</code></p>
 <p>Username: <code>admin</code>
-Password: <code>wandisco</code></p>
+Password: <code>admin</code></p>
 <p>Proceed to the Settings tab and select the <em>Live Hive: Plugin Activation</em> option on the left-hand panel.</p>
 <p>Click on the <em>Activate</em> option.</p></li>
-<li><p>Log out of the UI afterwards by clicking on the <strong>admin</strong> text on the top-right of the UI and selecting <strong>Log out</strong> on the dropdown.</p></li>
 </ol>
 <h3><a class="anchor" aria-hidden="true" id="install-fusion-client-on-hdp-nodes"></a><a href="#install-fusion-client-on-hdp-nodes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install Fusion Client on HDP nodes</h3>
 <ol>
@@ -286,7 +254,6 @@ Password: <code>admin</code></p></li>
 <li><p>File Path = <code>dbfs:/datatransformer.jar</code></p></li>
 </ul></li>
 <li><p>Select <strong>Install</strong> once the details are entered. Wait for the <strong>Status</strong> of the jar to display as <strong>Installed</strong> before continuing.</p></li>
-<li><p>Log out of the UI afterwards by clicking on the <strong>admin</strong> text on the top-right of the UI and selecting <strong>Log out</strong> on the dropdown.</p></li>
 </ol>
 <h2><a class="anchor" aria-hidden="true" id="replication"></a><a href="#replication" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Replication</h2>
 <p>In this section, follow the steps detailed to perform live replication of HCFS data and Hive metadata from the HDP cluster to the Azure Databricks cluster.</p>
@@ -295,7 +262,7 @@ Password: <code>admin</code></p></li>
 <li><p>Log into the Fusion UI for the HDP zone.</p>
 <p><code>http://&lt;docker_hostname/IP&gt;:8083</code></p>
 <p>Username: <code>admin</code>
-Password: <code>wandisco</code></p></li>
+Password: <code>admin</code></p></li>
 <li><p>Enter the Replication tab, and select to <strong>+ Create</strong> a replication rule.</p></li>
 <li><p>Create a new HCFS rule using the UI with the following properties:</p>
 <ul>
@@ -363,13 +330,31 @@ name       string
 1          words
 </code></pre></li>
 </ol>
+<h2><a class="anchor" aria-hidden="true" id="troubleshooting"></a><a href="#troubleshooting" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting</h2>
+<h3><a class="anchor" aria-hidden="true" id="error-relating-to-system_dbus_socket"></a><a href="#error-relating-to-system_dbus_socket" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Error relating to 'system_dbus_socket'</h3>
+<p>If encountering a <code>system_dbus_socket</code> error when attempting to start containers, run the following commands below on the docker host:</p>
+<pre><code class="hljs css language-json">mkdir -p /run /run/lock
+mv /var/run/* /run/
+mv /var/lock/* /run/lock/
+rm -rf /var/run /var/lock
+ln -s /run /var/run
+ln -s /run/lock /var/lock
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="error-relating-to-connection-refused-after-starting-fusion-for-the-first-time"></a><a href="#error-relating-to-connection-refused-after-starting-fusion-for-the-first-time" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Error relating to 'connection refused' after starting Fusion for the first time</h3>
+<p>You may see the following error occur when running <code>docker-compose up -d</code> for the first time inside the fusion-docker-compose repository:</p>
+<pre><code class="hljs css language-json">ERROR: Get https://registry-1.docker.io/v2/: dial tcp: lookup registry-1.docker.io on [::1]:53: read udp [::1]:52155-&gt;[::1]:53: read: connection refused
+</code></pre>
+<p>If encountering this error, run the <code>docker-compose up -d</code> command again, and this should initiate the download of the docker images.</p>
+<h3><a class="anchor" aria-hidden="true" id="fusion-zones-not-inducted-together-after-initial-start-up"></a><a href="#fusion-zones-not-inducted-together-after-initial-start-up" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Fusion zones not inducted together after initial start-up</h3>
+<p>If the Fusion zones are not inducted together after starting Fusion for the first time (<code>docker-compose up -d</code>), you can simply run the same command again to start the induction container:</p>
+<p><code>docker-compose up -d</code></p>
 <h2><a class="anchor" aria-hidden="true" id="advanced-options"></a><a href="#advanced-options" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Advanced options</h2>
 <ul>
 <li>This guide does not currently offer configuration of Fusion to a <strong>Kerberized</strong> HDP cluster.</li>
 <li>This guide does not currently offer configuration of Fusion to a NameNode HA HDP cluster.</li>
 </ul>
 <p>Please contact <a href="https://wandisco.com/contact">WANdisco</a> for further information on Fusion with docker.</p>
-</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#guidance">Guidance</a><ul class="toc-headings"><li><a href="#initial-setup">Initial Setup</a></li><li><a href="#setup-prompts">Setup prompts</a></li><li><a href="#startup">Startup</a></li><li><a href="#live-hive-config-changes">Live Hive config changes</a></li><li><a href="#install-fusion-client-on-hdp-nodes">Install Fusion Client on HDP nodes</a></li><li><a href="#install-the-live-hiveserver2-template-on-the-hdp-cluster">Install the Live Hiveserver2 template on the HDP cluster</a></li><li><a href="#activate-fusion-client-on-the-hdp-cluster">Activate Fusion Client on the HDP cluster</a></li><li><a href="#activate-live-hive-proxy-on-the-hdp-cluster">Activate Live Hive Proxy on the HDP cluster</a></li><li><a href="#restart-required-services">Restart required services</a></li><li><a href="#setup-databricks-on-adls-gen2-zone">Setup Databricks on ADLS Gen2 zone</a></li></ul></li><li><a href="#replication">Replication</a><ul class="toc-headings"><li><a href="#create-replication-rules">Create replication rules</a></li><li><a href="#test-replication">Test replication</a></li><li><a href="#verify-replication">Verify replication</a></li></ul></li><li><a href="#advanced-options">Advanced options</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://wandisco.github.io/wandisco-documentation/" class="nav-home"></a><div><h5>Docs</h5><a href="https://wandisco.github.io/wandisco-documentation/docs/en/quickstarts/quickstart-config.html">Getting Started</a><a href="https://docs.wandisco.com">Product User Guides</a><a href="https://community.wandisco.com/s/knowledge-base">Knowledge Base</a></div><div><h5>Community</h5><a href="https://community.wandisco.com/">WANdisco Community</a><a href="//wandisco.com/partners/find">Partners</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://wandisco.com/blog">Blog</a><a href="https://blogs.wandisco.com/">Developer Blog</a><a href="https://github.com/wandisco">GitHub</a></div></section><section class="copyright">Copyright © 2019 WANdisco, Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#guidance">Guidance</a><ul class="toc-headings"><li><a href="#initial-setup">Initial Setup</a></li><li><a href="#setup-prompts">Setup prompts</a></li><li><a href="#startup">Startup</a></li><li><a href="#live-hive-config-changes">Live Hive config changes</a></li><li><a href="#install-fusion-client-on-hdp-nodes">Install Fusion Client on HDP nodes</a></li><li><a href="#install-the-live-hiveserver2-template-on-the-hdp-cluster">Install the Live Hiveserver2 template on the HDP cluster</a></li><li><a href="#activate-fusion-client-on-the-hdp-cluster">Activate Fusion Client on the HDP cluster</a></li><li><a href="#activate-live-hive-proxy-on-the-hdp-cluster">Activate Live Hive Proxy on the HDP cluster</a></li><li><a href="#restart-required-services">Restart required services</a></li><li><a href="#setup-databricks-on-adls-gen2-zone">Setup Databricks on ADLS Gen2 zone</a></li></ul></li><li><a href="#replication">Replication</a><ul class="toc-headings"><li><a href="#create-replication-rules">Create replication rules</a></li><li><a href="#test-replication">Test replication</a></li><li><a href="#verify-replication">Verify replication</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul class="toc-headings"><li><a href="#error-relating-to-system_dbus_socket">Error relating to 'system_dbus_socket'</a></li><li><a href="#error-relating-to-connection-refused-after-starting-fusion-for-the-first-time">Error relating to 'connection refused' after starting Fusion for the first time</a></li><li><a href="#fusion-zones-not-inducted-together-after-initial-start-up">Fusion zones not inducted together after initial start-up</a></li></ul></li><li><a href="#advanced-options">Advanced options</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://wandisco.github.io/wandisco-documentation/" class="nav-home"></a><div><h5>Docs</h5><a href="https://wandisco.github.io/wandisco-documentation/docs/en/quickstarts/quickstart-config.html">Getting Started</a><a href="https://docs.wandisco.com">Product User Guides</a><a href="https://community.wandisco.com/s/knowledge-base">Knowledge Base</a></div><div><h5>Community</h5><a href="https://community.wandisco.com/">WANdisco Community</a><a href="//wandisco.com/partners/find">Partners</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://wandisco.com/blog">Blog</a><a href="https://blogs.wandisco.com/">Developer Blog</a><a href="https://github.com/wandisco">GitHub</a></div></section><section class="copyright">Copyright © 2019 WANdisco, Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

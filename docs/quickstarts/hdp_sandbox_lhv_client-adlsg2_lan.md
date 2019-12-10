@@ -208,9 +208,11 @@ The steps in this section can only be performed if docker is installed and the `
 
    Two automated jobs will automatically be started for installing and starting components, observable in **Background Operations**. Wait until these are complete before continuing (~10mins).
 
-### Adjust default Hive Metastore port
+### Adjust default Hive Metastore port and Tez application memory
 
 [//]: <DAP-151 workaround.>
+
+_If this section, select to **Proceed anyway** if prompted by Ambari due to any warnings after saving config._
 
 1. Adjust two properties in the Hive config so that it references the `9084` port.
 
@@ -230,9 +232,39 @@ The steps in this section can only be performed if docker is installed and the `
    hive.metastore.local=false,hive.metastore.uris=thrift://manager:9084,hive.metastore.sasl.enabled=false
    ```
 
-2. **Save** the Hive config after making these adjustments.
+2. Adjust one additional property in the Hive config that sets the bind port for the Metastore.
 
-3. **Restart** the Hive service after completing this.
+   **Hive -> Configs -> Filter for "hive-env template"**
+
+   Find the line below in the text window, and adjust the port number.
+
+   Change:
+
+   `export METASTORE_PORT=9083`
+
+   To:
+
+   `export METASTORE_PORT=9084`
+
+3. **Save** the Hive config after making these adjustments.
+
+[//]: <This is required due to hitting issues when running insert into tables in Hive sessions. The current default Yarn max container size is smaller than the Tez application memory size, so adjusting this property prevents errors during insert. See https://techtalks.tech/knowledge-base/tuning-tez-for-hive-optimizing-tez/ for info. This can be removed once baked into blueprint.>
+
+4. Adjust the maximum memory value for applications in Tez.
+
+   **Tez -> Configs -> Filter for "tez.am.resource.memory.mb"**
+
+   Change:
+
+   `tez.am.resource.memory.mb = 8192`
+
+   To:
+
+   `tez.am.resource.memory.mb = 5120`
+
+5. **Save** the Tez config after making this adjustment.
+
+6. **Restart** the Tez and Hive service (in that order) after completing this.
 
 ### Add temporary entry to hosts file
 
@@ -752,46 +784,69 @@ In this section, follow the steps detailed to perform live replication of HCFS d
 
 Prior to performing these tasks, the Databricks cluster must be in a **running** state. Please access the Azure portal and check the status of the cluster. If it is not running, select to start the cluster and wait until it is **running** before continuing.
 
-1. On the docker host, log into a HDP cluster node with the Hive client available.
-
-   You can confirm the Hive client is installed by switching to the `hdfs` user and running `hive` on the command line.
+1. On the docker host, log into a HDP cluster node.
 
    `docker exec -it manager bash`
 
-   `su - hdfs`
+2. Run beeline and use the `!connect` string to start a Hive session via the Hiveserver2 service.
 
-   `hive`
+   `beeline`
 
-   After running the Hive command as the `hdfs` user, you will now be inside a Hive interactive session.
+   `beeline> !connect jdbc:hive2://manager:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2`
+
+   This connection string can also be found on the Ambari UI under **Hive -> Summary -> HIVESERVER2 JDBC URL**.
+
+   When prompted for a username and password, enter the following:
+
+   `Enter username: hdfs`
+
+   `Enter password: ` _- leave blank and press enter._
 
 2. Create a database to use that will match the regex for the Hive replication rule created earlier in the Fusion UI.
 
-   `hive> create database test01;`
+   `0: jdbc:hive2://manager:2181/> create database test01;`
 
 3. Create a table inside of the database.
 
-   `hive> use test01;`
+   `0: jdbc:hive2://manager:2181/> use test01;`
 
-   `hive> create table table01(id int, name string) stored as ORC;`
+   `0: jdbc:hive2://manager:2181/> create table table01(id int, name string) stored as ORC;`
 
 4. Insert data inside of the table.
 
-   `hive> insert into table01 values (1,'words');`
+   `0: jdbc:hive2://manager:2181/> insert into table01 values (1,'words');`
 
    This will now launch a Hive job that will insert the data values provided in this example. If this is successful, you will see **SUCCEEDED** written in the STATUS column.
 
+   _Example_
+
+   ```json
+   --------------------------------------------------------------------------------
+           VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+   --------------------------------------------------------------------------------
+   Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+   --------------------------------------------------------------------------------
+   VERTICES: 01/01  [==========================>>] 100%  ELAPSED TIME: XY.ZA s
+   --------------------------------------------------------------------------------
+   ```
+
+   Please note that running an 'insert into table' for the first time on the HDP cluster will take a longer period of time than normal (i.e. up to 5 minutes). Further jobs will complete at a much faster rate.
+
 ### Verify replication
 
-1. To verify the data values inside of the table on the **HDP** zone, run the command below when still logged into the Hive interactive session:
+1. To verify the data values inside of the table on the **HDP** zone, run the command below when still logged into the Hive beeline session:
 
-   `hive> select * from table01;`
+   `0: jdbc:hive2://manager:2181/> select * from table01;`
 
    The output will be similar to that of below:
 
    ```json
-   OK
-   1       words
-   Time taken: X seconds, Fetched: 1 row(s)
+   +-------------+----------------+--+
+   | table01.id  |  table01.name  |
+   +-------------+----------------+--+
+   | 1           | words          |
+   +-------------+----------------+--+
+   1 rows selected (X.YZA seconds)
    ```
 
 2. To verify the data has replicated to the ADLS Gen2 zone and Databricks cluster, access the Azure portal and and Launch Workspace for your Databricks cluster (if not already opened).

@@ -112,7 +112,8 @@
 Password = <code>admin</code></p>
 <p>Two automated jobs will automatically be started for installing and starting components, observable in <strong>Background Operations</strong>. Wait until these are complete before continuing (~10mins).</p></li>
 </ol>
-<h3><a class="anchor" aria-hidden="true" id="adjust-default-hive-metastore-port"></a><a href="#adjust-default-hive-metastore-port" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Adjust default Hive Metastore port</h3>
+<h3><a class="anchor" aria-hidden="true" id="adjust-default-hive-metastore-port-and-tez-application-memory"></a><a href="#adjust-default-hive-metastore-port-and-tez-application-memory" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Adjust default Hive Metastore port and Tez application memory</h3>
+<p><em>If this section, select to <strong>Proceed anyway</strong> if prompted by Ambari due to any warnings after saving config.</em></p>
 <ol>
 <li><p>Adjust two properties in the Hive config so that it references the <code>9084</code> port.</p>
 <p><strong>Hive -&gt; Configs -&gt; Filter for &quot;hive.metastore.uris&quot;</strong></p>
@@ -123,8 +124,24 @@ Password = <code>admin</code></p>
 <p><em>Advanced webhcat-site</em></p>
 <pre><code class="hljs css language-json">hive.metastore.local=false,hive.metastore.uris=thrift://manager:9084,hive.metastore.sasl.enabled=false
 </code></pre></li>
+<li><p>Adjust one additional property in the Hive config that sets the bind port for the Metastore.</p>
+<p><strong>Hive -&gt; Configs -&gt; Filter for &quot;hive-env template&quot;</strong></p>
+<p>Find the line below in the text window, and adjust the port number.</p>
+<p>Change:</p>
+<p><code>export METASTORE_PORT=9083</code></p>
+<p>To:</p>
+<p><code>export METASTORE_PORT=9084</code></p></li>
 <li><p><strong>Save</strong> the Hive config after making these adjustments.</p></li>
-<li><p><strong>Restart</strong> the Hive service after completing this.</p></li>
+</ol>
+<ol start="4">
+<li><p>Adjust the maximum memory value for applications in Tez.</p>
+<p><strong>Tez -&gt; Configs -&gt; Filter for &quot;tez.am.resource.memory.mb&quot;</strong></p>
+<p>Change:</p>
+<p><code>tez.am.resource.memory.mb = 8192</code></p>
+<p>To:</p>
+<p><code>tez.am.resource.memory.mb = 5120</code></p></li>
+<li><p><strong>Save</strong> the Tez config after making this adjustment.</p></li>
+<li><p><strong>Restart</strong> the Tez and Hive service (in that order) after completing this.</p></li>
 </ol>
 <h3><a class="anchor" aria-hidden="true" id="add-temporary-entry-to-hosts-file"></a><a href="#add-temporary-entry-to-hosts-file" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Add temporary entry to hosts file</h3>
 <ol>
@@ -445,29 +462,45 @@ Password: <code>admin</code></p></li>
 <h3><a class="anchor" aria-hidden="true" id="test-replication"></a><a href="#test-replication" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Test replication</h3>
 <p>Prior to performing these tasks, the Databricks cluster must be in a <strong>running</strong> state. Please access the Azure portal and check the status of the cluster. If it is not running, select to start the cluster and wait until it is <strong>running</strong> before continuing.</p>
 <ol>
-<li><p>On the docker host, log into a HDP cluster node with the Hive client available.</p>
-<p>You can confirm the Hive client is installed by switching to the <code>hdfs</code> user and running <code>hive</code> on the command line.</p>
-<p><code>docker exec -it manager bash</code></p>
-<p><code>su - hdfs</code></p>
-<p><code>hive</code></p>
-<p>After running the Hive command as the <code>hdfs</code> user, you will now be inside a Hive interactive session.</p></li>
+<li><p>On the docker host, log into a HDP cluster node.</p>
+<p><code>docker exec -it manager bash</code></p></li>
+<li><p>Run beeline and use the <code>!connect</code> string to start a Hive session via the Hiveserver2 service.</p>
+<p><code>beeline</code></p>
+<p><code>beeline&gt; !connect jdbc:hive2://manager:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2</code></p>
+<p>This connection string can also be found on the Ambari UI under <strong>Hive -&gt; Summary -&gt; HIVESERVER2 JDBC URL</strong>.</p>
+<p>When prompted for a username and password, enter the following:</p>
+<p><code>Enter username: hdfs</code></p>
+<p><code>Enter password:</code> <em>- leave blank and press enter.</em></p></li>
 <li><p>Create a database to use that will match the regex for the Hive replication rule created earlier in the Fusion UI.</p>
-<p><code>hive&gt; create database test01;</code></p></li>
+<p><code>0: jdbc:hive2://manager:2181/&gt; create database test01;</code></p></li>
 <li><p>Create a table inside of the database.</p>
-<p><code>hive&gt; use test01;</code></p>
-<p><code>hive&gt; create table table01(id int, name string) stored as ORC;</code></p></li>
+<p><code>0: jdbc:hive2://manager:2181/&gt; use test01;</code></p>
+<p><code>0: jdbc:hive2://manager:2181/&gt; create table table01(id int, name string) stored as ORC;</code></p></li>
 <li><p>Insert data inside of the table.</p>
-<p><code>hive&gt; insert into table01 values (1,'words');</code></p>
-<p>This will now launch a Hive job that will insert the data values provided in this example. If this is successful, you will see <strong>SUCCEEDED</strong> written in the STATUS column.</p></li>
+<p><code>0: jdbc:hive2://manager:2181/&gt; insert into table01 values (1,'words');</code></p>
+<p>This will now launch a Hive job that will insert the data values provided in this example. If this is successful, you will see <strong>SUCCEEDED</strong> written in the STATUS column.</p>
+<p><em>Example</em></p>
+<pre><code class="hljs css language-json">--------------------------------------------------------------------------------
+        VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+--------------------------------------------------------------------------------
+Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+--------------------------------------------------------------------------------
+VERTICES: 01/01  [==========================&gt;&gt;] 100%  ELAPSED TIME: XY.ZA s
+--------------------------------------------------------------------------------
+</code></pre>
+<p>Please note that running an 'insert into table' for the first time on the HDP cluster will take a longer period of time than normal (i.e. up to 5 minutes). Further jobs will complete at a much faster rate.</p></li>
 </ol>
 <h3><a class="anchor" aria-hidden="true" id="verify-replication"></a><a href="#verify-replication" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Verify replication</h3>
 <ol>
-<li><p>To verify the data values inside of the table on the <strong>HDP</strong> zone, run the command below when still logged into the Hive interactive session:</p>
-<p><code>hive&gt; select * from table01;</code></p>
+<li><p>To verify the data values inside of the table on the <strong>HDP</strong> zone, run the command below when still logged into the Hive beeline session:</p>
+<p><code>0: jdbc:hive2://manager:2181/&gt; select * from table01;</code></p>
 <p>The output will be similar to that of below:</p>
-<pre><code class="hljs css language-json">OK
-1       words
-Time taken: X seconds, Fetched: 1 row(s)
+<pre><code class="hljs css language-json">+-------------+----------------+--+
+| table01.id  |  table01.name  |
++-------------+----------------+--+
+| 1           | words          |
++-------------+----------------+--+
+1 rows selected (X.YZA seconds)
 </code></pre></li>
 <li><p>To verify the data has replicated to the ADLS Gen2 zone and Databricks cluster, access the Azure portal and and Launch Workspace for your Databricks cluster (if not already opened).</p></li>
 <li><p>On the left-hand panel, select <strong>Data</strong> and then select the database created for this test (i.e. <code>test01</code>).</p></li>
@@ -507,7 +540,7 @@ ln -s /run/lock /var/lock
 <li>This guide does not currently offer configuration of Fusion to a NameNode HA HDP cluster.</li>
 </ul>
 <p>Please contact <a href="https://wandisco.com/contact">WANdisco</a> for further information on Fusion with docker.</p>
-</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#prerequisites">Prerequisites</a><ul class="toc-headings"><li><a href="#note-on-command-line-editing">Note on command line editing</a></li></ul></li><li><a href="#preparation">Preparation</a><ul class="toc-headings"><li><a href="#disable-iptables-and-selinux">Disable iptables and selinux</a></li><li><a href="#install-utilities">Install utilities</a></li><li><a href="#prepare-storage-for-docker-images">Prepare storage for docker images</a></li></ul></li><li><a href="#installation">Installation</a><ul class="toc-headings"><li><a href="#initial-setup-for-hdp-sandbox-wip">Initial Setup for HDP Sandbox - WiP</a></li><li><a href="#adjust-default-hive-metastore-port">Adjust default Hive Metastore port</a></li><li><a href="#add-temporary-entry-to-hosts-file">Add temporary entry to hosts file</a></li><li><a href="#initial-setup-for-fusion">Initial Setup for Fusion</a></li><li><a href="#setup-prompts">Setup prompts</a></li><li><a href="#remove-temporary-entry-to-hosts-file">Remove temporary entry to hosts file</a></li><li><a href="#startup">Startup</a></li></ul></li><li><a href="#configuration">Configuration</a><ul class="toc-headings"><li><a href="#live-hive-config-changes">Live Hive config changes</a></li><li><a href="#install-fusion-client-on-hdp-nodes">Install Fusion Client on HDP nodes</a></li><li><a href="#install-the-live-hiveserver2-template-on-the-hdp-cluster">Install the Live Hiveserver2 template on the HDP cluster</a></li><li><a href="#activate-fusion-client-on-the-hdp-cluster">Activate Fusion Client on the HDP cluster</a></li><li><a href="#activate-live-hive-proxy-on-the-hdp-cluster">Activate Live Hive Proxy on the HDP cluster</a></li><li><a href="#restart-required-services">Restart required services</a></li><li><a href="#setup-databricks-on-adls-gen2-zone">Setup Databricks on ADLS Gen2 zone</a></li></ul></li><li><a href="#replication">Replication</a><ul class="toc-headings"><li><a href="#create-replication-rules">Create replication rules</a></li><li><a href="#test-replication">Test replication</a></li><li><a href="#verify-replication">Verify replication</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul class="toc-headings"><li><a href="#error-relating-to-system_dbus_socket">Error relating to 'system_dbus_socket'</a></li><li><a href="#error-relating-to-connection-refused-after-starting-fusion-for-the-first-time">Error relating to 'connection refused' after starting Fusion for the first time</a></li><li><a href="#fusion-zones-not-inducted-together-after-initial-start-up">Fusion zones not inducted together after initial start-up</a></li></ul></li><li><a href="#advanced-options">Advanced options</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://wandisco.github.io/wandisco-documentation/" class="nav-home"></a><div><h5>Docs</h5><a href="https://wandisco.github.io/wandisco-documentation/docs/en/quickstarts/quickstart-config.html">Getting Started</a><a href="https://docs.wandisco.com">Product User Guides</a><a href="https://community.wandisco.com/s/knowledge-base">Knowledge Base</a></div><div><h5>Community</h5><a href="https://community.wandisco.com/">WANdisco Community</a><a href="//wandisco.com/partners/find">Partners</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://wandisco.com/blog">Blog</a><a href="https://blogs.wandisco.com/">Developer Blog</a><a href="https://github.com/wandisco">GitHub</a></div></section><section class="copyright">Copyright © 2019 WANdisco, Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#prerequisites">Prerequisites</a><ul class="toc-headings"><li><a href="#note-on-command-line-editing">Note on command line editing</a></li></ul></li><li><a href="#preparation">Preparation</a><ul class="toc-headings"><li><a href="#disable-iptables-and-selinux">Disable iptables and selinux</a></li><li><a href="#install-utilities">Install utilities</a></li><li><a href="#prepare-storage-for-docker-images">Prepare storage for docker images</a></li></ul></li><li><a href="#installation">Installation</a><ul class="toc-headings"><li><a href="#initial-setup-for-hdp-sandbox-wip">Initial Setup for HDP Sandbox - WiP</a></li><li><a href="#adjust-default-hive-metastore-port-and-tez-application-memory">Adjust default Hive Metastore port and Tez application memory</a></li><li><a href="#add-temporary-entry-to-hosts-file">Add temporary entry to hosts file</a></li><li><a href="#initial-setup-for-fusion">Initial Setup for Fusion</a></li><li><a href="#setup-prompts">Setup prompts</a></li><li><a href="#remove-temporary-entry-to-hosts-file">Remove temporary entry to hosts file</a></li><li><a href="#startup">Startup</a></li></ul></li><li><a href="#configuration">Configuration</a><ul class="toc-headings"><li><a href="#live-hive-config-changes">Live Hive config changes</a></li><li><a href="#install-fusion-client-on-hdp-nodes">Install Fusion Client on HDP nodes</a></li><li><a href="#install-the-live-hiveserver2-template-on-the-hdp-cluster">Install the Live Hiveserver2 template on the HDP cluster</a></li><li><a href="#activate-fusion-client-on-the-hdp-cluster">Activate Fusion Client on the HDP cluster</a></li><li><a href="#activate-live-hive-proxy-on-the-hdp-cluster">Activate Live Hive Proxy on the HDP cluster</a></li><li><a href="#restart-required-services">Restart required services</a></li><li><a href="#setup-databricks-on-adls-gen2-zone">Setup Databricks on ADLS Gen2 zone</a></li></ul></li><li><a href="#replication">Replication</a><ul class="toc-headings"><li><a href="#create-replication-rules">Create replication rules</a></li><li><a href="#test-replication">Test replication</a></li><li><a href="#verify-replication">Verify replication</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul class="toc-headings"><li><a href="#error-relating-to-system_dbus_socket">Error relating to 'system_dbus_socket'</a></li><li><a href="#error-relating-to-connection-refused-after-starting-fusion-for-the-first-time">Error relating to 'connection refused' after starting Fusion for the first time</a></li><li><a href="#fusion-zones-not-inducted-together-after-initial-start-up">Fusion zones not inducted together after initial start-up</a></li></ul></li><li><a href="#advanced-options">Advanced options</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://wandisco.github.io/wandisco-documentation/" class="nav-home"></a><div><h5>Docs</h5><a href="https://wandisco.github.io/wandisco-documentation/docs/en/quickstarts/quickstart-config.html">Getting Started</a><a href="https://docs.wandisco.com">Product User Guides</a><a href="https://community.wandisco.com/s/knowledge-base">Knowledge Base</a></div><div><h5>Community</h5><a href="https://community.wandisco.com/">WANdisco Community</a><a href="//wandisco.com/partners/find">Partners</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://wandisco.com/blog">Blog</a><a href="https://blogs.wandisco.com/">Developer Blog</a><a href="https://github.com/wandisco">GitHub</a></div></section><section class="copyright">Copyright © 2019 WANdisco, Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

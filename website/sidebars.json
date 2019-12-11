@@ -21,12 +21,12 @@
       "quickstarts/preparation/azure_vm_prep"
     ],
     "Installation": [
-      "quickstarts/quickstart_guides/quickstart-config",
-      "quickstarts/quickstart_guides/adlsg1-adlsg2",
-      "quickstarts/quickstart_guides/hdp-adlsg2",
-      "quickstarts/quickstart_guides/cdh-adlsg2",
-      "quickstarts/quickstart_guides/hdp-s3",
-      "quickstarts/quickstart_guides/cdh-s3"
+      "quickstarts/installation/quickstart-config",
+      "quickstarts/installation/adlsg1-adlsg2",
+      "quickstarts/installation/hdp-adlsg2",
+      "quickstarts/installation/cdh-adlsg2",
+      "quickstarts/installation/hdp-s3",
+      "quickstarts/installation/cdh-s3"
     ],
     "Operation": [
       "quickstarts/operation/create-rule",

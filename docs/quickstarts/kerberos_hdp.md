@@ -6,7 +6,7 @@ sidebar_label: Kerberos (HDP) integration with Fusion
 
 _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_
 
-**This guide should only be followed if you have already completed the [Hortonworks (HDP) to ADLS Gen2](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/quickstart_guides/hdp-adlsg2) quickstart.**
+**This guide should only be followed if you have already completed the [Hortonworks (HDP) to ADLS Gen2](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/installation/hdp-adlsg2) quickstart.**
 
 ## Considerations
 

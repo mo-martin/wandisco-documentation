@@ -1,19 +1,28 @@
 ---
-id: adlsg1-adlsg2
-title: ADLS Gen1 to ADLS Gen2
-sidebar_label: ADLS Gen1 to ADLS Gen2
+id: cdh-adlsg2
+title: Cloudera (CDH) to ADLS Gen2
+sidebar_label: Cloudera (CDH) to ADLS Gen2
 ---
 
-Use this quickstart if you want to configure Fusion to connect to ADLS Gen1 storage and ADLS Gen2 storage.
+Use this quickstart if you want to configure Fusion to connect to Cloudera (CDH) and ADLS Gen2 storage.
 
-Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/troubleshooting/useful_info) section for additional commands and help.
+Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/troubleshooting/useful_info) section for additional commands and help.
+
+## Limitations of this quickstart
+
+* This guide does not currently offer configuration of Fusion to a **Kerberized** CDH cluster.
+* Migration of existing data will be available after configuration, but not live replication.
+
+We are working to include these additional items as soon as possible.
 
 ## Prerequisites
 
 * Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7).
 * [Docker](https://docs.docker.com/install/) (v19.03.3 or higher), [Docker Compose](https://docs.docker.com/compose/install/) (v1.24.1 or higher), and [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on instance.
-* Credentials for accessing the Data Lake Storage Gen1 and Data Lake Storage Gen2.
-* Network connectivity between Azure VM and Data Lake Storage Gen1/Gen2.
+* Administrator credentials for the Cloudera Manager.
+* Network connectivity to the Cloudera Manager and NameNodes.
+* Credentials for accessing the Data Lake Storage Gen2.
+* Network connectivity to the Data Lake Storage Gen2.
 
 ## Guidance
 
@@ -39,21 +48,13 @@ _Licenses_
 
 Trial licenses will last 30 days and are limited to 1TB of replicated data.
 
-_Examples entries for ADLS Gen1_
+_Example entries for CDH_
 
-HDI version: `4.0`
+CDH version: `6.1.0`
 
-Hostname: `example.westeurope.azuredatalakestore.net`
+Hadoop NameNode IP/hostname: `namenode.example.com` - if NameNode HA is configured, this should be the Active NameNode.
 
-Mountpoint: `/`,`/path/to/mountpoint` - Can be root or a specific directory.
-
-Handshake user: `wandisco` - must be an Owner of the ADLS Gen1 (under role assignments).
-
-OAUTH2 Credential: `RANDOM_STRING` - the authentication key of the Active Directory credential you wish to use with Fusion.
-
-OAUTH2 Refresh URL: `https://login.microsoftonline.com/abc123de-fgh4-567i-8jkl-90123mnop456/oauth2/token`
-
-OAUTH2 Client ID: `123ab456-78c9-0d12-3456-78e90123f45g`
+NameNode port: `8020` - if NameNode HA is configured, this value will be defined in the `dfs.namenode.rpc-address.<nameservice>.<namenode_id>` property. If NameNode HA is not configured, the value will be defined in the `fs.defaultFS` property.
 
 _Example entries for ADLS Gen2_
 
@@ -85,11 +86,11 @@ Start the Fusion containers with:
 
 `docker-compose up -d`
 
-Log into the ONEUI via a web browser with the VM's hostname and port 8081.
+Log in to the UI via a web browser with the VM's hostname and port 8081.
 
 `http://<docker_hostname>:8081/`
 
-Register your email address and password, and then use these to log into the ONEUI.
+Register your email address and password, and then use these to log in to the UI.
 
 ### Replication
 

@@ -1,7 +1,7 @@
 ---
 id: hdp_sandbox_lhv_client-adlsg2_lan
-title: Hortonworks (HDP) Sandbox with Live Hive & Client to ADLS Gen2 with Live Analytics
-sidebar_label: Hortonworks (HDP) Sandbox with Live Hive & Client to ADLS Gen2 with Live Analytics
+title: Hortonworks (HDP) Sandbox with Live Hive to Azure Databricks with Live Analytics
+sidebar_label: HDP Sandbox with Live Hive to Azure Databricks with Live Analytics
 ---
 
 _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_
@@ -10,7 +10,7 @@ _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS W
 
 Use this quickstart if you want to configure Fusion to connect to Hortonworks (HDP) and ADLS Gen2 storage/Databricks cluster. This guide will also include Live Hive on the HDP cluster, and Live Analytics on the ADLS Gen2/Databricks cluster.
 
-Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/troubleshooting/useful_info) section for additional commands and help.
+Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/troubleshooting/useful_info) section for additional commands and help.
 
 ## Prerequisites
 

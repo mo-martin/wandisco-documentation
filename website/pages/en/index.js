@@ -63,7 +63,7 @@ class HomeSplash extends React.Component {
         <div className="inner">
           <ProjectTitle siteConfig={siteConfig} />
           <PromoSection>
-            <Button href={docUrl('quickstarts/quickstart-config.html')}>Get Started</Button>
+            <Button href={docUrl('quickstarts/quickstart_guides/quickstart-config.html')}>Get Started</Button>
             <Button href="https://wandisco.tech">WANdisco.tech</Button>
             <Button href="https://www.docker.com/get-started">Get Docker</Button>
 

@@ -1,16 +1,16 @@
 ---
-id: cdh-adlsg2
-title: Cloudera (CDH) to ADLS Gen2
-sidebar_label: Cloudera (CDH) to ADLS Gen2
+id: hdp-adlsg2
+title: Hortonworks (HDP) to ADLS Gen2
+sidebar_label: Hortonworks (HDP) to ADLS Gen2
 ---
 
-Use this quickstart if you want to configure Fusion to connect to Cloudera (CDH) and ADLS Gen2 storage.
+Use this quickstart if you want to configure Fusion to connect to Hortonworks (HDP) and ADLS Gen2 storage.
 
-Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/troubleshooting/useful_info) section for additional commands and help.
+Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/troubleshooting/useful_info) section for additional commands and help.
 
 ## Limitations of this quickstart
 
-* This guide does not currently offer configuration of Fusion to a **Kerberized** CDH cluster.
+* This guide does not currently offer configuration of Fusion to a **Kerberized** HDP cluster.
 * Migration of existing data will be available after configuration, but not live replication.
 
 We are working to include these additional items as soon as possible.
@@ -19,8 +19,8 @@ We are working to include these additional items as soon as possible.
 
 * Azure VM instance set up and running, with root access available (instructions were tested on RHEL 7).
 * [Docker](https://docs.docker.com/install/) (v19.03.3 or higher), [Docker Compose](https://docs.docker.com/compose/install/) (v1.24.1 or higher), and [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on instance.
-* Administrator credentials for the Cloudera Manager.
-* Network connectivity to the Cloudera Manager and NameNodes.
+* Administrator credentials for the HDP Ambari Manager.
+* Network connectivity to the Ambari Manager and NameNodes.
 * Credentials for accessing the Data Lake Storage Gen2.
 * Network connectivity to the Data Lake Storage Gen2.
 
@@ -48,9 +48,9 @@ _Licenses_
 
 Trial licenses will last 30 days and are limited to 1TB of replicated data.
 
-_Example entries for CDH_
+_Example entries for HDP_
 
-CDH version: `6.1.0`
+HDP version: `3.1.0`
 
 Hadoop NameNode IP/hostname: `namenode.example.com` - if NameNode HA is configured, this should be the Active NameNode.
 

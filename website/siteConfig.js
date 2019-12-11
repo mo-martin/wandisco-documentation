@@ -39,7 +39,7 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'quickstarts/quickstart-config', label: 'Quickstarts'},
+    {doc: 'quickstarts/quickstart_guides/quickstart-config', label: 'Quickstarts'},
     {doc: 'docs/doc1', label: 'Docs'},
     {doc: 'glossary/a', label: 'Glossary'},
     {doc: 'api/api', label: 'API'},

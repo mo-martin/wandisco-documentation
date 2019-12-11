@@ -17,21 +17,24 @@
     ]
   },
   "quickstarts": {
-    "Initial Configuration": [
-      "quickstarts/quickstart-config",
-      "quickstarts/adlsg1-adlsg2",
-      "quickstarts/hdp-adlsg2",
-      "quickstarts/cdh-adlsg2",
-      "quickstarts/hdp-s3",
-      "quickstarts/cdh-s3"
+    "Preparation": [
+      "quickstarts/preparation/azure_vm_prep"
+    ],
+    "Installation": [
+      "quickstarts/quickstart_guides/quickstart-config",
+      "quickstarts/quickstart_guides/adlsg1-adlsg2",
+      "quickstarts/quickstart_guides/hdp-adlsg2",
+      "quickstarts/quickstart_guides/cdh-adlsg2",
+      "quickstarts/quickstart_guides/hdp-s3",
+      "quickstarts/quickstart_guides/cdh-s3"
     ],
     "Operation": [
       "quickstarts/operation/create-rule",
       "quickstarts/operation/migration"
     ],
     "Troubleshooting": [
-      "troubleshooting/useful_info",
-      "troubleshooting/logs"
+      "quickstarts/troubleshooting/useful_info",
+      "quickstarts/troubleshooting/logs"
     ]
   },
   "Glossary": {

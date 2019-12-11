@@ -6,7 +6,7 @@ sidebar_label: Kerberos (CDH) integration with Fusion
 
 _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_
 
-**This guide should only be followed if you have already completed the [Cloudera (CDH) to ADLS Gen2](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/cdh-adlsg2) quickstart.**
+**This guide should only be followed if you have already completed the [Cloudera (CDH) to ADLS Gen2](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/quickstart_guides/cdh-adlsg2) quickstart.**
 
 ## Considerations
 

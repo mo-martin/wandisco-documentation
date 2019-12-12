@@ -207,7 +207,9 @@ The `vi` command line editor will be used in this lab, please see this [vi cheat
 
 Log into the Azure VM after it is has finished deployment.
 
-`ssh myname@<docker_host01-IP-ADDRESS>`
+_Example_
+
+`ssh myname@172.10.1.10`
 
 ## Next steps
 

@@ -12,17 +12,15 @@ This guide will include:
 
 * Disabling firewall and selinux for the Fusion installation to complete.
 * Installation of utilities.
-* Preparation of storage for docker images.
+* Verification of available storage for docker images.
 
 ## Prerequisites
 
 [//]: <Issues with running out of disk space because of docker images filling up the root partition (see DAP-134). As such, we suggest adding a data disk for storage.>
 
-To complete this lab exercise, you will need:
-
-* Azure VM created and started.
+* Azure VM created and started. See the [Azure VM creation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_creation) guide for steps to create an Azure VM.
   * Running CentOS-based 7.7 or higher (instructions were tested on this release).
-  * A minimum of 100GB storage for the `/var` partition. See the [Microsoft documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-manage-disks#attach-disk-at-vm-creation) for steps on how to attach a disk to a Linux VM at creation.
+  * A minimum of 100GB storage available.
   * Root access on server (this is normally available by default).
 
 ###  Note on command line editing
@@ -122,11 +120,11 @@ The steps in this section can only be performed if docker is installed and the `
 
 1. Verify that there is a minimum of 100GB disk space available in the `/var/lib/docker` directory.
 
-   `cd /var/lib/docker`
-
-   `df -h`
+   `df -h /var/lib/docker`
 
    _Example output_
 
+   ```bash
    Filesystem                 Size  Used Avail Use% Mounted on
-   /dev/sdc1                  128G   18G  118G   4% /var
+   overlay                    128G   18G  118G   4% /
+   ```

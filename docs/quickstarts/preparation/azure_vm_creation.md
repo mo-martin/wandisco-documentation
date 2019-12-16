@@ -48,7 +48,7 @@ The `vi` command line editor will be used in this lab, please see this [vi cheat
    print_usage() {
      echo "Usage: ./create_docker_vm.sh -g AZ-USER-GROUP -r AZ-RESOURCE-GROUP -v AZ-VNET -n VM-NAME -u VM-USERNAME -t VM-TYPE -d VM-DISK-SIZE (GB) -i OPERATING-SYSTEM"
 
-     echo "Example: ./create_docker_vm.sh -g DEV -r DEV-john.smith1 -v DEV-westeurope-vnet -n johnsmith-docker -u john -t Standard_D8_v3 -d 100 -i UbuntuLTS"
+     echo "Example: ./create_docker_vm.sh -g DEV -r DEV-john.smith1 -v DEV-westeurope-vnet -n johnsmith-docker -u john -t Standard_D8_v3 -d 128 -i UbuntuLTS"
    }
    #Setup of env
    while getopts "g:G:r:R:v:V:n:N:u:U:t:T:d:D:i:I:hH*" opt; do
@@ -95,7 +95,7 @@ The `vi` command line editor will be used in this lab, please see this [vi cheat
        --public-ip-address ""
    ```
 
-3. Exit insert mode (`esc`) and save & quit the file (`:wq!`).
+3. Exit insert mode (`esc`) and save & quit the file (`:wq`).
 
 ## Create the cloud-init template
 
@@ -136,7 +136,7 @@ The `vi` command line editor will be used in this lab, please see this [vi cheat
            groups: [docker]
    ```
 
-2. Exit insert mode (`esc`) and save & quit the file (`:wq!`).
+2. Exit insert mode (`esc`) and save & quit the file (`:wq`).
 
 ## Use the Azure template script to create the VM
 
@@ -154,24 +154,24 @@ The `vi` command line editor will be used in this lab, please see this [vi cheat
    * VM NAME: docker_host01
    * VM USERNAME: myname
    * VM TYPE: Standard_D8_v3
-   * Disk Size: 100 _- in GB_
+   * Disk Size: 128 _- in GB_
    * Image (OS): UbuntuLTS
 
    *VM TYPE*
 
    You can discover a list of available VM types/sizes by running the following command:
 
-   `az vm list-sizes --location <vm_location>` _- For example, the location could be "westeurope"_
+   `az vm list-sizes --location <vm_location>`
 
-   See the [Azure VM types/sizes](https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes) documentation for more detail.
+   Variable required = `"name"`. See the [Azure VM types/sizes](https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes) documentation for more detail.
 
    *Image (OS)*
 
    You can discover a list of available VM images (OS) by running the following command:
 
-   `az vm image list [--all] [--location]` _- Enter "--all" for available images in any location or specify the location with the "--location" flag._
+   `az vm image list [--all] [--location]`
 
-   See the [Azure VM OS/images](https://docs.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az-vm-image-list) documentation for more detail.
+   Variable required = `"urnAlias"`. See the [Azure VM OS/images](https://docs.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az-vm-image-list) documentation for more detail.
 
 3. Run the script using the variables collected in the previous step.
 
@@ -187,7 +187,7 @@ The `vi` command line editor will be used in this lab, please see this [vi cheat
    VM NAME: docker_host01
    VM USERNAME: myname
    VM TYPE: Standard_D8_v3
-   Disk Size: 100 GB
+   Disk Size: 128 GB
    Image (OS): UbuntuLTS
    SUBNETID: /subscriptions/3842fefa-7697-4e7d-b051-a5a3ae601030/resourceGroups/GRP/providers/Microsoft.Network/virtualNetworks/GRP-westeurope-vnet/subnets/default
    {

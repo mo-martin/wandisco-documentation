@@ -91,7 +91,7 @@ IMAGE=<span class="hljs-string">''</span>
 <span class="hljs-function"><span class="hljs-title">print_usage</span></span>() {
   <span class="hljs-built_in">echo</span> <span class="hljs-string">"Usage: ./create_docker_vm.sh -g AZ-USER-GROUP -r AZ-RESOURCE-GROUP -v AZ-VNET -n VM-NAME -u VM-USERNAME -t VM-TYPE -d VM-DISK-SIZE (GB) -i OPERATING-SYSTEM"</span>
 
-  <span class="hljs-built_in">echo</span> <span class="hljs-string">"Example: ./create_docker_vm.sh -g DEV -r DEV-john.smith1 -v DEV-westeurope-vnet -n johnsmith-docker -u john -t Standard_D8_v3 -d 100 -i UbuntuLTS"</span>
+  <span class="hljs-built_in">echo</span> <span class="hljs-string">"Example: ./create_docker_vm.sh -g DEV -r DEV-john.smith1 -v DEV-westeurope-vnet -n johnsmith-docker -u john -t Standard_D8_v3 -d 128 -i UbuntuLTS"</span>
 }
 <span class="hljs-comment">#Setup of env</span>
 <span class="hljs-keyword">while</span> <span class="hljs-built_in">getopts</span> <span class="hljs-string">"g:G:r:R:v:V:n:N:u:U:t:T:d:D:i:I:hH*"</span> opt; <span class="hljs-keyword">do</span>
@@ -137,7 +137,7 @@ az vm create \
     --subnet <span class="hljs-variable">$SUBNETID</span> \
     --public-ip-address <span class="hljs-string">""</span>
 </code></pre></li>
-<li><p>Exit insert mode (<code>esc</code>) and save &amp; quit the file (<code>:wq!</code>).</p></li>
+<li><p>Exit insert mode (<code>esc</code>) and save &amp; quit the file (<code>:wq</code>).</p></li>
 </ol>
 <h2><a class="anchor" aria-hidden="true" id="create-the-cloud-init-template"></a><a href="#create-the-cloud-init-template" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Create the cloud-init template</h2>
 <ol>
@@ -172,7 +172,7 @@ system_info:
     default_user:
         groups: [docker]
 </code></pre></li>
-<li><p>Exit insert mode (<code>esc</code>) and save &amp; quit the file (<code>:wq!</code>).</p></li>
+<li><p>Exit insert mode (<code>esc</code>) and save &amp; quit the file (<code>:wq</code>).</p></li>
 </ol>
 <h2><a class="anchor" aria-hidden="true" id="use-the-azure-template-script-to-create-the-vm"></a><a href="#use-the-azure-template-script-to-create-the-vm" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Use the Azure template script to create the VM</h2>
 <ol>
@@ -187,17 +187,17 @@ system_info:
 <li>VM NAME: docker_host01</li>
 <li>VM USERNAME: myname</li>
 <li>VM TYPE: Standard_D8_v3</li>
-<li>Disk Size: 100 <em>- in GB</em></li>
+<li>Disk Size: 128 <em>- in GB</em></li>
 <li>Image (OS): UbuntuLTS</li>
 </ul>
 <p><em>VM TYPE</em></p>
 <p>You can discover a list of available VM types/sizes by running the following command:</p>
-<p><code>az vm list-sizes --location &lt;vm_location&gt;</code> <em>- For example, the location could be &quot;westeurope&quot;</em></p>
-<p>See the <a href="https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes">Azure VM types/sizes</a> documentation for more detail.</p>
+<p><code>az vm list-sizes --location &lt;vm_location&gt;</code></p>
+<p>Variable required = <code>&quot;name&quot;</code>. See the <a href="https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes">Azure VM types/sizes</a> documentation for more detail.</p>
 <p><em>Image (OS)</em></p>
 <p>You can discover a list of available VM images (OS) by running the following command:</p>
-<p><code>az vm image list [--all] [--location]</code> <em>- Enter &quot;--all&quot; for available images in any location or specify the location with the &quot;--location&quot; flag.</em></p>
-<p>See the <a href="https://docs.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az-vm-image-list">Azure VM OS/images</a> documentation for more detail.</p></li>
+<p><code>az vm image list [--all] [--location]</code></p>
+<p>Variable required = <code>&quot;urnAlias&quot;</code>. See the <a href="https://docs.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az-vm-image-list">Azure VM OS/images</a> documentation for more detail.</p></li>
 <li><p>Run the script using the variables collected in the previous step.</p>
 <p><code>./create_docker_vm.sh -g GRP -r GRP-my.name1 -v GRP-westeurope-vnet -n docker_host01 -u myname -t Standard_D8_v3 -d 100 -i UbuntuLTS</code></p>
 <p><em>Example output</em></p>
@@ -208,7 +208,7 @@ VNET: GRP-westeurope-vnet
 VM NAME: docker_host01
 VM USERNAME: myname
 VM TYPE: Standard_D8_v3
-Disk Size: 100 GB
+Disk Size: 128 GB
 Image (OS): UbuntuLTS
 SUBNETID: /subscriptions/3842fefa-7697-4e7d-b051-a5a3ae601030/resourceGroups/GRP/providers/Microsoft.Network/virtualNetworks/GRP-westeurope-vnet/subnets/default
 {

@@ -15,127 +15,37 @@ Please see the [Useful information](https://wandisco.github.io/wandisco-document
 ## Prerequisites
 
 [//]: <We are still working out the minimum VM requirements, at the moment, we are with Standard D8 v3 ones.>
-[//]: <Issues with running out of disk space because of docker images filling up the root partition (see DAP-134). As such, we suggest adding a data disk for storage. Additional step is mentioned further down as to when this must be mounted with link to Microsoft documentation. If there is time, we could look to include all of these steps within this document.>
 
 To complete this lab exercise, you will need:
 
-* Azure VM server set up and running on CentOS-based 7.7 or higher (instructions were tested on this release).
+* Azure VM created and started. See the [Azure VM creation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_creation) guide for steps to create an Azure VM.
   * (TBC) Minimum size VM recommendation = **Standard D8 v3 (8 vcpus, 32 GiB memory).**
-  * A minimum of 100GB storage is required for the `/datadrive` partition. See the [Microsoft documentation](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal) for steps on how to attach a disk to a Linux VM.
+  * CentOS-based 7.7 (or higher) or UbuntuLTS 18.04. Instructions are provided for these releases.
+  * A minimum of 128GB storage. The [Azure VM creation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_creation) guide includes this by default.
   * Root access on server (this is normally available by default).
-* Credentials for accessing the Data Lake Storage Gen2 and Databricks cluster.
-* Network connectivity from the VM to the Data Lake Storage Gen2 and Databricks cluster.
+* Azure VM prepared for Fusion installation, see [Azure VM preparation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_prep) guide for all required steps.
 
 ###  Note on command line editing
 
 The `vi` command line editor will be used in this lab, please see this [vi cheat sheet](https://ryanstutorials.net/linuxtutorial/cheatsheetvi.php) for guidance on how to use it.
 
-## Preparation
+## Installation
 
 All the commands within this guidance should be run as **root** user. To switch to this user, type `sudo -i` in the command line when logged in as the default Azure user (this will have been set during creation of the VM).
 
-### Disable iptables and selinux
+Log into the VM via a terminal session and switch to root user.
 
-For the purposes of this lab, iptables and selinux will be disabled.
+`ssh <docker_host>`
 
-1. Log into the VM via a terminal session and switch to root user.
+`sudo -i`
 
-   `ssh <docker_host>`
+### Create docker network
 
-   `sudo -i`
+1. Run the following command to create the Fusion docker network that will work in conjunction with the HDP Sandbox.
 
-2. Run the commands below to stop and disable iptables.
+   `docker network create fusion-docker-compose_fusion`
 
-   `systemctl stop firewalld`
-
-   `systemctl disable firewalld`
-
-3. Edit the selinux configuration file to disable it.
-
-   `vi /etc/sysconfig/selinux`
-
-   Change:
-
-   `SELINUX=enforced`
-
-   To:
-
-   `SELINUX=disabled`
-
-   Once complete, save and quit the file (e.g. `:wq!`).
-
-4. If not already performed, please mount the `/datadrive` partition now as detailed in the [link](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal#connect-to-the-linux-vm-to-mount-the-new-disk) provided in the prerequisites.
-
-5. The server will now need to be rebooted, run the command below to do this.
-
-   `shutdown -r now`
-
-   You will be automatically logged out of the server.
-
-### Install utilities
-
-1. Log into the VM via a terminal session and switch to root user.
-
-   `ssh <docker_host>`
-
-   `sudo -i`
-
-[//]: <JDK dependency for the 'wandocker.run' script>
-
-2. Run the command below to install Java 1.8 and Git.
-
-   `yum install -y java-1.8.0-openjdk.x86_64 git`
-
-3. Run the commands below to install [Docker](https://docs.docker.com/install/) (v19.03.5 or higher).
-
-   `yum install -y yum-utils device-mapper-persistent-data lvm2`
-
-   `yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo`
-
-   `yum install docker-ce docker-ce-cli containerd.io` - answer `y` to any prompts.
-
-4. Start the Docker service and verify that it is correctly installed.
-
-   `systemctl start docker`
-
-   `docker run hello-world` - This will print an informational message and exit if docker is running correctly.
-
-   `systemctl enable docker` - This will enable docker to start up automatically on server reboot.
-
-5. Install [Docker Compose for Linux](https://docs.docker.com/compose/install/#install-compose) (v1.25.0 or higher) by running the commands below.
-
-   `curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`
-
-   `chmod +x /usr/local/bin/docker-compose`
-
-   `ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose`
-
-6. Verify that Docker Compose is correctly installed.
-
-   `docker-compose --version`
-
-   _Example output_
-   ```json
-   docker-compose version 1.25.0, build 1110ad01
-   ```
-
-### Prepare storage for docker images
-
-[//]: <As referenced in prerequisites, these steps will prevent the root partition from filling up.>
-
-The steps in this section can only be performed if docker is installed and the `/datadrive` partition was created as per the prerequisites.
-
-1. Copy the contents of the Docker directory whilst retaining permissions.
-
-   `cp -Rp /var/lib/docker /datadrive/`
-
-2. Delete the original directory and creating a symlink to the new location.
-
-   `rm -rf /var/lib/docker`
-
-   `ln -s /datadrive/docker /var/lib/docker`
-
-## Installation
+   A 'sha' reference will be displayed afterwards if this was successful.
 
 ### Initial Setup for HDP Sandbox - WiP
 
@@ -143,128 +53,85 @@ The steps in this section can only be performed if docker is installed and the `
 
 [//]: <These steps are being performed using the 'wandocker.run' script. This script allows for the creation of a custom network name, as well as selecting existing ones. It is also using Ambari 2.7.3, which will allow us to export blueprints via the UI when we have configured everything on the cluster. There is also expansion planned to the script capabilities (on the side) for multiple node HDP clusters, so that future testing could be done with NameNode HA.>
 
-1. Download the HDP sandbox script.
+1. Download the HDP sandbox in compressed format - **TBC**
 
-   `wget wandocker.run`
+   _Example_
 
-2. Run the script and change directory.
+   `wget https://URL/wandocker.run`
+
+2. Decompress the gzip file and run the script.
+
+   `tar -xf wandocker.tar.gz`
 
    `./wandocker.run`
 
-   `cd wandocker`
-
 [//]: <DAP-151 workaround>
 
-3. Edit the `hdp265_docker.ini` file to change port 9083 to 9084 in order to resolve a port conflict.
+3. Change directory and run the wandocker management script.
 
-   `vi hdp265_docker.ini`
-
-   Change:
-
-   `ports=8080,8088,8042,8020,9083,50010,50070`
-
-   To:
-
-   `ports=8080,8088,8042,8020,9084,50010,50070`
-
-   Once complete, save and quit the file (e.g. `:wq!`).
-
-4. Run the wandocker script.
+   `cd wandocker`
 
    `./wandocker.sh -i hdp265_docker.ini`
 
-5. Choose Option 1 to set up all the required images for the HDP sandbox and repository.
+4. Choose Option 1 to set up all the required images for the HDP sandbox and repository.
 
    `1` - Build All Images (Repo, Agent, Server)
 
-   This may take some time so feel free to take a 15-20min break at this point.
+   This may take up to 15 minutes.
 
-   Once the stream has finished, press enter to return to the Main Menu.
+   Once the following four lines are displayed in the Event Log, the image builds will have completed:
 
-6. Select option 2 to create the HDP repository.
+   ```text
+   BuildResponseItem[stream=Successfully tagged hdp_slave:2.7.3.0
+   BuildResponseItem[stream=Successfully tagged repo_host:2.6.5.0-292
+   BuildResponseItem[stream=Successfully tagged hdp_master:2.7.3.0
+   BuildResponseItem[stream=Successfully tagged repo_cache_host:2.6.5.0-292
+   ```
 
-   `2` - Create and start Local Repo Container
+   Press enter to return to the Main Menu.
 
-   Press `n` to create a new network.
+5. Select option 2 to create and start the HDP repository and cache.
 
-   Type `fusion-docker-compose_fusion` as the new network name, followed by enter.
+   `2` - Create and start Local Repo Containers
 
-7. Select option 3 to create the HDP sandbox.
+   Type the Index number for the `fusion-docker-compose_fusion` network, followed by enter.
+
+   This may take 2-3 minutes. Once the following line is displayed in the Event Log, the repositories are ready:
+
+   ```text
+   [/root/buildrepo.sh, 2.6.5.0-292] on /repo_host Completed.
+   ```
+
+   Press enter to return to the Main Menu.
+
+6. Select option 3 to create the HDP sandbox.
 
    `3` - Create and start Sandbox Container(s)
 
-   Enter the appropriate number to use the `fusion-docker-compose_fusion` network (previously created for the HDP repository).
+   Type the Index number for the `fusion-docker-compose_fusion` network, followed by enter.
 
-   Before continuing, wait until the Ambari UI is accessible on `http://<docker_IP_address>:8080` before continuing (you do not need to log in at this time). It will take a few minutes until the UI is available.
+   This may take 2-3 minutes. Once the following line is displayed in the Event Log, the Ambari Server is ready:
 
-8. Install the Cluster blueprint by selecting option 4.
+   ```text
+   [/root/startup.sh] on /manager Completed.
+   ```
+
+   Press enter to return to the Main Menu.
+
+   Wait until the Ambari UI is accessible on `http://<docker_IP_address>:8080` via a web browser before continuing (you do not need to log in at this time).
+
+7. Install the Cluster blueprint by selecting option 4.
 
    `4` - Install Cluster from Blueprint
 
-9. Log into the Ambari UI.
+   Press `q` to quit out of the wandocker main menu after completing this.
+
+8. Log into the Ambari UI.
 
    Username = `admin`
    Password = `admin`
 
    Two automated jobs will automatically be started for installing and starting components, observable in **Background Operations**. Wait until these are complete before continuing (~10mins).
-
-### Adjust default Hive Metastore port and Tez application memory
-
-[//]: <DAP-151 workaround.>
-
-_If this section, select to **Proceed anyway** if prompted by Ambari due to any warnings after saving config._
-
-1. Adjust two properties in the Hive config so that it references the `9084` port.
-
-   **Hive -> Configs -> Filter for "hive.metastore.uris"**
-
-   Adjust the value of `hive.metastore.uris` from port 9083 to 9084 in the following sub-sections:
-
-   _General_
-
-   ```json
-   thrift://manager:9084
-   ```
-
-   _Advanced webhcat-site_
-
-   ```json
-   hive.metastore.local=false,hive.metastore.uris=thrift://manager:9084,hive.metastore.sasl.enabled=false
-   ```
-
-2. Adjust one additional property in the Hive config that sets the bind port for the Metastore.
-
-   **Hive -> Configs -> Filter for "hive-env template"**
-
-   Find the line below in the text window, and adjust the port number.
-
-   Change:
-
-   `export METASTORE_PORT=9083`
-
-   To:
-
-   `export METASTORE_PORT=9084`
-
-3. **Save** the Hive config after making these adjustments.
-
-[//]: <This is required due to hitting issues when running insert into tables in Hive sessions. The current default Yarn max container size is smaller than the Tez application memory size, so adjusting this property prevents errors during insert. See https://techtalks.tech/knowledge-base/tuning-tez-for-hive-optimizing-tez/ for info. This can be removed once baked into blueprint.>
-
-4. Adjust the maximum memory value for applications in Tez.
-
-   **Tez -> Configs -> Filter for "tez.am.resource.memory.mb"**
-
-   Change:
-
-   `tez.am.resource.memory.mb = 8192`
-
-   To:
-
-   `tez.am.resource.memory.mb = 5120`
-
-5. **Save** the Tez config after making this adjustment.
-
-6. **Restart** the Tez and Hive service (in that order) after completing this.
 
 ### Add temporary entry to hosts file
 
@@ -276,7 +143,7 @@ _If this section, select to **Proceed anyway** if prompted by Ambari due to any 
 
    Add an additional line as below:
 
-   `127.0.0.1   manager fusion-nn-proxy-hdp fusion-server-hdp fusion-livehive-proxy-hdp`
+   `127.0.0.1 manager fusion-nn-proxy-hdp fusion-server-hdp fusion-livehive-proxy-hdp`
 
    Once complete, save and quit the file (e.g. `:wq!`).
 

@@ -47,92 +47,6 @@ Log into the VM via a terminal session and switch to root user.
 
    A 'sha' reference will be displayed afterwards if this was successful.
 
-### Setup and start HDP Sandbox (TBC)
-
-[//]: <DAP-142>
-
-[//]: <These steps are being performed using the 'wandocker.run' script. This script allows for the creation of a custom network name, as well as selecting existing ones. It is also using Ambari 2.7.3, which will allow us to export blueprints via the UI when we have configured everything on the cluster. There is also expansion planned to the script capabilities (on the side) for multiple node HDP clusters, so that future testing could be done with NameNode HA.>
-
-1. (**TBC**) Download the HDP sandbox in compressed format.
-
-   _Example_
-
-   `wget https://URL/wandocker.run`
-
-2. Decompress the gzip file and run the script.
-
-   `tar -xf wandocker.tar.gz`
-
-   `./wandocker.run`
-
-[//]: <DAP-151 workaround>
-
-3. Change directory and run the wandocker management script.
-
-   `cd wandocker`
-
-   `./wandocker.sh -i hdp265_docker.ini`
-
-4. Choose Option 1 to set up all the required images for the HDP sandbox and repository.
-
-   `1` - Build All Images (Repo, Agent, Server)
-
-   This may take up to 15 minutes.
-
-   Once the following four lines are displayed in the Event Log, the image builds will have completed:
-
-   ```text
-   BuildResponseItem[stream=Successfully tagged hdp_slave:2.7.3.0
-   BuildResponseItem[stream=Successfully tagged repo_host:2.6.5.0-292
-   BuildResponseItem[stream=Successfully tagged hdp_master:2.7.3.0
-   BuildResponseItem[stream=Successfully tagged repo_cache_host:2.6.5.0-292
-   ```
-
-   Press enter to return to the Main Menu.
-
-5. Select option 2 to create and start the HDP repository and cache.
-
-   `2` - Create and start Local Repo Containers
-
-   Type the Index number for the `fusion-docker-compose_fusion` network, followed by enter.
-
-   This may take 2-3 minutes. Once the following line is displayed in the Event Log, the repositories are ready:
-
-   ```text
-   [/root/buildrepo.sh, 2.6.5.0-292] on /repo_host Completed.
-   ```
-
-   Press enter to return to the Main Menu.
-
-6. Select option 3 to create the HDP sandbox.
-
-   `3` - Create and start Sandbox Container(s)
-
-   Type the Index number for the `fusion-docker-compose_fusion` network, followed by enter.
-
-   This may take 2-3 minutes. Once the following line is displayed in the Event Log, the Ambari Server is ready:
-
-   ```text
-   [/root/startup.sh] on /manager Completed.
-   ```
-
-   Press enter to return to the Main Menu.
-
-   Wait until the Ambari UI is accessible on `http://<docker_IP_address>:8080` via a web browser before continuing (you do not need to log in at this time).
-
-7. Install the Cluster blueprint by selecting option 4.
-
-   `4` - Install Cluster from Blueprint
-
-   Press `q` to quit out of the wandocker main menu after completing this.
-
-8. Log into the Ambari UI.
-
-   Username = `admin`
-   Password = `admin`
-
-   Two automated jobs will automatically be started for installing and starting components, observable in **Background Operations**. Wait until these are complete before continuing (~10mins).
-
 ### Add temporary entry to hosts file
 
 [//]: <This is required to get the Fusion docker setup script to pass verification when entering the HDP NameNode/Metastore hostnames. It is removed after the setup script is done.>
@@ -215,6 +129,86 @@ After all the prompts have been completed, you will be able to start the contain
 2. Start the Fusion containers with:
 
    `docker-compose up -d`
+
+### Setup and start HDP Sandbox (TBC)
+
+[//]: <DAP-142>
+
+[//]: <These steps are being performed using the 'wandocker.run' script. This script allows for the creation of a custom network name, as well as selecting existing ones. It is also using Ambari 2.7.3, which will allow us to export blueprints via the UI when we have configured everything on the cluster. There is also expansion planned to the script capabilities (on the side) for multiple node HDP clusters, so that future testing could be done with NameNode HA.>
+
+1. (**TBC**) Download the HDP sandbox in compressed format.
+
+   _Example_
+
+   `wget https://URL/wandocker.run`
+
+2. Decompress the gzip file and run the script.
+
+   `tar -xf wandocker.tar.gz`
+
+   `./wandocker.run`
+
+[//]: <DAP-151 workaround>
+
+3. Change directory and run the wandocker management script.
+
+   `cd wandocker`
+
+   `./wandocker.sh -i hdp265_docker.ini`
+
+4. Choose Option 1 to set up all the required images for the HDP sandbox and repository.
+
+   `1` - Build All Images (Repo, Agent, Server)
+
+   This may take up to 15 minutes.
+
+   Once the following four lines are displayed in the Event Log, the image builds will have completed:
+
+   ```text
+   BuildResponseItem[stream=Successfully tagged hdp_slave:2.7.3.0
+   BuildResponseItem[stream=Successfully tagged repo_host:2.6.5.0-292
+   BuildResponseItem[stream=Successfully tagged hdp_master:2.7.3.0
+   BuildResponseItem[stream=Successfully tagged repo_cache_host:2.6.5.0-292
+   ```
+
+   Press enter to return to the Main Menu.
+
+5. Select option 2 to create and start the HDP repository and cache.
+
+   `2` - Create and start Local Repo Containers
+
+   Type the Index number for the `fusion-docker-compose_fusion` network, followed by enter.
+
+   This may take 2-3 minutes. Once the following line is displayed in the Event Log, the repositories are ready:
+
+   ```text
+   [/root/buildrepo.sh, 2.6.5.0-292] on /repo_host Completed.
+   ```
+
+   Press enter to return to the Main Menu.
+
+6. Select option 3 to create the HDP sandbox.
+
+   `3` - Create and start Sandbox Container(s)
+
+   Type the Index number for the `fusion-docker-compose_fusion` network, followed by enter.
+
+   This may take 3-4 minutes. Press enter to return to the Main Menu.
+
+   Wait until the Ambari UI is accessible on `http://<docker_IP_address>:8080` via a web browser before continuing (you do not need to log in at this time).
+
+7. Install the Cluster blueprint by selecting option 4.
+
+   `4` - Install Cluster from Blueprint
+
+   Press `q` to quit out of the wandocker main menu after completing this.
+
+8. Log into the Ambari UI.
+
+   Username = `admin`
+   Password = `admin`
+
+   Two automated jobs will automatically be started for installing and starting components, observable in **Background Operations**. Wait until these are complete before continuing (~12mins).
 
 ## Configuration
 
@@ -479,6 +473,24 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
    ```
 
 ## Troubleshooting
+
+### Hiveserver2 down after HDP Sandbox is started for first time
+
+The Hiveserver2 component in the HDP sandbox may be down after starting the cluster for the first time. If so, try the following steps to start it back up.
+
+1. On the docker host, change directory to the Fusion docker compose directory and restart the Fusion containers.
+
+   `cd /path/to/fusion-docker-compose`
+
+   `docker-compose restart`
+
+   Wait until all containers have finished restarting before continuing.
+
+2. Access the Ambari UI, and manually start the Hiveserver2 component.
+
+   **Ambari UI -> Hive -> Summary -> Click on the "HIVESERVER2" written in blue text.**
+
+3. Locate the HiveServer2 in the component list and click the `...` in the Action column. Select to **Start** the component in the drop-down list.
 
 ### Error relating to 'system_dbus_socket'
 

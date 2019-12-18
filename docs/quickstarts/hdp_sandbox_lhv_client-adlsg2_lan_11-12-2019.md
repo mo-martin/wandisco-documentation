@@ -1,14 +1,14 @@
 ---
 id: hdp_sandbox_lhv_client-adlsg2_lan_11-12-2019
-title: Hortonworks (HDP) Sandbox with Live Hive to Azure Databricks with Live Analytics
-sidebar_label: HDP Sandbox with Live Hive to Azure Databricks with Live Analytics
+title: Hortonworks (HDP) Sandbox with Live Hive to Azure Databricks with LiveAnalytics
+sidebar_label: HDP Sandbox with Live Hive to Azure Databricks with LiveAnalytics
 ---
 
 _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_
 
 [//]: <This quickstart is work in progress, and new items are still being added. The development approach is that all known workarounds/configuration steps will be kept in the document until we have fully confirmed their fix (see MTC label). At which point, they will be removed. The same will apply for configuration/installation steps when blueprints for HDP or Fusion have been completed (see DAP-144).>
 
-Use this quickstart if you want to configure Fusion to connect to Hortonworks (HDP) and ADLS Gen2 storage/Databricks cluster. This guide will also include Live Hive on the HDP cluster, and Live Analytics on the ADLS Gen2/Databricks cluster.
+Use this quickstart if you want to configure Fusion to connect to Hortonworks (HDP) and ADLS Gen2 storage/Databricks cluster. This guide will also include Live Hive on the HDP cluster, and LiveAnalytics on the ADLS Gen2/Databricks cluster.
 
 Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/troubleshooting/useful_info) section for additional commands and help.
 
@@ -687,7 +687,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
 [//]: <DAP-135 workaround>
 
-4. Upload the Live Analytics "datatransformer" jar using a curl command.
+4. Upload the LiveAnalytics "datatransformer" jar using a curl command.
 
    `curl -v -H "Authorization: Bearer <bearer_token>"  -F contents=@/opt/wandisco/fusion/plugins/databricks/live-analytics-databricks-etl-5.0.0.0.jar -F path="/datatransformer.jar" https://<databricks_service_address>/api/2.0/dbfs/put`
 

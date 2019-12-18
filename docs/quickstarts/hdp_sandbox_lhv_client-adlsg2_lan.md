@@ -8,24 +8,24 @@ _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS W
 
 [//]: <This quickstart is work in progress, and new items are still being added. The development approach is that all known workarounds/configuration steps will be kept in the document until we have fully confirmed their fix (see MTC label). At which point, they will be removed. The same will apply for configuration/installation steps when blueprints for HDP or Fusion have been completed (see DAP-144).>
 
-Use this quickstart if you want to configure Fusion to connect to Hortonworks (HDP) and ADLS Gen2 storage/Databricks cluster. This guide will also include Live Hive on the HDP cluster, and Live Analytics on the ADLS Gen2/Databricks cluster.
+Use this quickstart if you want to configure Fusion to replicate from a Hortonworks (HDP) Sandbox to an Azure Databricks cluster. This will involve the use of Live Hive for the HDP cluster, and Live Analytics for the Azure Databricks cluster.
 
 Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/troubleshooting/useful_info) section for additional commands and help.
 
 ## Prerequisites
 
-[//]: <We are still working out the minimum VM requirements, at the moment, we are with Standard D8 v3 ones.>
+[//]: <We are still working out the minimum VM requirements, at the moment, we are working with Standard D8 v3.>
 
 To complete this lab exercise, you will need:
 
 * Azure VM created and started. See the [Azure VM creation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_creation) guide for steps to create an Azure VM.
-  * (TBC) Minimum size VM recommendation = **Standard D8 v3 (8 vcpus, 32 GiB memory).**
+  * Minimum size VM recommendation = **Standard D8 v3 (8 vcpus, 32 GiB memory).**
   * CentOS-based 7.7 (or higher) or UbuntuLTS 18.04. Instructions are provided for these releases.
   * A minimum of 128GB storage. The [Azure VM creation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_creation) guide includes this by default.
   * Root access on server (this is normally available by default).
 * Azure VM prepared for Fusion installation, see [Azure VM preparation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_prep) guide for all required steps.
 
-###  Note on command line editing
+###  Command line editing
 
 The `vi` command line editor will be used in this lab, please see this [vi cheat sheet](https://ryanstutorials.net/linuxtutorial/cheatsheetvi.php) for guidance on how to use it.
 
@@ -47,13 +47,13 @@ Log into the VM via a terminal session and switch to root user.
 
    A 'sha' reference will be displayed afterwards if this was successful.
 
-### Initial Setup for HDP Sandbox - WiP
+### Setup and start HDP Sandbox (TBC)
 
 [//]: <DAP-142>
 
 [//]: <These steps are being performed using the 'wandocker.run' script. This script allows for the creation of a custom network name, as well as selecting existing ones. It is also using Ambari 2.7.3, which will allow us to export blueprints via the UI when we have configured everything on the cluster. There is also expansion planned to the script capabilities (on the side) for multiple node HDP clusters, so that future testing could be done with NameNode HA.>
 
-1. Download the HDP sandbox in compressed format - **TBC**
+1. (**TBC**) Download the HDP sandbox in compressed format.
 
    _Example_
 
@@ -137,6 +137,8 @@ Log into the VM via a terminal session and switch to root user.
 
 [//]: <This is required to get the Fusion docker setup script to pass verification when entering the HDP NameNode/Metastore hostnames. It is removed after the setup script is done.>
 
+[//]: <This workaround is not required after removing the 'validate_hostname' function from the following conf files: common.conf, common-fusion.conf, plugin-livehive.conf and zone-hdp.conf.>
+
 1. On the docker host, edit the hosts file so that the correct hostname variables will be set during the Fusion setup.
 
    `vi /etc/hosts`
@@ -147,9 +149,11 @@ Log into the VM via a terminal session and switch to root user.
 
    Once complete, save and quit the file (e.g. `:wq!`).
 
-### Initial Setup for Fusion
+### Setup Fusion
 
-1. Clone the Fusion docker repository to your Azure VM instance:
+[//]: <Still not determined as to where the users will pull the fusion-docker-compose repository. We will need to provide pre-baked config files so that the only entries required will be the ADLS Gen2 details.>
+
+1. (**TBC**) Clone the Fusion docker repository to your Azure VM instance:
 
    `cd ~`
 
@@ -163,67 +167,28 @@ Log into the VM via a terminal session and switch to root user.
 
    `./setup-env.sh`
 
-4. Follow the prompts to configure your zones, see the next section below for guidance on this.
+4. Follow the prompts to configure your ADLS Gen2 Zone, see the next section below for guidance on this.
 
-### Setup prompts
+#### Setup prompts for ADLS Gen2
 
-  _Zone type_
+Please ensure to enter your details for the **Storage account**, **Storage container** and **Account Key** values so that they match your account in Azure.
+The examples shown below are for guidance only.
 
-  * For the purposes of this quickstart, please enter `hdp` for the first zone type, and `adls2` for the second zone type.
+* Storage account: `adlsg2storage`
 
-  _Zone name_
+* Storage container: `fusionreplication`
 
-  * If defining a zone name, please note that each zone must have a different name (i.e. they cannot match). Otherwise, press enter to leave as default.
+* Account key: `KEY_1_STRING` - the Primary Access Key is now referred to as "Key1" in Microsoft’s documentation. You can get the Access Key from the Microsoft Azure storage account under the **Access Keys** section.
 
-  _Licenses_
+* default FS: `abfss://fusionreplication@adlsg2storage.dfs.core.windows.net/` - press enter for the default value.
 
-  * Trial licenses will last 30 days and are limited to 1TB of replicated data. Press enter to leave as default trial license.
-
-  _Docker hostname_
-
-  * For the purposes of this quickstart, this can be changed to the IP address of your docker host.
-
-  _Entries for HDP_
-
-  * HDP version: `2.6.5`
-
-  * Hadoop NameNode IP/hostname: `manager` - The value will be the hostname defined in the `fs.defaultFS` property in the HDFS config, but does not include the `hdfs://` prefix or port `8020`.
-
-  * NameNode port: `8020` - The value will be the port defined in the `fs.defaultFS` property in the HDFS config.
-
-  * NameNode Service Name: `manager:8020` - The value will be the hostname and port combined in the `fs.defaultFS` property in the HDFS config, but not including the `hdfs://` prefix.
-
-  _Entries for Live Hive_
-
-  * Enter `livehive` for the HDP zone when prompted to select a plugin.
-
-  * Hive Metastore hostname: `manager` - The HDP cluster's Hive Metastore hostname, can be seen by hovering over the Hive Metastore in the Hive summary page. As this is a one node cluster, the value will be the same as the NameNode.
-
-[//]: <DAP-151 workaround.>
-
-  * Hive Metastore port: `9084` - Please type `9084` and press enter.
-
-  _Entries for ADLS Gen2_
-
-  * HDI version: `3.6`
-
-  Please ensure to enter your details for the **Storage account**, **Storage container** and **Account Key** values so that they match your account in Azure. The examples shown below are for guidance only.
-
-  * Storage account: `adlsg2storage`
-
-  * Storage container: `fusionreplication`
-
-  * Account key: `KEY_1_STRING` - the Primary Access Key is now referred to as "Key1" in Microsoft’s documentation. You can get the Access Key from the Microsoft Azure storage account under the **Access Keys** section.
-
-  * default FS: `abfss://fusionreplication@adlsg2storage.dfs.core.windows.net/` - press enter for the default value.
-
-  * underlying FS: `abfs://fusionreplication@adlsg2storage.dfs.core.windows.net/` - press enter for the default value.
-
-  * Enter `NONE` for the adls2 zone when prompted to select a plugin.
+* underlying FS: `abfs://fusionreplication@adlsg2storage.dfs.core.windows.net/` - press enter for the default value.
 
 At this point, the setup prompts will be complete and the script will exit out with an informational message. Please ignore this for now and continue following the steps below.
 
 ### Remove temporary entry to hosts file
+
+[//]: <This workaround is not required after removing the 'validate_hostname' function from the following conf files: common.conf, common-fusion.conf, plugin-livehive.conf and zone-hdp.conf.>
 
 1. Edit the hosts file as the additional entry is no longer required and will create problems with the internal network if not removed.
 
@@ -235,7 +200,7 @@ At this point, the setup prompts will be complete and the script will exit out w
 
    Once complete, save and quit the file (e.g. `:wq!`).
 
-### Startup
+### Startup Fusion
 
 After all the prompts have been completed, you will be able to start the containers.
 
@@ -253,7 +218,7 @@ After all the prompts have been completed, you will be able to start the contain
 
 ## Configuration
 
-### Live Hive config changes
+### Live Hive configuration and activation
 
 1. Log into one of the containers for the HDP zone.
 
@@ -274,7 +239,7 @@ After all the prompts have been completed, you will be able to start the contain
      </property>
    ```
 
-   Once complete, save and quit the file (e.g. `:wq!`).
+   Once complete, save and quit the file (e.g. `:wq`).
 
 3. Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.
 
@@ -293,7 +258,7 @@ After all the prompts have been completed, you will be able to start the contain
 
    Click on the *Activate* option. Wait for the **Reload this window** message to appear and refresh the page.
 
-### Setup Databricks on ADLS Gen2 zone
+### Setup Databricks
 
 Prior to performing these tasks, the Databricks cluster must be in a **running** state. Please access the Azure portal and check the status of the cluster. If it is not running, select to start the cluster and wait until it is **running** before continuing.
 
@@ -330,7 +295,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
 4. Upload the Live Analytics "datatransformer" jar using a curl command.
 
-   `curl -v -H "Authorization: Bearer <bearer_token>"  -F contents=@/opt/wandisco/fusion/plugins/databricks/live-analytics-databricks-etl-5.0.0.0.jar -F path="/datatransformer.jar" https://<databricks_service_address>/api/2.0/dbfs/put`
+   `curl -v -H "Authorization: Bearer <bearer_token>" -F contents=@/opt/wandisco/fusion/plugins/databricks/live-analytics-databricks-etl-5.0.0.0.jar -F path="/datatransformer.jar" https://<databricks_service_address>/api/2.0/dbfs/put`
 
    You will need to adjust the `curl` command so that your **Bearer Token** and **Databricks Service Address** is referenced.
 
@@ -350,17 +315,19 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
    < HTTP/1.1 200 OK
    ```
 
-   Once complete, exit the container:
+5. Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.
 
    `exit`
 
-5. Log into the Azure portal and Launch Workspace for your Databricks cluster.
+   `docker-compose restart`
 
-6. On the left-hand panel, select **Clusters** and then select your interactive cluster.
+6. Log into the Azure portal and Launch Workspace for your Databricks cluster.
 
-7. Click on the **Libraries** tab, and select the option to **Install New**.
+7. On the left-hand panel, select **Clusters** and then select your interactive cluster.
 
-8. Select the following options for the Install Library prompt:
+8. Click on the **Libraries** tab, and select the option to **Install New**.
+
+9. Select the following options for the Install Library prompt:
 
    * Library Source = `DBFS`
 
@@ -368,7 +335,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
    * File Path = `dbfs:/datatransformer.jar`
 
-9. Select **Install** once the details are entered. Wait for the **Status** of the jar to display as **Installed** before continuing.
+10. Select **Install** once the details are entered. Wait for the **Status** of the jar to display as **Installed** before continuing.
 
 ## Replication
 
@@ -415,7 +382,7 @@ In this section, follow the steps detailed to perform live replication of HCFS d
 
    * Table name = `*`
 
-   * Description = `testing` _- this field is optional_
+   * Description = `Testing` _- this field is optional_
 
    Click **Create rule** once complete.
 
@@ -425,7 +392,7 @@ In this section, follow the steps detailed to perform live replication of HCFS d
 
 Prior to performing these tasks, the Databricks cluster must be in a **running** state. Please access the Azure portal and check the status of the cluster. If it is not running, select to start the cluster and wait until it is **running** before continuing.
 
-1. On the docker host, log into a HDP cluster node.
+1. On the docker host, log into the HDP cluster node.
 
    `docker exec -it manager bash`
 
@@ -471,7 +438,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
    --------------------------------------------------------------------------------
    ```
 
-   Please note that running an 'insert into table' for the first time on the HDP cluster will take a longer period of time than normal (i.e. up to 5 minutes). Further jobs will complete at a much faster rate.
+   Please note that running an 'insert into table' for the first time on the HDP cluster may take a longer period of time than normal. Further jobs will complete at a much faster rate.
 
 ### Verify replication
 
@@ -544,7 +511,7 @@ If encountering this error, run the `docker-compose up -d` command again, and th
 
 If the Fusion zones are not inducted together after starting Fusion for the first time (`docker-compose up -d`), you can simply run the same command again to start the induction container:
 
-   `docker-compose up -d`
+`docker-compose up -d`
 
 ## Advanced options
 

@@ -26,52 +26,6 @@
 <p><code>docker network create fusion-docker-compose_fusion</code></p>
 <p>A 'sha' reference will be displayed afterwards if this was successful.</p></li>
 </ol>
-<h3><a class="anchor" aria-hidden="true" id="setup-and-start-hdp-sandbox-tbc"></a><a href="#setup-and-start-hdp-sandbox-tbc" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setup and start HDP Sandbox (TBC)</h3>
-<ol>
-<li><p>(<strong>TBC</strong>) Download the HDP sandbox in compressed format.</p>
-<p><em>Example</em></p>
-<p><code>wget https://URL/wandocker.run</code></p></li>
-<li><p>Decompress the gzip file and run the script.</p>
-<p><code>tar -xf wandocker.tar.gz</code></p>
-<p><code>./wandocker.run</code></p></li>
-</ol>
-<ol start="3">
-<li><p>Change directory and run the wandocker management script.</p>
-<p><code>cd wandocker</code></p>
-<p><code>./wandocker.sh -i hdp265_docker.ini</code></p></li>
-<li><p>Choose Option 1 to set up all the required images for the HDP sandbox and repository.</p>
-<p><code>1</code> - Build All Images (Repo, Agent, Server)</p>
-<p>This may take up to 15 minutes.</p>
-<p>Once the following four lines are displayed in the Event Log, the image builds will have completed:</p>
-<pre><code class="hljs css language-text">BuildResponseItem[stream=Successfully tagged hdp_slave:2.7.3.0
-BuildResponseItem[stream=Successfully tagged repo_host:2.6.5.0-292
-BuildResponseItem[stream=Successfully tagged hdp_master:2.7.3.0
-BuildResponseItem[stream=Successfully tagged repo_cache_host:2.6.5.0-292
-</code></pre>
-<p>Press enter to return to the Main Menu.</p></li>
-<li><p>Select option 2 to create and start the HDP repository and cache.</p>
-<p><code>2</code> - Create and start Local Repo Containers</p>
-<p>Type the Index number for the <code>fusion-docker-compose_fusion</code> network, followed by enter.</p>
-<p>This may take 2-3 minutes. Once the following line is displayed in the Event Log, the repositories are ready:</p>
-<pre><code class="hljs css language-text">[/root/buildrepo.sh, 2.6.5.0-292] on /repo_host Completed.
-</code></pre>
-<p>Press enter to return to the Main Menu.</p></li>
-<li><p>Select option 3 to create the HDP sandbox.</p>
-<p><code>3</code> - Create and start Sandbox Container(s)</p>
-<p>Type the Index number for the <code>fusion-docker-compose_fusion</code> network, followed by enter.</p>
-<p>This may take 2-3 minutes. Once the following line is displayed in the Event Log, the Ambari Server is ready:</p>
-<pre><code class="hljs css language-text">[/root/startup.sh] on /manager Completed.
-</code></pre>
-<p>Press enter to return to the Main Menu.</p>
-<p>Wait until the Ambari UI is accessible on <code>http://&lt;docker_IP_address&gt;:8080</code> via a web browser before continuing (you do not need to log in at this time).</p></li>
-<li><p>Install the Cluster blueprint by selecting option 4.</p>
-<p><code>4</code> - Install Cluster from Blueprint</p>
-<p>Press <code>q</code> to quit out of the wandocker main menu after completing this.</p></li>
-<li><p>Log into the Ambari UI.</p>
-<p>Username = <code>admin</code>
-Password = <code>admin</code></p>
-<p>Two automated jobs will automatically be started for installing and starting components, observable in <strong>Background Operations</strong>. Wait until these are complete before continuing (~10mins).</p></li>
-</ol>
 <h3><a class="anchor" aria-hidden="true" id="add-temporary-entry-to-hosts-file"></a><a href="#add-temporary-entry-to-hosts-file" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Add temporary entry to hosts file</h3>
 <ol>
 <li><p>On the docker host, edit the hosts file so that the correct hostname variables will be set during the Fusion setup.</p>
@@ -119,6 +73,49 @@ The examples shown below are for guidance only.</p>
 <p><code>systemctl start docker</code></p></li>
 <li><p>Start the Fusion containers with:</p>
 <p><code>docker-compose up -d</code></p></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="setup-and-start-hdp-sandbox-tbc"></a><a href="#setup-and-start-hdp-sandbox-tbc" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setup and start HDP Sandbox (TBC)</h3>
+<ol>
+<li><p>(<strong>TBC</strong>) Download the HDP sandbox in compressed format.</p>
+<p><em>Example</em></p>
+<p><code>wget https://URL/wandocker.run</code></p></li>
+<li><p>Decompress the gzip file and run the script.</p>
+<p><code>tar -xf wandocker.tar.gz</code></p>
+<p><code>./wandocker.run</code></p></li>
+</ol>
+<ol start="3">
+<li><p>Change directory and run the wandocker management script.</p>
+<p><code>cd wandocker</code></p>
+<p><code>./wandocker.sh -i hdp265_docker.ini</code></p></li>
+<li><p>Choose Option 1 to set up all the required images for the HDP sandbox and repository.</p>
+<p><code>1</code> - Build All Images (Repo, Agent, Server)</p>
+<p>This may take up to 15 minutes.</p>
+<p>Once the following four lines are displayed in the Event Log, the image builds will have completed:</p>
+<pre><code class="hljs css language-text">BuildResponseItem[stream=Successfully tagged hdp_slave:2.7.3.0
+BuildResponseItem[stream=Successfully tagged repo_host:2.6.5.0-292
+BuildResponseItem[stream=Successfully tagged hdp_master:2.7.3.0
+BuildResponseItem[stream=Successfully tagged repo_cache_host:2.6.5.0-292
+</code></pre>
+<p>Press enter to return to the Main Menu.</p></li>
+<li><p>Select option 2 to create and start the HDP repository and cache.</p>
+<p><code>2</code> - Create and start Local Repo Containers</p>
+<p>Type the Index number for the <code>fusion-docker-compose_fusion</code> network, followed by enter.</p>
+<p>This may take 2-3 minutes. Once the following line is displayed in the Event Log, the repositories are ready:</p>
+<pre><code class="hljs css language-text">[/root/buildrepo.sh, 2.6.5.0-292] on /repo_host Completed.
+</code></pre>
+<p>Press enter to return to the Main Menu.</p></li>
+<li><p>Select option 3 to create the HDP sandbox.</p>
+<p><code>3</code> - Create and start Sandbox Container(s)</p>
+<p>Type the Index number for the <code>fusion-docker-compose_fusion</code> network, followed by enter.</p>
+<p>This may take 3-4 minutes. Press enter to return to the Main Menu.</p>
+<p>Wait until the Ambari UI is accessible on <code>http://&lt;docker_IP_address&gt;:8080</code> via a web browser before continuing (you do not need to log in at this time).</p></li>
+<li><p>Install the Cluster blueprint by selecting option 4.</p>
+<p><code>4</code> - Install Cluster from Blueprint</p>
+<p>Press <code>q</code> to quit out of the wandocker main menu after completing this.</p></li>
+<li><p>Log into the Ambari UI.</p>
+<p>Username = <code>admin</code>
+Password = <code>admin</code></p>
+<p>Two automated jobs will automatically be started for installing and starting components, observable in <strong>Background Operations</strong>. Wait until these are complete before continuing (~12mins).</p></li>
 </ol>
 <h2><a class="anchor" aria-hidden="true" id="configuration"></a><a href="#configuration" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration</h2>
 <h3><a class="anchor" aria-hidden="true" id="live-hive-configuration-and-activation"></a><a href="#live-hive-configuration-and-activation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Live Hive configuration and activation</h3>
@@ -288,6 +285,17 @@ name       string
 </code></pre></li>
 </ol>
 <h2><a class="anchor" aria-hidden="true" id="troubleshooting"></a><a href="#troubleshooting" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting</h2>
+<h3><a class="anchor" aria-hidden="true" id="hiveserver2-down-after-hdp-sandbox-is-started-for-first-time"></a><a href="#hiveserver2-down-after-hdp-sandbox-is-started-for-first-time" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Hiveserver2 down after HDP Sandbox is started for first time</h3>
+<p>The Hiveserver2 component in the HDP sandbox may be down after starting the cluster for the first time. If so, try the following steps to start it back up.</p>
+<ol>
+<li><p>On the docker host, change directory to the Fusion docker compose directory and restart the Fusion containers.</p>
+<p><code>cd /path/to/fusion-docker-compose</code></p>
+<p><code>docker-compose restart</code></p>
+<p>Wait until all containers have finished restarting before continuing.</p></li>
+<li><p>Access the Ambari UI, and manually start the Hiveserver2 component.</p>
+<p><strong>Ambari UI -&gt; Hive -&gt; Summary -&gt; Click on the &quot;HIVESERVER2&quot; written in blue text.</strong></p></li>
+<li><p>Locate the HiveServer2 in the component list and click the <code>...</code> in the Action column. Select to <strong>Start</strong> the component in the drop-down list.</p></li>
+</ol>
 <h3><a class="anchor" aria-hidden="true" id="error-relating-to-system_dbus_socket"></a><a href="#error-relating-to-system_dbus_socket" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Error relating to 'system_dbus_socket'</h3>
 <p>If encountering a <code>system_dbus_socket</code> error when attempting to start containers, run the following commands below on the docker host:</p>
 <pre><code class="hljs css language-json">mkdir -p /run /run/lock
@@ -311,7 +319,7 @@ ln -s /run/lock /var/lock
 <li>This guide does not currently offer configuration of Fusion to a NameNode HA HDP cluster.</li>
 </ul>
 <p>Please contact <a href="https://wandisco.com/contact">WANdisco</a> for further information on Fusion with docker.</p>
-</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#prerequisites">Prerequisites</a><ul class="toc-headings"><li><a href="#command-line-editing">Command line editing</a></li></ul></li><li><a href="#installation">Installation</a><ul class="toc-headings"><li><a href="#create-docker-network">Create docker network</a></li><li><a href="#setup-and-start-hdp-sandbox-tbc">Setup and start HDP Sandbox (TBC)</a></li><li><a href="#add-temporary-entry-to-hosts-file">Add temporary entry to hosts file</a></li><li><a href="#setup-fusion">Setup Fusion</a></li><li><a href="#remove-temporary-entry-to-hosts-file">Remove temporary entry to hosts file</a></li><li><a href="#startup-fusion">Startup Fusion</a></li></ul></li><li><a href="#configuration">Configuration</a><ul class="toc-headings"><li><a href="#live-hive-configuration-and-activation">Live Hive configuration and activation</a></li><li><a href="#setup-databricks">Setup Databricks</a></li></ul></li><li><a href="#replication">Replication</a><ul class="toc-headings"><li><a href="#create-replication-rules">Create replication rules</a></li><li><a href="#test-replication">Test replication</a></li><li><a href="#verify-replication">Verify replication</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul class="toc-headings"><li><a href="#error-relating-to-system_dbus_socket">Error relating to 'system_dbus_socket'</a></li><li><a href="#error-relating-to-connection-refused-after-starting-fusion-for-the-first-time">Error relating to 'connection refused' after starting Fusion for the first time</a></li><li><a href="#fusion-zones-not-inducted-together-after-initial-start-up">Fusion zones not inducted together after initial start-up</a></li></ul></li><li><a href="#advanced-options">Advanced options</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://wandisco.github.io/wandisco-documentation/" class="nav-home"></a><div><h5>Docs</h5><a href="https://wandisco.github.io/wandisco-documentation/docs/en/quickstarts/quickstart-config.html">Getting Started</a><a href="https://docs.wandisco.com">Product User Guides</a><a href="https://community.wandisco.com/s/knowledge-base">Knowledge Base</a></div><div><h5>Community</h5><a href="https://community.wandisco.com/">WANdisco Community</a><a href="//wandisco.com/partners/find">Partners</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://wandisco.com/blog">Blog</a><a href="https://blogs.wandisco.com/">Developer Blog</a><a href="https://github.com/wandisco">GitHub</a></div></section><section class="copyright">Copyright © 2019 WANdisco, Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#prerequisites">Prerequisites</a><ul class="toc-headings"><li><a href="#command-line-editing">Command line editing</a></li></ul></li><li><a href="#installation">Installation</a><ul class="toc-headings"><li><a href="#create-docker-network">Create docker network</a></li><li><a href="#add-temporary-entry-to-hosts-file">Add temporary entry to hosts file</a></li><li><a href="#setup-fusion">Setup Fusion</a></li><li><a href="#remove-temporary-entry-to-hosts-file">Remove temporary entry to hosts file</a></li><li><a href="#startup-fusion">Startup Fusion</a></li><li><a href="#setup-and-start-hdp-sandbox-tbc">Setup and start HDP Sandbox (TBC)</a></li></ul></li><li><a href="#configuration">Configuration</a><ul class="toc-headings"><li><a href="#live-hive-configuration-and-activation">Live Hive configuration and activation</a></li><li><a href="#setup-databricks">Setup Databricks</a></li></ul></li><li><a href="#replication">Replication</a><ul class="toc-headings"><li><a href="#create-replication-rules">Create replication rules</a></li><li><a href="#test-replication">Test replication</a></li><li><a href="#verify-replication">Verify replication</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul class="toc-headings"><li><a href="#hiveserver2-down-after-hdp-sandbox-is-started-for-first-time">Hiveserver2 down after HDP Sandbox is started for first time</a></li><li><a href="#error-relating-to-system_dbus_socket">Error relating to 'system_dbus_socket'</a></li><li><a href="#error-relating-to-connection-refused-after-starting-fusion-for-the-first-time">Error relating to 'connection refused' after starting Fusion for the first time</a></li><li><a href="#fusion-zones-not-inducted-together-after-initial-start-up">Fusion zones not inducted together after initial start-up</a></li></ul></li><li><a href="#advanced-options">Advanced options</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://wandisco.github.io/wandisco-documentation/" class="nav-home"></a><div><h5>Docs</h5><a href="https://wandisco.github.io/wandisco-documentation/docs/en/quickstarts/quickstart-config.html">Getting Started</a><a href="https://docs.wandisco.com">Product User Guides</a><a href="https://community.wandisco.com/s/knowledge-base">Knowledge Base</a></div><div><h5>Community</h5><a href="https://community.wandisco.com/">WANdisco Community</a><a href="//wandisco.com/partners/find">Partners</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://wandisco.com/blog">Blog</a><a href="https://blogs.wandisco.com/">Developer Blog</a><a href="https://github.com/wandisco">GitHub</a></div></section><section class="copyright">Copyright © 2019 WANdisco, Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

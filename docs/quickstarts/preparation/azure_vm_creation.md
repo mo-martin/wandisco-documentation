@@ -74,12 +74,12 @@ The `vi` command line editor will be used in this lab, please see this [vi cheat
    echo "Group: $GROUP"
    echo "Resource Group: $RG"
    echo "VNET: $VNET"
-   echo "VM NAME: $VM_NAME"
-   echo "VM USERNAME: $VM_USERNAME"
-   echo "VM TYPE: $TYPE"
+   echo "VM Name: $VM_NAME"
+   echo "VM Username: $VM_USERNAME"
+   echo "VM Type: $TYPE"
    echo "Disk Size: $DISK GB"
    echo "Image (OS): $IMAGE"
-   echo "SUBNETID: $SUBNETID"
+   echo "Subnet ID: $SUBNETID"
 
    az vm create \
        --resource-group $RG \
@@ -140,42 +140,48 @@ The `vi` command line editor will be used in this lab, please see this [vi cheat
 
 ## Use the Azure template script to create the VM
 
+### Define required variables
+
+Collect all required variables before running the script.
+
+|Variable|Example|Description|
+|---|---|---|
+|Group|`GRP`|The [Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) group to use. **Must already exist**.|
+|Resource Group|`GRP-my.name1`|The [Azure Resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#resource-groups) to use. **Must already exist**.|
+|VNET|`GRP-westeurope-vnet`|The [Azure Virtual Network](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview) to use. **Must already exist**.|
+|VM Name|`docker_host01`|Define the Virtual Machine name in Azure.|
+|VM Username|`vm_user`|Define the username to access the Virtual Machine with.|
+|VM Type|`Standard_D8_v3`|Define the Virtual Machine size from the [Azure templates](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes).|
+|Disk Size|`128`|Define the disk space on the Virtual Machine in GigaBytes (GB).|
+|Image (OS)|`UbuntuLTS`|Define the Virtual Machine's Operating System from the [Azure images](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/cli-ps-findimage).|
+
+**Further Information**
+
+* [VM Type](https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes)
+
+You can discover a list of available VM types/sizes by running the following command:
+
+`az vm list-sizes --location <vm_location>`
+
+Variable required = `"name"`.
+
+* [Image (OS)](https://docs.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az-vm-image-list)
+
+You can discover a list of available VM images (OS) by running the following command:
+
+`az vm image list [--all] [--location]`
+
+Variable required = `"urnAlias"`.
+
+### Run the script
+
 1. Make the script executable.
 
    `chmod +x create_docker_vm.sh`
 
-2. Collect all required variables before running the script.
+2. Run the script using the variables collected in the previous sub-section.
 
-   _Example variables_
-
-   * Group: GRP
-   * Resource Group: GRP-my.name1
-   * VNET: GRP-westeurope-vnet
-   * VM NAME: docker_host01
-   * VM USERNAME: myname
-   * VM TYPE: Standard_D8_v3
-   * Disk Size: 128 _- in GB_
-   * Image (OS): UbuntuLTS
-
-   *VM TYPE*
-
-   You can discover a list of available VM types/sizes by running the following command:
-
-   `az vm list-sizes --location <vm_location>`
-
-   Variable required = `"name"`. See the [Azure VM types/sizes](https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes) documentation for more detail.
-
-   *Image (OS)*
-
-   You can discover a list of available VM images (OS) by running the following command:
-
-   `az vm image list [--all] [--location]`
-
-   Variable required = `"urnAlias"`. See the [Azure VM OS/images](https://docs.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az-vm-image-list) documentation for more detail.
-
-3. Run the script using the variables collected in the previous step.
-
-   `./create_docker_vm.sh -g GRP -r GRP-my.name1 -v GRP-westeurope-vnet -n docker_host01 -u myname -t Standard_D8_v3 -d 100 -i UbuntuLTS`
+   `./create_docker_vm.sh -g GRP -r GRP-my.name1 -v GRP-westeurope-vnet -n docker_host01 -u vm_user -t Standard_D8_v3 -d 100 -i UbuntuLTS`
 
    _Example output_
 
@@ -184,12 +190,12 @@ The `vi` command line editor will be used in this lab, please see this [vi cheat
    Group: GRP
    Resource Group: GRP-my.name1
    VNET: GRP-westeurope-vnet
-   VM NAME: docker_host01
-   VM USERNAME: myname
-   VM TYPE: Standard_D8_v3
+   VM Name: docker_host01
+   VM Username: vm_user
+   VM Type: Standard_D8_v3
    Disk Size: 128 GB
    Image (OS): UbuntuLTS
-   SUBNETID: /subscriptions/3842fefa-7697-4e7d-b051-a5a3ae601030/resourceGroups/GRP/providers/Microsoft.Network/virtualNetworks/GRP-westeurope-vnet/subnets/default
+   Subnet ID: /subscriptions/3842fefa-7697-4e7d-b051-a5a3ae601030/resourceGroups/GRP/providers/Microsoft.Network/virtualNetworks/GRP-westeurope-vnet/subnets/default
    {
      "fqdns": "",
      "id": "/subscriptions/3842fefa-7697-4e7d-b051-a5a3ae601030/resourceGroups/GRP-my.name1/providers/Microsoft.Compute/virtualMachines/docker_host01",
@@ -209,7 +215,7 @@ Log into the Azure VM after it is has finished deployment.
 
 _Example_
 
-`ssh myname@172.10.1.10`
+`ssh vm_user@172.10.1.10`
 
 ## Next steps
 

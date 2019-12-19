@@ -179,17 +179,17 @@ system_info:
 <p>Collect all required variables before running the script.</p>
 <table>
 <thead>
-<tr><th>Variable</th><th>Example</th><th>Description</th></tr>
+<tr><th>Variable</th><th>Flag</th><th>Example</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>Group</td><td><code>GRP</code></td><td>The <a href="https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis">Azure Active Directory</a> group to use. <strong>Must already exist</strong>.</td></tr>
-<tr><td>Resource Group</td><td><code>GRP-my.name1</code></td><td>The <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#resource-groups">Azure Resource group</a> to use. <strong>Must already exist</strong>.</td></tr>
-<tr><td>VNET</td><td><code>GRP-westeurope-vnet</code></td><td>The <a href="https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview">Azure Virtual Network</a> to use. <strong>Must already exist</strong>.</td></tr>
-<tr><td>VM Name</td><td><code>docker_host01</code></td><td>Define the Virtual Machine name in Azure.</td></tr>
-<tr><td>VM Username</td><td><code>vm_user</code></td><td>Define the username to access the Virtual Machine with.</td></tr>
-<tr><td>VM Type</td><td><code>Standard_D8_v3</code></td><td>Define the Virtual Machine size from the <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes">Azure templates</a>.</td></tr>
-<tr><td>Disk Size</td><td><code>128</code></td><td>Define the disk space on the Virtual Machine in GigaBytes (GB).</td></tr>
-<tr><td>Image (OS)</td><td><code>UbuntuLTS</code></td><td>Define the Virtual Machine's Operating System from the <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/linux/cli-ps-findimage">Azure images</a>.</td></tr>
+<tr><td>Group</td><td><code>-g</code></td><td><code>GRP</code></td><td>The <a href="https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis">Azure Active Directory</a> group to use. <strong>Must already exist</strong>.</td></tr>
+<tr><td>Resource Group</td><td><code>-r</code></td><td><code>GRP-my.name1</code></td><td>The <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#resource-groups">Azure Resource group</a> to use. <strong>Must already exist</strong>.</td></tr>
+<tr><td>VNET</td><td><code>-v</code></td><td><code>GRP-westeurope-vnet</code></td><td>The <a href="https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview">Azure Virtual Network</a> to use. <strong>Must already exist</strong>.</td></tr>
+<tr><td>VM Name</td><td><code>-n</code></td><td><code>docker_host01</code></td><td>Define the Virtual Machine name in Azure.</td></tr>
+<tr><td>VM Username</td><td><code>-u</code></td><td><code>vm_user</code></td><td>Define the username to access the Virtual Machine with.</td></tr>
+<tr><td>VM Type</td><td><code>-t</code></td><td><code>Standard_D8_v3</code></td><td>Define the Virtual Machine size from the <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes">Azure templates</a>.</td></tr>
+<tr><td>Disk Size</td><td><code>-d</code></td><td><code>128</code></td><td>Define the disk space on the Virtual Machine in GigaBytes (GB).</td></tr>
+<tr><td>Image (OS)</td><td><code>-i</code></td><td><code>UbuntuLTS</code></td><td>Define the Virtual Machine's Operating System from the <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/linux/cli-ps-findimage">Azure images</a>.</td></tr>
 </tbody>
 </table>
 <p><strong>Further Information</strong></p>

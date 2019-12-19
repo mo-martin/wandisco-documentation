@@ -144,16 +144,16 @@ The `vi` command line editor will be used in this lab, please see this [vi cheat
 
 Collect all required variables before running the script.
 
-|Variable|Example|Description|
-|---|---|---|
-|Group|`GRP`|The [Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) group to use. **Must already exist**.|
-|Resource Group|`GRP-my.name1`|The [Azure Resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#resource-groups) to use. **Must already exist**.|
-|VNET|`GRP-westeurope-vnet`|The [Azure Virtual Network](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview) to use. **Must already exist**.|
-|VM Name|`docker_host01`|Define the Virtual Machine name in Azure.|
-|VM Username|`vm_user`|Define the username to access the Virtual Machine with.|
-|VM Type|`Standard_D8_v3`|Define the Virtual Machine size from the [Azure templates](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes).|
-|Disk Size|`128`|Define the disk space on the Virtual Machine in GigaBytes (GB).|
-|Image (OS)|`UbuntuLTS`|Define the Virtual Machine's Operating System from the [Azure images](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/cli-ps-findimage).|
+|Variable|Flag|Example|Description|
+|---|---|---|---|
+|Group|`-g`|`GRP`|The [Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) group to use. **Must already exist**.|
+|Resource Group|`-r`|`GRP-my.name1`|The [Azure Resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#resource-groups) to use. **Must already exist**.|
+|VNET|`-v`|`GRP-westeurope-vnet`|The [Azure Virtual Network](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview) to use. **Must already exist**.|
+|VM Name|`-n`|`docker_host01`|Define the Virtual Machine name in Azure.|
+|VM Username|`-u`|`vm_user`|Define the username to access the Virtual Machine with.|
+|VM Type|`-t`|`Standard_D8_v3`|Define the Virtual Machine size from the [Azure templates](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes).|
+|Disk Size|`-d`|`128`|Define the disk space on the Virtual Machine in GigaBytes (GB).|
+|Image (OS)|`-i`|`UbuntuLTS`|Define the Virtual Machine's Operating System from the [Azure images](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/cli-ps-findimage).|
 
 **Further Information**
 

@@ -18,7 +18,7 @@ This guide will include:
 ## Prerequisites
 
 * The [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) setup on your operating system with the ability to run `az login` on your terminal.
-* Connectivity from your operating system to Azure (via your company's VPN if required).
+* Connectivity from your terminal to Azure (via your company's VPN if required).
 
 ###  Note on command line editing
 

@@ -22,6 +22,7 @@ This guide will include:
   * CentOS-based 7.7 (or higher) or UbuntuLTS 18.04. Instructions are provided for these releases.
   * A minimum of 128GB storage. The [Azure VM creation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_creation) guide includes this by default.
   * Root access on server (this is normally available by default).
+* Access to your company's VPN or similar if required.
 
 ###  Note on command line editing
 
@@ -101,7 +102,7 @@ For the purposes of the Fusion installation, firewall and selinux will be disabl
 
    _Ubuntu_
 
-   `apt-get update && apt install openjdk-8-jdk git`
+   `apt-get update && apt install -y openjdk-8-jdk git`
 
 3. Run the commands below to install [Docker](https://docs.docker.com/install/) (v19.03.5 or higher).
 
@@ -111,7 +112,7 @@ For the purposes of the Fusion installation, firewall and selinux will be disabl
 
    `yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo`
 
-   `yum install docker-ce docker-ce-cli containerd.io` - answer `y` to any prompts.
+   `yum install -y docker-ce docker-ce-cli containerd.io`
 
    _Ubuntu_
 

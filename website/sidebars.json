@@ -25,9 +25,7 @@
       "quickstarts/installation/quickstart-config",
       "quickstarts/installation/adlsg1-adlsg2",
       "quickstarts/installation/hdp-adlsg2",
-      "quickstarts/installation/cdh-adlsg2",
-      "quickstarts/installation/hdp-s3",
-      "quickstarts/installation/cdh-s3"
+      "quickstarts/installation/cdh-adlsg2"
     ],
     "Operation": [
       "quickstarts/operation/create-rule",

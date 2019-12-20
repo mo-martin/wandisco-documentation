@@ -23,7 +23,7 @@ This guide will include:
   * A minimum of 128GB storage. The [Azure VM creation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_creation) guide includes this by default.
   * Root access on server (this is normally available by default).
 
-###  Note on command line editing
+###  Command line editing
 
 The `vi` command line editor will be used in this lab, please see this [vi cheat sheet](https://ryanstutorials.net/linuxtutorial/cheatsheetvi.php) for guidance on how to use it.
 

@@ -20,9 +20,19 @@ This guide will include:
 * The [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) setup on your operating system with the ability to run `az login` on your terminal.
 * Connectivity from your operating system to Azure (via your company's VPN if required).
 
-###  Note on command line editing
+###  Command line editing
 
 The `vi` command line editor will be used in this lab, please see this [vi cheat sheet](https://ryanstutorials.net/linuxtutorial/cheatsheetvi.php) for guidance on how to use it.
+
+### SSH keys
+
+As part of the VM creation process, SSH keys will be generated that will enable you to log into the Virtual Machine. See the Microsoft documentation for further detail depending on your Operating System:
+
+* [Linux or macOS](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys)
+
+* [Windows](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ssh-from-windows)
+
+Please note that if you already have existing keys present in the default location(s), then those keys will be used with the Azure VM and not be overwritten during this procedure.
 
 ## Creating the Azure VM template
 

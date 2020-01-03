@@ -21,3 +21,6 @@ Before you can migrate or replicate data, a [replication rule](https://wandisco.
     ```
     These exclude Fusion’s housekeeping files, trash directories and Hive staging directories.
     You can add any other exclusions required.
+
+After a few moments the rule will appear on your dashboard.
+You can now migrate your data.

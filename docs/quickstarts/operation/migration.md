@@ -15,5 +15,4 @@ One setting you need to configure is the overwrite setting. This determines what
 - Skip - If the filesize is identical between the source and target, the file is skipped. If it’s a different size, the whole file is replaced.
 
 - Overwrite - Everything is replaced, even if the file size is identical.
-
-  Coming soon will be the ability to decide if files are always overwritten, or if they are only overwritten if their timestamp is after a specified time. This time is set in UTC.
+Either files are always overwritten, or they are only overwritten if their timestamp is after a time you specify. This time must be set in UTC.

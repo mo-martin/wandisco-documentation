@@ -6,43 +6,30 @@ sidebar_label: Azure VM creation
 
 _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_
 
-Use this quickstart if you want to create an Azure Linux VM that will be suitable for a Fusion installation.
-
-This guide will include:
+This quickstart helps you create an Azure Linux VM suitable for a Fusion installation. It walks you through:
 
 * Creating an [Azure Linux VM template](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/create-ssh-secured-vm-from-template) script.
 * Creating a [cloud-init](https://cloudinit.readthedocs.io/en/latest/topics/examples.html) template to initialise the VM.
 * How to use the Azure Linux VM template script.
-  * Logging into the VM for the first time.
+  * Logging in to the VM for the first time.
 
 ## Prerequisites
 
-* The [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) setup on your operating system with the ability to run `az login` on your terminal.
+* [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) with the ability to run `az login` on your terminal.
 * Connectivity from your terminal to Azure (via your company's VPN if required).
-
-###  Command line editing
-
-The `vi` command line editor will be used in this lab, please see this [vi cheat sheet](https://ryanstutorials.net/linuxtutorial/cheatsheetvi.php) for guidance on how to use it.
 
 ### SSH keys
 
-As part of the VM creation process, SSH keys will be generated that will enable you to log into the Virtual Machine. See the Microsoft documentation for further detail depending on your Operating System:
+SSH keys will be generated as part of the VM creation process.
+See the Microsoft documentation for further details - [Linux or macOS](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys) or [Windows](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ssh-from-windows).
 
-* [Linux or macOS](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys)
+If you already have keys in the default location(s), these keys will be used with the Azure VM and will not be overwritten.
 
-* [Windows](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ssh-from-windows)
+## Create templates
 
-Please note that if you already have existing keys present in the default location(s), then those keys will be used with the Azure VM and not be overwritten during this procedure.
+The two required templates are given below. Create these in the same location with the names given.
 
-## Creating the Azure VM template
-
-1. Open a terminal session on your system.
-
-2. Create a script that will contain the template options that are required for the VM.
-
-   `vi create_docker_vm.sh`
-
-   Enter insert mode (`i`) and copy & paste the text below into the terminal.
+1. `create_docker_vm.sh` - this contains the template options required for the VM.
 
    ```bash
    #!/usr/bin/env bash
@@ -105,17 +92,7 @@ Please note that if you already have existing keys present in the default locati
        --public-ip-address ""
    ```
 
-3. Exit insert mode (`esc`) and save & quit the file (`:wq`).
-
-## Create the cloud-init template
-
-1. Create a script that will contain initialisation settings for the VM.
-
-   `vi cloud-init.txt`
-
-   Please ensure the text file is named correctly as above, as it is referenced explicitly within the Azure VM template script (`--custom-data`).
-
-   Enter insert mode (`i`) and copy & paste the text below into the terminal.
+2. `cloud-init.txt` - contains initialisation settings for the VM.
 
    ```text
    #cloud-config
@@ -146,50 +123,26 @@ Please note that if you already have existing keys present in the default locati
            groups: [docker]
    ```
 
-2. Exit insert mode (`esc`) and save & quit the file (`:wq`).
-
 ## Use the Azure template script to create the VM
 
-### Define required variables
+1. Collect all required variables before running the script.
 
-Collect all required variables before running the script.
+   |Variable|Flag|Example|Description|
+   |---|---|---|---|
+   |Group|`-g`|`GRP`|The [Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) group to use. **Must already exist**.|
+   |Resource Group|`-r`|`GRP-my.name1`|The [Azure Resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#resource-groups) to use. **Must already exist**.|
+   |VNET|`-v`|`GRP-westeurope-vnet`|The [Azure Virtual Network](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview) to use. **Must already exist**.|
+   |VM Name|`-n`|`docker_host01`|Define the Virtual Machine name in Azure.|
+   |VM Username|`-u`|`vm_user`|Define the username to access the Virtual Machine with.|
+   |[VM Type](https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes)|`-t`|`Standard_D8_v3`|Define the Virtual Machine size from the [Azure templates](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes). The `name` value from `az vm list-sizes --location <vm_location>` should be the value here.|
+   |Disk Size|`-d`|`128`|Define the disk space on the Virtual Machine in GigaBytes (GB).|
+   |[Image (OS)](https://docs.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az-vm-image-list)|`-i`|`UbuntuLTS`|Define the Virtual Machine's Operating System from the [Azure images](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/cli-ps-findimage). The `urnAlias` value from `az vm image list [--all] [--location]` should be the value here.|
 
-|Variable|Flag|Example|Description|
-|---|---|---|---|
-|Group|`-g`|`GRP`|The [Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) group to use. **Must already exist**.|
-|Resource Group|`-r`|`GRP-my.name1`|The [Azure Resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#resource-groups) to use. **Must already exist**.|
-|VNET|`-v`|`GRP-westeurope-vnet`|The [Azure Virtual Network](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview) to use. **Must already exist**.|
-|VM Name|`-n`|`docker_host01`|Define the Virtual Machine name in Azure.|
-|VM Username|`-u`|`vm_user`|Define the username to access the Virtual Machine with.|
-|VM Type|`-t`|`Standard_D8_v3`|Define the Virtual Machine size from the [Azure templates](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes).|
-|Disk Size|`-d`|`128`|Define the disk space on the Virtual Machine in GigaBytes (GB).|
-|Image (OS)|`-i`|`UbuntuLTS`|Define the Virtual Machine's Operating System from the [Azure images](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/cli-ps-findimage).|
-
-**Further Information**
-
-* [VM Type](https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes)
-
-You can discover a list of available VM types/sizes by running the following command:
-
-`az vm list-sizes --location <vm_location>`
-
-Variable required = `"name"`.
-
-* [Image (OS)](https://docs.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az-vm-image-list)
-
-You can discover a list of available VM images (OS) by running the following command:
-
-`az vm image list [--all] [--location]`
-
-Variable required = `"urnAlias"`.
-
-### Run the script
-
-1. Make the script executable.
+2. Make the script executable.
 
    `chmod +x create_docker_vm.sh`
 
-2. Run the script using the variables collected in the previous sub-section.
+3. Run the script using the variables collected above.
 
    `./create_docker_vm.sh -g GRP -r GRP-my.name1 -v GRP-westeurope-vnet -n docker_host01 -u vm_user -t Standard_D8_v3 -d 100 -i UbuntuLTS`
 
@@ -219,13 +172,7 @@ Variable required = `"urnAlias"`.
    }
    ```
 
-### Log into the VM
-
-Log into the Azure VM after it is has finished deployment.
-
-_Example_
-
-`ssh vm_user@172.10.1.10`
+You can now log in to your Azure VM, for example `ssh vm_user@172.10.1.10`.
 
 ## Next steps
 

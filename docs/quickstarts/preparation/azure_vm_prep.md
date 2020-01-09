@@ -6,9 +6,7 @@ sidebar_label: Azure VM preparation
 
 _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_
 
-Use this quickstart if you want to prepare an Azure Linux VM for a Fusion installation using docker.
-
-This guide will include:
+This quickstart helps you prepare an Azure Linux VM suitable for a Fusion installation using docker. It walks you through:
 
 * Disabling firewall and selinux/apparmor for the Fusion installation to complete.
 * Installation of utilities.
@@ -21,28 +19,16 @@ This guide will include:
 * Azure VM created and started. See the [Azure VM creation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_creation) guide for steps to create an Azure VM.
   * CentOS-based 7.7 (or higher) or UbuntuLTS 18.04. Instructions are provided for these releases.
   * A minimum of 128GB storage. The [Azure VM creation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_creation) guide includes this by default.
-  * Root access on server (this is normally available by default).
+  * Root access on server (this is normally available by default). All the commands given here should be run as **root** user.
 * Access to your company's VPN or similar if required.
-
-###  Command line editing
-
-The `vi` command line editor will be used in this lab, please see this [vi cheat sheet](https://ryanstutorials.net/linuxtutorial/cheatsheetvi.php) for guidance on how to use it.
 
 ## Preparation
 
-All the commands within this guidance should be run as **root** user. To switch to this user, type `sudo -i` in the command line when logged in as the default Azure user (this will have been set during creation of the VM).
-
 ### Disable firewall and selinux/apparmor
 
-For the purposes of the Fusion installation, firewall and selinux will be disabled.
+To install Fusion, firewall and selinux must be disabled.
 
-1. Log into the VM via a terminal session and switch to root user.
-
-   `ssh <docker_host>`
-
-   `sudo -i`
-
-2. Run the commands below to stop and disable iptables.
+1. Log in to the VM via a terminal session and run the commands below to stop and disable iptables.
 
    _RHEL/CentOS_
 
@@ -54,23 +40,11 @@ For the purposes of the Fusion installation, firewall and selinux will be disabl
 
    **Not required on Ubuntu.**
 
-3. Disable selinux/apparmor.
+2. Disable selinux/apparmor.
 
    _RHEL/CentOS_
 
-   Edit the selinux configuration file to disable it.
-
-   `vi /etc/sysconfig/selinux`
-
-   Change:
-
-   `SELINUX=enforced`
-
-   To:
-
-   `SELINUX=disabled`
-
-   Once complete, save and quit the file (e.g. `:wq!`).
+   In `/etc/sysconfig/selinux`, `SELINUX=disabled`.
 
    _Ubuntu_
 
@@ -78,19 +52,11 @@ For the purposes of the Fusion installation, firewall and selinux will be disabl
 
    `systemctl disable apparmor`
 
-4. The server will now need to be rebooted, run the command below to do this.
-
-   `shutdown -r now`
-
-   You will be automatically logged out of the server.
+3. The server will now need to be rebooted.
 
 ### Install utilities
 
-1. Log into the VM via a terminal session and switch to root user.
-
-   `ssh <docker_host>`
-
-   `sudo -i`
+1. Log in to the VM via a terminal session again.
 
 [//]: <JDK dependency for the 'wandocker.run' script>
 
@@ -151,9 +117,7 @@ For the purposes of the Fusion installation, firewall and selinux will be disabl
 
 ### Verify storage for docker images
 
-This step can only be performed if docker is installed as per the prerequisites.
-
-1. Verify that there is a minimum of 100GB disk space available in the `/var/lib/docker` directory.
+Verify that there is a minimum of 100GB disk space available in the `/var/lib/docker` directory.
 
    `df -h /var/lib/docker`
 

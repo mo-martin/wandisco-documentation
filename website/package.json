@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "docusaurus": "^1.14.0"
+  },
+  "dependencies": {
+    "favicons": "^5.5.0"
   }
 }

@@ -1,14 +1,16 @@
 ---
 id: hdp_sandbox_lhv_client-adlsg2_lan
-title: Hortonworks (HDP) Sandbox with Live Hive to Azure Databricks with LiveAnalytics
-sidebar_label: HDP Sandbox with Live Hive to Azure Databricks with LiveAnalytics
+title: Hortonworks (HDP) Sandbox to Azure Databricks with LiveAnalytics
+sidebar_label: HDP Sandbox to Azure Databricks with LiveAnalytics
 ---
 
 _THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED_
 
 [//]: <This quickstart is work in progress, and new items are still being added. The development approach is that all known workarounds/configuration steps will be kept in the document until we have fully confirmed their fix (see MTC label). At which point, they will be removed. The same will apply for configuration/installation steps when blueprints for HDP or Fusion have been completed (see DAP-144).>
 
-Use this quickstart if you want to configure Fusion to replicate from a Hortonworks (HDP) Sandbox to an Azure Databricks cluster. This will involve the use of Live Hive for the HDP cluster, and LiveAnalytics for the Azure Databricks cluster.
+Use this quickstart if you want to configure Fusion to replicate from a Hortonworks (HDP) Sandbox to an Azure Databricks cluster.
+
+This will involve the use of Live Hive for the HDP cluster, and the Databricks Delta Lake plugin for the Azure Databricks cluster. These two products form the LiveAnalytics solution.
 
 Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/troubleshooting/useful_info) section for additional commands and help.
 
@@ -16,7 +18,7 @@ Please see the [Useful information](https://wandisco.github.io/wandisco-document
 
 [//]: <We are still working out the minimum VM requirements, at the moment, we are working with Standard D8 v3.>
 
-To complete this lab exercise, you will need:
+To complete this quickstart, you will need:
 
 * Azure VM created and started. See the [Azure VM creation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_creation) guide for steps to create an Azure VM.
   * Minimum size VM recommendation = **Standard D8 v3 (8 vcpus, 32 GiB memory).**
@@ -25,53 +27,17 @@ To complete this lab exercise, you will need:
   * Root access on server (this is normally available by default).
 * Azure VM prepared for Fusion installation, see [Azure VM preparation](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/preparation/azure_vm_prep) guide for all required steps.
 
-###  Command line editing
-
-The `vi` command line editor will be used in this lab, please see this [vi cheat sheet](https://ryanstutorials.net/linuxtutorial/cheatsheetvi.php) for guidance on how to use it.
-
 ## Installation
 
-All the commands within this guidance should be run as **root** user. To switch to this user, type `sudo -i` in the command line when logged in as the default Azure user (this will have been set during creation of the VM).
-
-Log into the VM via a terminal session and switch to root user.
-
-`ssh <docker_host>`
-
-`sudo -i`
-
-### Create docker network
-
-1. Run the following command to create the Fusion docker network that will work in conjunction with the HDP Sandbox.
-
-   `docker network create fusion-docker-compose_fusion`
-
-   A 'sha' reference will be displayed afterwards if this was successful.
-
-### Add temporary entry to hosts file
-
-[//]: <This is required to get the Fusion docker setup script to pass verification when entering the HDP NameNode/Metastore hostnames. It is removed after the setup script is done.>
-
-[//]: <This workaround is not required after removing the 'validate_hostname' function from the following conf files: common.conf, common-fusion.conf, plugin-livehive.conf and zone-hdp.conf.>
-
-1. On the docker host, edit the hosts file so that the correct hostname variables will be set during the Fusion setup.
-
-   `vi /etc/hosts`
-
-   Add an additional line as below:
-
-   `127.0.0.1 manager fusion-nn-proxy-hdp fusion-server-hdp fusion-livehive-proxy-hdp`
-
-   Once complete, save and quit the file (e.g. `:wq!`).
+Please log into your VM prior to starting these steps. All the commands within this guidance should be run as **root** user.
 
 ### Setup Fusion
 
 [//]: <Still not determined as to where the users will pull the fusion-docker-compose repository. We will need to provide pre-baked config files so that the only entries required will be the ADLS Gen2 details.>
 
-1. (**TBC**) Clone the Fusion docker repository to your Azure VM instance:
+1. (**TBC - branch name**) Clone the Fusion docker repository to your Azure VM instance:
 
-   `cd ~`
-
-   `git clone -b features/livehive-merge https://github.com/WANdisco/fusion-docker-compose.git`
+   `git clone https://github.com/WANdisco/fusion-docker-compose.git`
 
 2. Change to the repository directory:
 
@@ -100,20 +66,6 @@ The examples shown below are for guidance only.
 
 At this point, the setup prompts will be complete and the script will exit out with an informational message. Please ignore this for now and continue following the steps below.
 
-### Remove temporary entry to hosts file
-
-[//]: <This workaround is not required after removing the 'validate_hostname' function from the following conf files: common.conf, common-fusion.conf, plugin-livehive.conf and zone-hdp.conf.>
-
-1. Edit the hosts file as the additional entry is no longer required and will create problems with the internal network if not removed.
-
-   `vi /etc/hosts`
-
-   Remove the line below:
-
-   `127.0.0.1   manager fusion-nn-proxy-hdp fusion-server-hdp fusion-livehive-proxy-hdp`
-
-   Once complete, save and quit the file (e.g. `:wq!`).
-
 ### Startup Fusion
 
 After all the prompts have been completed, you will be able to start the containers.
@@ -140,9 +92,9 @@ After all the prompts have been completed, you will be able to start the contain
 
    _Example_
 
-   `wget https://URL/wandocker.run`
+   `wget https://URL/wandocker.tar.gz`
 
-2. Decompress the gzip file and run the script.
+2. (**TBC**) Decompress the gzip file and run the script.
 
    `tar -xf wandocker.tar.gz`
 
@@ -162,13 +114,13 @@ After all the prompts have been completed, you will be able to start the contain
 
    This may take up to 15 minutes.
 
-   Once the following four lines are displayed in the Event Log, the image builds will have completed:
+   Once this has completed (i.e the event log text will eventually stop), hit enter to return to the main menu. Press `l` to list all images and confirm the following four images are listed:
 
    ```text
-   BuildResponseItem[stream=Successfully tagged hdp_slave:2.7.3.0
-   BuildResponseItem[stream=Successfully tagged repo_host:2.6.5.0-292
-   BuildResponseItem[stream=Successfully tagged hdp_master:2.7.3.0
-   BuildResponseItem[stream=Successfully tagged repo_cache_host:2.6.5.0-292
+   hdp_master:2.7.3.0
+   repo_cache_host:2.6.5.0-292
+   repo_host:2.6.5.0-292
+   hdp_slave:2.7.3.0
    ```
 
    Press enter to return to the Main Menu.
@@ -177,7 +129,7 @@ After all the prompts have been completed, you will be able to start the contain
 
    `2` - Create and start Local Repo Containers
 
-   Type the Index number for the `fusion-docker-compose_fusion` network, followed by enter.
+   Type the Index number for the `fusion_fusion` network, followed by enter.
 
    This may take 2-3 minutes. Once the following line is displayed in the Event Log, the repositories are ready:
 
@@ -193,7 +145,13 @@ After all the prompts have been completed, you will be able to start the contain
 
    Type the Index number for the `fusion-docker-compose_fusion` network, followed by enter.
 
-   This may take 3-4 minutes. Press enter to return to the Main Menu.
+   This may take 3-4 minutes. Once the following line is displayed in the Event Log, the sandbox container is ready:
+
+   ```text
+   [/root/firstInit.sh] on /sandbox-hdp Completed.
+   ```
+
+   Press enter to return to the Main Menu.
 
    Wait until the Ambari UI is accessible on `http://<docker_IP_address>:8080` via a web browser before continuing (you do not need to log in at this time).
 

@@ -144,7 +144,7 @@ The two required templates are given below. Create these in the same location wi
 
 3. Run the script using the variables collected above.
 
-   `./create_docker_vm.sh -g GRP -r GRP-my.name1 -v GRP-westeurope-vnet -n docker_host01 -u vm_user -t Standard_D8_v3 -d 100 -i UbuntuLTS`
+   `./create_docker_vm.sh -g GRP -r GRP-my.name1 -v GRP-westeurope-vnet -n docker_host01 -u vm_user -t Standard_D8_v3 -d 128 -i UbuntuLTS`
 
    _Example output_
 

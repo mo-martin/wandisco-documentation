@@ -54,7 +54,7 @@
                 };
               }
             });
-        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Creating an Azure Linux VM for a Fusion installation</h1></header><article><div><span><p><em>THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED</em></p>
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Creating an Azure Linux VM for a Fusion installation</h1></header><article><div><span><p><em>THIS GUIDE IS WORK IN PROGRESS, PLEASE DO NOT FOLLOW ANYTHING HERE UNTIL THIS WARNING IS REMOVED</em></p>
 <p>This quickstart helps you create an Azure Linux VM suitable for a Fusion installation. It walks you through:</p>
 <ul>
 <li>Creating an <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/linux/create-ssh-secured-vm-from-template">Azure Linux VM template</a> script.</li>
@@ -187,7 +187,7 @@ system_info:
 <li><p>Make the script executable.</p>
 <p><code>chmod +x create_docker_vm.sh</code></p></li>
 <li><p>Run the script using the variables collected above.</p>
-<p><code>./create_docker_vm.sh -g GRP -r GRP-my.name1 -v GRP-westeurope-vnet -n docker_host01 -u vm_user -t Standard_D8_v3 -d 100 -i UbuntuLTS</code></p>
+<p><code>./create_docker_vm.sh -g GRP -r GRP-my.name1 -v GRP-westeurope-vnet -n docker_host01 -u vm_user -t Standard_D8_v3 -d 128 -i UbuntuLTS</code></p>
 <p><em>Example output</em></p>
 <pre><code class="hljs css language-text">Parameters
 Group: GRP

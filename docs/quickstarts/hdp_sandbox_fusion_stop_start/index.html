@@ -1,0 +1,134 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>How to safely shutdown and start up a WANdisco Fusion and Hortonworks Sandbox installation · WANdisco docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="This guide is for when you want to safely shutdown or start up a WANdisco Fusion and Hortonworks Sandbox installation."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="How to safely shutdown and start up a WANdisco Fusion and Hortonworks Sandbox installation · WANdisco docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/"/><meta property="og:description" content="This guide is for when you want to safely shutdown or start up a WANdisco Fusion and Hortonworks Sandbox installation."/><meta property="og:image" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://wandisco.github.io/wandisco-documentation/ https://wandisco.github.io/wandisco-documentation/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="https://wandisco.github.io/wandisco-documentation/img/favicon.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://wandisco.github.io/wandisco-documentation/js/scrollSpy.js"></script><link rel="stylesheet" href="https://wandisco.github.io/wandisco-documentation/css/main.css"/><script src="https://wandisco.github.io/wandisco-documentation/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="https://wandisco.github.io/wandisco-documentation/"><img class="logo" src="https://wandisco.github.io/wandisco-documentation/img/favicon.png" alt="WANdisco docs"/><h2 class="headerTitleWithLogo">WANdisco docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/quickstarts/installation/quickstart-config" target="_self">Quickstarts</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/docs/doc1" target="_self">Docs</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/glossary/a" target="_self">Glossary</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/docs/api/api" target="_self">API</a></li><li class=""><a href="https://wandisco.github.io/wandisco-documentation/help" target="_self">Help</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">How to safely shutdown and start up a WANdisco Fusion and Hortonworks Sandbox installation</h1></header><article><div><span><p>This guide is for when you want to safely shutdown or start up a WANdisco Fusion and Hortonworks Sandbox installation.</p>
+<p>All commands shown are to be run as root user.</p>
+<h2><a class="anchor" aria-hidden="true" id="shutting-down"></a><a href="#shutting-down" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Shutting down</h2>
+<p>The steps should be carried out prior to shutting down the Docker host itself.</p>
+<h3><a class="anchor" aria-hidden="true" id="shutdown-wandisco-fusion"></a><a href="#shutdown-wandisco-fusion" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Shutdown WANdisco Fusion</h3>
+<p>Follow the steps outlined below to safely shutdown Fusion.</p>
+<ol>
+<li><p>Log in to the Docker host via a terminal session.</p></li>
+<li><p>Switch to the fusion-docker-compose directory.</p>
+<p><code>cd /path/to/fusion-docker-compose</code></p></li>
+<li><p>Stop all Fusion containers.</p>
+<p><code>docker-compose stop</code></p>
+<p><em>Example output</em></p>
+<pre><code class="hljs css language-text">Stopping fusion_fusion-ihc-server-hdp_1     ... done
+Stopping fusion_sshd-hdp_1                  ... done
+Stopping fusion_fusion-ui-server-hdp_1      ... done
+Stopping fusion_fusion-livehive-proxy-hdp_1 ... done
+Stopping fusion_fusion-nn-proxy-hdp_1       ... done
+Stopping fusion_fusion-ihc-server-adls2_1   ... done
+Stopping fusion_fusion-ui-server-adls2_1    ... done
+Stopping fusion_fusion-server-hdp_1         ... done
+Stopping fusion_fusion-oneui-server_1       ... done
+Stopping fusion_debug_1                     ... done
+Stopping fusion_fusion-server-adls2_1       ... done
+</code></pre></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="shutdown-hdp-sandbox"></a><a href="#shutdown-hdp-sandbox" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Shutdown HDP Sandbox</h3>
+<p>Follow the steps outlined below to safely shutdown the HDP Sandbox.</p>
+<ol>
+<li><p>Log in to the Ambari UI, and shutdown all services.</p>
+<p><strong>Ambari UI -&gt; Services (...) -&gt; Stop All -&gt; CONFIRM STOP</strong></p>
+<p>Wait until all services have shutdown before continuing.</p></li>
+<li><p>Log in to the Docker host via a terminal session.</p></li>
+<li><p>Change to the 'wandocker' directory.</p>
+<p><code>cd /path/to/wandocker</code></p></li>
+<li><p>Run the wandocker script to access the main menu.</p>
+<p><code>./wandocker.sh -i hdp265_docker.ini</code></p></li>
+<li><p>Once in the wandocker main menu, select option <code>a</code> to <strong>Toggle Advanced Options</strong>.</p></li>
+<li><p>Select option <code>8</code> to <strong>Stop a Container</strong>.</p>
+<p>Type the index number for the <code>/sandbox-hdp</code> container, and press enter.</p>
+<p>Wait until the <code>Container /sandbox-hdp stopped OK</code> line appears in the Event Log.</p></li>
+<li><p><strong>Please note that this step is not required if you did not build local HDP repositories</strong></p>
+<p>Perform the same step above twice more except this time, select the <code>/repo_cache_host</code> and <code>/repo_host</code> containers (the order does not matter).</p>
+<p>Wait until the <code>Container /repo_cache_host stopped OK</code> and <code>Container /repo_host stopped OK</code> lines appear in the Event Log before continuing.</p></li>
+<li><p>Press <code>q</code> to quit out of the wandocker main menu after completing this.</p></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="shutdown-the-docker-host"></a><a href="#shutdown-the-docker-host" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Shutdown the Docker host</h3>
+<p>If desired, you can now shut down the Docker host.</p>
+<h2><a class="anchor" aria-hidden="true" id="starting-up"></a><a href="#starting-up" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Starting up</h2>
+<p>Ensure the Docker host is started before continuing. The WANdisco Fusion containers must be started before the HDP sandbox as it will try to contact the Fusion containers when services are started.</p>
+<h3><a class="anchor" aria-hidden="true" id="starting-wandisco-fusion"></a><a href="#starting-wandisco-fusion" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Starting WANdisco Fusion</h3>
+<p>Follow the steps outlined below to start up Fusion.</p>
+<ol>
+<li><p>Log in to the Docker host via a terminal session.</p></li>
+<li><p>Switch to the fusion-docker-compose directory.</p>
+<p><code>cd /path/to/fusion-docker-compose</code></p></li>
+<li><p>Verify that the Fusion containers are stopped.</p>
+<p><code>docker-compose ps</code></p>
+<p>All containers should have an <code>Exit</code> state.</p></li>
+<li><p>Start all Fusion containers.</p>
+<p><code>docker-compose start</code></p>
+<p><em>Example output</em></p>
+<pre><code class="hljs css language-text">Starting fusion_fusion-ihc-server-hdp_1     ... done
+Starting fusion_sshd-hdp_1                  ... done
+Starting fusion_fusion-ui-server-hdp_1      ... done
+Starting fusion_fusion-livehive-proxy-hdp_1 ... done
+Starting fusion_fusion-nn-proxy-hdp_1       ... done
+Starting fusion_fusion-ihc-server-adls2_1   ... done
+Starting fusion_fusion-ui-server-adls2_1    ... done
+Starting fusion_fusion-server-hdp_1         ... done
+Starting fusion_fusion-oneui-server_1       ... done
+Starting fusion_debug_1                     ... done
+Starting fusion_fusion-server-adls2_1       ... done
+</code></pre></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="starting-hdp-sandbox"></a><a href="#starting-hdp-sandbox" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Starting HDP Sandbox</h3>
+<ol>
+<li><p>Log in to the Docker host via a terminal session.</p></li>
+<li><p>Change to the 'wandocker' directory.</p>
+<p><code>cd /path/to/wandocker</code></p></li>
+<li><p>Run the wandocker script to access the main menu.</p>
+<p><code>./wandocker.sh -i hdp265_docker.ini</code></p></li>
+<li><p>Once in the wandocker main menu, select option <code>a</code> to <strong>Toggle Advanced Options</strong>.</p></li>
+<li><p>Select option <code>7</code> to <strong>Start a Container</strong>.</p></li>
+<li><p><strong>Please note that this step is not required if you did not build local HDP repositories</strong></p>
+<p>Type the index number for the <code>/repo_host</code> container and press enter.</p>
+<p>Wait until the <code>Container /repo_host started OK</code> line appears in the Event Log before continuing.</p>
+<p>Repeat the same step for the <code>/repo_cache_host</code> container and wait until the <code>Container /repo_cache_host started OK</code> line appears in the Event Log before continuing.</p></li>
+<li><p>Select option <code>7</code> to <strong>Start a Container</strong>.</p>
+<p>Type the index number for the <code>/sandbox-hdp</code> container, and press enter.</p>
+<p>Wait until the <code>Container /sandbox-hdp started OK</code> line appears in the Event Log.</p></li>
+<li><p>Select option <code>3a</code> to <strong>Start Manager and agents (after powerdown etc)</strong>.</p>
+<p>The following two lines (amongst others) will appear in the Event Log once the Ambari Server and Ambari Agent has started:</p>
+<pre><code class="hljs css language-text">[/usr/sbin/ambari-server, start] on /sandbox-hdp Completed.
+[/usr/sbin/ambari-agent, start] on /sandbox-hdp Completed.
+</code></pre>
+<p>Wait until Ambari UI is accessible on <code>http://&lt;docker_IP_address&gt;:8080</code> via a web browser before continuing.</p></li>
+<li><p>Log into the Ambari UI and start all services.</p>
+<p><strong>Ambari UI -&gt; Services (...) -&gt; Start All -&gt; CONFIRM START</strong></p>
+<p>Wait until all services have started before continuing.</p></li>
+<li><p>Press <code>q</code> to quit out of the wandocker main menu after completing this.</p></li>
+</ol>
+<h2><a class="anchor" aria-hidden="true" id="troubleshooting"></a><a href="#troubleshooting" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting</h2>
+<h3><a class="anchor" aria-hidden="true" id="hiveserver2-down-after-hdp-sandbox-is-started"></a><a href="#hiveserver2-down-after-hdp-sandbox-is-started" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Hiveserver2 down after HDP Sandbox is started</h3>
+<p>The Hiveserver2 component in the HDP sandbox may be down after starting the cluster. If so, try the following steps to start it back up.</p>
+<ol>
+<li><p>On the docker host, change directory to the Fusion docker compose directory and restart the Fusion Server container for the HDP zone.</p>
+<p><code>cd /path/to/fusion-docker-compose</code></p>
+<p><code>docker-compose restart fusion-server-hdp</code></p>
+<p>Wait until the container has finished restarting before continuing.</p></li>
+<li><p>Access the Ambari UI, and manually start the Hiveserver2 component.</p>
+<p><strong>Ambari UI -&gt; Hive -&gt; Summary -&gt; Click on the &quot;HIVESERVER2&quot; written in blue text.</strong></p></li>
+<li><p>Locate the HiveServer2 in the component list and click the <code>...</code> in the Action column. Select to <strong>Start</strong> the component in the drop-down list.</p></li>
+</ol>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#shutting-down">Shutting down</a><ul class="toc-headings"><li><a href="#shutdown-wandisco-fusion">Shutdown WANdisco Fusion</a></li><li><a href="#shutdown-hdp-sandbox">Shutdown HDP Sandbox</a></li><li><a href="#shutdown-the-docker-host">Shutdown the Docker host</a></li></ul></li><li><a href="#starting-up">Starting up</a><ul class="toc-headings"><li><a href="#starting-wandisco-fusion">Starting WANdisco Fusion</a></li><li><a href="#starting-hdp-sandbox">Starting HDP Sandbox</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a><ul class="toc-headings"><li><a href="#hiveserver2-down-after-hdp-sandbox-is-started">Hiveserver2 down after HDP Sandbox is started</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://wandisco.github.io/wandisco-documentation/" class="nav-home"></a><div><h5>Docs</h5><a href="https://wandisco.github.io/wandisco-documentation/docs/en/quickstarts/quickstart-config.html">Getting Started</a><a href="https://docs.wandisco.com">Product User Guides</a><a href="https://community.wandisco.com/s/knowledge-base">Knowledge Base</a></div><div><h5>Community</h5><a href="https://community.wandisco.com/">WANdisco Community</a><a href="//wandisco.com/partners/find">Partners</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://wandisco.com/blog">Blog</a><a href="https://blogs.wandisco.com/">Developer Blog</a><a href="https://github.com/wandisco">GitHub</a></div></section><section class="copyright">Copyright © 2020 WANdisco, Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '56e573413aa88e9ec072a585bec45683',
+                indexName: 'wandisco',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>

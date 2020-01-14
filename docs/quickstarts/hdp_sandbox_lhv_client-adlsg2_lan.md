@@ -12,7 +12,14 @@ Use this quickstart if you want to configure Fusion to replicate from a Hortonwo
 
 This will involve the use of Live Hive for the HDP cluster, and the Databricks Delta Lake plugin for the Azure Databricks cluster. These two products form the LiveAnalytics solution.
 
-Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/troubleshooting/useful_info) section for additional commands and help.
+What this guide will cover:
+
+- Installing WANdisco Fusion using the [docker-compose](https://docs.docker.com/compose/) tool.
+- Using the 'wandocker' tool to deploy a pre-configured Hadoop Sandbox based on HDP 2.6.5.
+- Integrating WANdisco Fusion with Azure Databricks.
+- Performing a sample data migration.
+
+Please see the [shutdown and start up](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/hdp_sandbox_fusion_stop_start) guide for when you wish to safely shutdown or start back up the installation.
 
 ## Prerequisites
 
@@ -108,13 +115,13 @@ After all the prompts have been completed, you will be able to start the contain
 
    `./wandocker.sh -i hdp265_docker.ini`
 
-4. Choose Option 1 to set up all the required images for the HDP sandbox and repository.
+4. (**TBC if Repos are required**) Choose Option 1 to set up all the required images for the HDP sandbox and repository.
 
    `1` - Build All Images (Repo, Agent, Server)
 
-   This may take up to 15 minutes.
+   This may take up to 15-20 minutes.
 
-   Once this has completed (i.e the event log text will eventually stop), hit enter to return to the main menu. Press `l` to list all images and confirm the following four images are listed:
+   Once this has completed (i.e the event log stream will eventually stop), hit enter to return to the main menu. Press `l` to list all images and confirm the following four images are listed:
 
    ```text
    hdp_master:2.7.3.0
@@ -125,27 +132,37 @@ After all the prompts have been completed, you will be able to start the contain
 
    Press enter to return to the Main Menu.
 
-5. Select option 2 to create and start the HDP repository and cache.
+5. (**TBC if required**) Select option 2 to create and start the HDP repository and cache.
 
    `2` - Create and start Local Repo Containers
 
    Type the Index number for the `fusion_fusion` network, followed by enter.
 
-   This may take 2-3 minutes. Once the following line is displayed in the Event Log, the repositories are ready:
+   This may take 2-3 minutes. Once the following two lines are displayed in the Event Log, the repositories are ready:
 
    ```text
-   [/root/buildrepo.sh, 2.6.5.0-292] on /repo_host Completed.
+   Container /repo_host created OK
+   Container /repo_cache_host created OK
    ```
 
    Press enter to return to the Main Menu.
+
+   You can perform another check of the repositories by selecting option `c` to list containers, and check that the following two entries are listed:
+
+   ```text
+   repo_host:2.6.5.0-292, [/repo_host]
+   repo_cache_host:2.6.5.0-292, [/repo_cache_host]
+   ```
+
+   Press enter to return to the Main Menu afterwards.
 
 6. Select option 3 to create the HDP sandbox.
 
    `3` - Create and start Sandbox Container(s)
 
-   Type the Index number for the `fusion-docker-compose_fusion` network, followed by enter.
+   Type the Index number for the `fusion_fusion` network, followed by enter.
 
-   This may take 3-4 minutes. Once the following line is displayed in the Event Log, the sandbox container is ready:
+   This may take up to 5 minutes. Once the following line is displayed in the Event Log, the sandbox container is ready:
 
    ```text
    [/root/firstInit.sh] on /sandbox-hdp Completed.
@@ -153,7 +170,7 @@ After all the prompts have been completed, you will be able to start the contain
 
    Press enter to return to the Main Menu.
 
-   Wait until the Ambari UI is accessible on `http://<docker_IP_address>:8080` via a web browser before continuing (you do not need to log in at this time).
+   Wait until the Ambari UI is accessible on `http://<docker_IP_address>:8080` via a web browser before continuing, you do not need to log in at this time.
 
 7. Install the Cluster blueprint by selecting option 4.
 
@@ -166,7 +183,7 @@ After all the prompts have been completed, you will be able to start the contain
    Username = `admin`
    Password = `admin`
 
-   Two automated jobs will automatically be started for installing and starting components, observable in **Background Operations**. Wait until these are complete before continuing (~12mins).
+   Two automated jobs will automatically be started for installing and starting components, observable in **Background Operations**. Wait until these are complete before continuing (~15mins).
 
 ## Configuration
 
@@ -174,7 +191,7 @@ After all the prompts have been completed, you will be able to start the contain
 
 1. Log into one of the containers for the HDP zone.
 
-   `docker exec -it fusion-docker-compose_fusion-ui-server-hdp_1 bash`
+   `docker exec -it fusion_fusion-ui-server-hdp_1 bash`
 
 [//]: <DAP-131>
 
@@ -239,9 +256,9 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
    Click **Update** once complete.
 
-3. On the docker host, log into one of the containers for the ADLS Gen2 zone as root user.
+3. On the docker host, log into one of the containers for the ADLS Gen2 zone.
 
-   `docker exec -u root -it fusion-docker-compose_fusion-ui-server-adls2_1 bash`
+   `docker exec -it fusion_fusion-server-adls2_1 bash`
 
 [//]: <DAP-135 workaround>
 
@@ -346,13 +363,13 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
 1. On the docker host, log into the HDP cluster node.
 
-   `docker exec -it manager bash`
+   `docker exec -it sandbox-hdp bash`
 
 2. Run beeline and use the `!connect` string to start a Hive session via the Hiveserver2 service.
 
    `beeline`
 
-   `beeline> !connect jdbc:hive2://manager:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2`
+   `beeline> !connect jdbc:hive2://sandbox-hdp:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2`
 
    This connection string can also be found on the Ambari UI under **Hive -> Summary -> HIVESERVER2 JDBC URL**.
 
@@ -364,17 +381,17 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
 2. Create a database to use that will match the regex for the Hive replication rule created earlier in the Fusion UI.
 
-   `0: jdbc:hive2://manager:2181/> create database test01;`
+   `0: jdbc:hive2://sandbox-hdp:2181/> create database test01;`
 
 3. Create a table inside of the database.
 
-   `0: jdbc:hive2://manager:2181/> use test01;`
+   `0: jdbc:hive2://sandbox-hdp:2181/> use test01;`
 
-   `0: jdbc:hive2://manager:2181/> create table table01(id int, name string) stored as ORC;`
+   `0: jdbc:hive2://sandbox-hdp:2181/> create table table01(id int, name string) stored as ORC;`
 
 4. Insert data inside of the table.
 
-   `0: jdbc:hive2://manager:2181/> insert into table01 values (1,'words');`
+   `0: jdbc:hive2://sandbox-hdp:2181/> insert into table01 values (1,'words');`
 
    This will now launch a Hive job that will insert the data values provided in this example. If this is successful, you will see **SUCCEEDED** written in the STATUS column.
 
@@ -396,7 +413,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
 1. To verify the data values inside of the table on the **HDP** zone, run the command below when still logged into the Hive beeline session:
 
-   `0: jdbc:hive2://manager:2181/> select * from table01;`
+   `0: jdbc:hive2://sandbox-hdp:2181/> select * from table01;`
 
    The output will be similar to that of below:
 
@@ -432,40 +449,9 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
 ## Troubleshooting
 
-### Hiveserver2 down after HDP Sandbox is started for first time
+Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/troubleshooting/useful_info) section for additional commands and help.
 
-The Hiveserver2 component in the HDP sandbox may be down after starting the cluster for the first time. If so, try the following steps to start it back up.
-
-1. On the docker host, change directory to the Fusion docker compose directory and restart the Fusion containers.
-
-   `cd /path/to/fusion-docker-compose`
-
-   `docker-compose restart`
-
-   Wait until all containers have finished restarting before continuing.
-
-2. Access the Ambari UI, and manually start the Hiveserver2 component.
-
-   **Ambari UI -> Hive -> Summary -> Click on the "HIVESERVER2" written in blue text.**
-
-3. Locate the HiveServer2 in the component list and click the `...` in the Action column. Select to **Start** the component in the drop-down list.
-
-### Error relating to 'system_dbus_socket'
-
-[//]: <May not be included but a few people have hit this when using docker. It is apparently due to an incompatibility with Ubuntu, see https://bugs.freedesktop.org/show_bug.cgi?id=75515 for detail.>
-
-If encountering a `system_dbus_socket` error when attempting to start containers, run the following commands below on the docker host:
-
-```json
-mkdir -p /run /run/lock
-mv /var/run/* /run/
-mv /var/lock/* /run/lock/
-rm -rf /var/run /var/lock
-ln -s /run /var/run
-ln -s /run/lock /var/lock
-```
-
-### Error relating to 'connection refused' after starting Fusion for the first time
+### Error 'connection refused' after starting Fusion for the first time
 
 You may see the following error occur when running `docker-compose up -d` for the first time inside the fusion-docker-compose repository:
 
@@ -475,13 +461,45 @@ ERROR: Get https://registry-1.docker.io/v2/: dial tcp: lookup registry-1.docker.
 
 If encountering this error, run the `docker-compose up -d` command again, and this should initiate the download of the docker images.
 
-### Fusion zones not inducted together after initial start-up
+### Fusion zones not inducted together
 
 [//]: <DAP-136 workaround>
 
 If the Fusion zones are not inducted together after starting Fusion for the first time (`docker-compose up -d`), you can simply run the same command again to start the induction container:
 
 `docker-compose up -d`
+
+### Hiveserver2 down after HDP Sandbox is started
+
+The Hiveserver2 component in the HDP sandbox may be down after starting the cluster. If so, try the following steps to start it back up.
+
+1. On the docker host, change directory to the Fusion docker compose directory and restart the Fusion Server container for the HDP zone.
+
+   `cd /path/to/fusion-docker-compose`
+
+   `docker-compose restart fusion-server-hdp`
+
+   Wait until the container has finished restarting before continuing.
+
+2. Access the Ambari UI, and manually start the Hiveserver2 component.
+
+   **Ambari UI -> Hive -> Summary -> Click on the "HIVESERVER2" written in blue text.**
+
+3. Locate the HiveServer2 in the component list and click the `...` in the Action column. Select to **Start** the component in the drop-down list.
+
+### Spark2 History Server down after HDP Sandbox is started for first time
+
+When starting the HDP Sandbox for the first time, the Spark2 History Server may be in a stopped state. This is often due to the order in which Spark2 and the WANdisco Fusion client is installed.
+
+To resolve and bring the History Server online, follow the steps below:
+
+1. In the Ambari UI, select to Refresh configs for the WANdisco Fusion service.
+
+   **Ambari UI -> WANdisco Fusion -> Actions -> Refresh configs -> OK**
+
+2. Start the Spark2 service.
+
+   **Ambari UI -> Spark2 -> Actions -> Start -> CONFIRM START**
 
 ## Advanced options
 

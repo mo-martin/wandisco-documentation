@@ -88,9 +88,9 @@ DISK=<span class="hljs-string">''</span>
 IMAGE=<span class="hljs-string">''</span>
 
 <span class="hljs-function"><span class="hljs-title">print_usage</span></span>() {
-  <span class="hljs-built_in">echo</span> <span class="hljs-string">"Usage: ./create_docker_vm.sh -g AZ-USER-GROUP -r AZ-RESOURCE-GROUP -v AZ-VNET -n VM-NAME -u VM-USERNAME -t VM-TYPE -d VM-DISK-SIZE (GB) -i OPERATING-SYSTEM"</span>
+  <span class="hljs-built_in">echo</span> <span class="hljs-string">"Usage: ./create_docker_vm.sh -g AZ-USER-GROUP -r AZ-RESOURCE-GROUP -v AZ-VNET -s AZ-SUBNET-NAME -n VM-NAME -u VM-USERNAME -t VM-TYPE -d VM-DISK-SIZE (GB) -i OPERATING-SYSTEM"</span>
 
-  <span class="hljs-built_in">echo</span> <span class="hljs-string">"Example: ./create_docker_vm.sh -g DEV -r DEV-john.smith1 -v DEV-westeurope-vnet -n johnsmith-docker -u john -t Standard_D8_v3 -d 128 -i UbuntuLTS"</span>
+  <span class="hljs-built_in">echo</span> <span class="hljs-string">"Example: ./create_docker_vm.sh -g DEV -r DEV-john.smith1 -v DEV-westeurope-vnet -s default -n johnsmith-docker -u john -t Standard_D8_v3 -d 128 -i UbuntuLTS"</span>
 }
 <span class="hljs-comment">#Setup of env</span>
 <span class="hljs-keyword">while</span> <span class="hljs-built_in">getopts</span> <span class="hljs-string">"g:G:r:R:v:V:n:N:u:U:t:T:d:D:i:I:hH*"</span> opt; <span class="hljs-keyword">do</span>
@@ -98,6 +98,7 @@ IMAGE=<span class="hljs-string">''</span>
     g|G) GROUP=<span class="hljs-string">"<span class="hljs-variable">${OPTARG}</span>"</span> ;;
     r|R) RG=<span class="hljs-string">"<span class="hljs-variable">${OPTARG}</span>"</span> ;;
     v|V) VNET=<span class="hljs-string">"<span class="hljs-variable">${OPTARG}</span>"</span> ;;
+    s|S) SUBNAME=<span class="hljs-string">"<span class="hljs-variable">${OPTARG}</span>"</span> ;;
     n|N) VM_NAME=<span class="hljs-string">"<span class="hljs-variable">${OPTARG}</span>"</span> ;;
     u|U) VM_USERNAME=<span class="hljs-string">"<span class="hljs-variable">${OPTARG}</span>"</span> ;;
     t|T) TYPE=<span class="hljs-variable">${OPTARG}</span> ;;
@@ -110,12 +111,13 @@ IMAGE=<span class="hljs-string">''</span>
 <span class="hljs-keyword">done</span>
 
 <span class="hljs-comment">#VM Characteristics</span>
-SUBNETID=$(az network vnet subnet show -g <span class="hljs-variable">$GROUP</span> -n default --vnet-name <span class="hljs-variable">$VNET</span> |grep addressPrefix -a3 |grep -i id | awk <span class="hljs-string">'{print $2}'</span> | tr -d [\",])
+SUBNETID=$(az network vnet subnet show -g <span class="hljs-variable">$GROUP</span> -n <span class="hljs-variable">$SUBNAME</span> --vnet-name <span class="hljs-variable">$VNET</span> |grep addressPrefix -a3 |grep -i id | awk <span class="hljs-string">'{print $2}'</span> | tr -d [\",])
 
 <span class="hljs-built_in">echo</span> <span class="hljs-string">"Parameters"</span>
 <span class="hljs-built_in">echo</span> <span class="hljs-string">"Group: <span class="hljs-variable">$GROUP</span>"</span>
 <span class="hljs-built_in">echo</span> <span class="hljs-string">"Resource Group: <span class="hljs-variable">$RG</span>"</span>
 <span class="hljs-built_in">echo</span> <span class="hljs-string">"VNET: <span class="hljs-variable">$VNET</span>"</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"Subnet Name: <span class="hljs-variable">$SUBNAME</span>"</span>
 <span class="hljs-built_in">echo</span> <span class="hljs-string">"VM Name: <span class="hljs-variable">$VM_NAME</span>"</span>
 <span class="hljs-built_in">echo</span> <span class="hljs-string">"VM Username: <span class="hljs-variable">$VM_USERNAME</span>"</span>
 <span class="hljs-built_in">echo</span> <span class="hljs-string">"VM Type: <span class="hljs-variable">$TYPE</span>"</span>
@@ -176,6 +178,7 @@ system_info:
 <tr><td>Group</td><td><code>-g</code></td><td><code>GRP</code></td><td>The <a href="https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis">Azure Active Directory</a> group to use. <strong>Must already exist</strong>.</td></tr>
 <tr><td>Resource Group</td><td><code>-r</code></td><td><code>GRP-my.name1</code></td><td>The <a href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#resource-groups">Azure Resource group</a> to use. <strong>Must already exist</strong>.</td></tr>
 <tr><td>VNET</td><td><code>-v</code></td><td><code>GRP-westeurope-vnet</code></td><td>The <a href="https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview">Azure Virtual Network</a> to use. <strong>Must already exist</strong>.</td></tr>
+<tr><td>Subnet Name</td><td><code>-s</code></td><td><code>default</code></td><td>The Azure Virtual Network <a href="https://docs.microsoft.com/en-us/cli/azure/network/vnet/subnet?view=azure-cli-latest">Subnet name</a>. <strong>Must already exist</strong>.</td></tr>
 <tr><td>VM Name</td><td><code>-n</code></td><td><code>docker_host01</code></td><td>Define the Virtual Machine name in Azure.</td></tr>
 <tr><td>VM Username</td><td><code>-u</code></td><td><code>vm_user</code></td><td>Define the username to access the Virtual Machine with.</td></tr>
 <tr><td><a href="https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes">VM Type</a></td><td><code>-t</code></td><td><code>Standard_D8_v3</code></td><td>Define the Virtual Machine size from the <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes">Azure templates</a>. The <code>name</code> value from <code>az vm list-sizes --location &lt;vm_location&gt;</code> should be the value here.</td></tr>
@@ -187,12 +190,13 @@ system_info:
 <li><p>Make the script executable.</p>
 <p><code>chmod +x create_docker_vm.sh</code></p></li>
 <li><p>Run the script using the variables collected above.</p>
-<p><code>./create_docker_vm.sh -g GRP -r GRP-my.name1 -v GRP-westeurope-vnet -n docker_host01 -u vm_user -t Standard_D8_v3 -d 128 -i UbuntuLTS</code></p>
+<p><code>./create_docker_vm.sh -g GRP -r GRP-my.name1 -v GRP-westeurope-vnet -s default -n docker_host01 -u vm_user -t Standard_D8_v3 -d 128 -i UbuntuLTS</code></p>
 <p><em>Example output</em></p>
 <pre><code class="hljs css language-text">Parameters
 Group: GRP
 Resource Group: GRP-my.name1
 VNET: GRP-westeurope-vnet
+Subnet Name: default
 VM Name: docker_host01
 VM Username: vm_user
 VM Type: Standard_D8_v3

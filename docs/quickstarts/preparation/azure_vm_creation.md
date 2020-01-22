@@ -43,9 +43,9 @@ The two required templates are given below. Create these in the same location wi
    IMAGE=''
 
    print_usage() {
-     echo "Usage: ./create_docker_vm.sh -g AZ-USER-GROUP -r AZ-RESOURCE-GROUP -v AZ-VNET -n VM-NAME -u VM-USERNAME -t VM-TYPE -d VM-DISK-SIZE (GB) -i OPERATING-SYSTEM"
+     echo "Usage: ./create_docker_vm.sh -g AZ-USER-GROUP -r AZ-RESOURCE-GROUP -v AZ-VNET -s AZ-SUBNET-NAME -n VM-NAME -u VM-USERNAME -t VM-TYPE -d VM-DISK-SIZE (GB) -i OPERATING-SYSTEM"
 
-     echo "Example: ./create_docker_vm.sh -g DEV -r DEV-john.smith1 -v DEV-westeurope-vnet -n johnsmith-docker -u john -t Standard_D8_v3 -d 128 -i UbuntuLTS"
+     echo "Example: ./create_docker_vm.sh -g DEV -r DEV-john.smith1 -v DEV-westeurope-vnet -s default -n johnsmith-docker -u john -t Standard_D8_v3 -d 128 -i UbuntuLTS"
    }
    #Setup of env
    while getopts "g:G:r:R:v:V:n:N:u:U:t:T:d:D:i:I:hH*" opt; do
@@ -53,6 +53,7 @@ The two required templates are given below. Create these in the same location wi
        g|G) GROUP="${OPTARG}" ;;
        r|R) RG="${OPTARG}" ;;
        v|V) VNET="${OPTARG}" ;;
+       s|S) SUBNAME="${OPTARG}" ;;
        n|N) VM_NAME="${OPTARG}" ;;
        u|U) VM_USERNAME="${OPTARG}" ;;
        t|T) TYPE=${OPTARG} ;;
@@ -65,12 +66,13 @@ The two required templates are given below. Create these in the same location wi
    done
 
    #VM Characteristics
-   SUBNETID=$(az network vnet subnet show -g $GROUP -n default --vnet-name $VNET |grep addressPrefix -a3 |grep -i id | awk '{print $2}' | tr -d [\",])
+   SUBNETID=$(az network vnet subnet show -g $GROUP -n $SUBNAME --vnet-name $VNET |grep addressPrefix -a3 |grep -i id | awk '{print $2}' | tr -d [\",])
 
    echo "Parameters"
    echo "Group: $GROUP"
    echo "Resource Group: $RG"
    echo "VNET: $VNET"
+   echo "Subnet Name: $SUBNAME"
    echo "VM Name: $VM_NAME"
    echo "VM Username: $VM_USERNAME"
    echo "VM Type: $TYPE"
@@ -132,6 +134,7 @@ The two required templates are given below. Create these in the same location wi
    |Group|`-g`|`GRP`|The [Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) group to use. **Must already exist**.|
    |Resource Group|`-r`|`GRP-my.name1`|The [Azure Resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#resource-groups) to use. **Must already exist**.|
    |VNET|`-v`|`GRP-westeurope-vnet`|The [Azure Virtual Network](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview) to use. **Must already exist**.|
+   |Subnet Name|`-s`|`default`|The Azure Virtual Network [Subnet name](https://docs.microsoft.com/en-us/cli/azure/network/vnet/subnet?view=azure-cli-latest). **Must already exist**.|
    |VM Name|`-n`|`docker_host01`|Define the Virtual Machine name in Azure.|
    |VM Username|`-u`|`vm_user`|Define the username to access the Virtual Machine with.|
    |[VM Type](https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes)|`-t`|`Standard_D8_v3`|Define the Virtual Machine size from the [Azure templates](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes). The `name` value from `az vm list-sizes --location <vm_location>` should be the value here.|
@@ -144,7 +147,7 @@ The two required templates are given below. Create these in the same location wi
 
 3. Run the script using the variables collected above.
 
-   `./create_docker_vm.sh -g GRP -r GRP-my.name1 -v GRP-westeurope-vnet -n docker_host01 -u vm_user -t Standard_D8_v3 -d 128 -i UbuntuLTS`
+   `./create_docker_vm.sh -g GRP -r GRP-my.name1 -v GRP-westeurope-vnet -s default -n docker_host01 -u vm_user -t Standard_D8_v3 -d 128 -i UbuntuLTS`
 
    _Example output_
 
@@ -153,6 +156,7 @@ The two required templates are given below. Create these in the same location wi
    Group: GRP
    Resource Group: GRP-my.name1
    VNET: GRP-westeurope-vnet
+   Subnet Name: default
    VM Name: docker_host01
    VM Username: vm_user
    VM Type: Standard_D8_v3

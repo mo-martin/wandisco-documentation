@@ -6,82 +6,100 @@ sidebar_label: Useful information
 
 ## Reference links
 
-[Docker installation guide](https://docs.docker.com/install/)
+### [Docker installation guide](https://docs.docker.com/install/)
 
-[Docker Compose installation guide](https://docs.docker.com/compose/install/)
+### [Docker Compose installation guide](https://docs.docker.com/compose/install/)
 
-[Git installation guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+### [Git installation guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-## Useful docker-compose commands
+## Useful commands
 
-Bring the docker containers up and force a recreation of the containers (useful if encountering errors):
+### Container
 
-`docker-compose up -d --force`
+List all running containers:
+
+`docker-compose ps`
+
+Stop all containers and retain current state:
+
+`docker-compose stop`
+
+Start all containers:
+
+`docker-compose start`
+
+### Login
+
+Log in to specific container:
+
+`docker exec -it <container-name> bash`
+
+Log in to a specific container as root user:
+
+`docker exec -u root -it <container-name> bash`
+
+### Image
 
 Pull down latest docker container images:
 
 `docker-compose pull`
 
-Bring down containers and retain configured state:
+### Service
 
-`docker-compose down`
+`docker-compose start|stop|restart ${SERVICE_NAME}`
 
-Remove all named volumes and down containers (current configuration will be lost):
+_Example to restart Fusion ONEUI Server_
 
-`docker-compose down -v`
+`docker-compose restart fusion-oneui-server`
 
-## Useful docker commands
+### Service names
 
-List all running containers:
+#### General services
 
-`docker ps`
+`fusion-ui-server-${ZONE_NAME}`
 
-Log in to specific container:
+`fusion-ihc-server-${ZONE_NAME`
 
-`docker exec -it <container-ID> /bin/bash`
+`fusion-server-${ZONE_NAME}`
 
-Stop all containers:
+`fusion-oneui-server`
 
-`docker container stop $(docker container ls -aq)`
+#### Environment specific services
 
-Remove all stopped containers, all networks not used by at least one container, all dangling images and all dangling build cache:
+`fusion-nn-proxy-${ZONE_NAME}`
 
-`docker system prune`
+`sshd-${ZONE_NAME}`
 
-## Information on service names
+#### Plugin services
 
-The Fusion service names can be found in the `.yml` files contained within the `fusion-docker-compose` Git repository.
-
-_Example_
-```text
-docker-compose.zone-a.yml
-docker-compose.common.yml
-```
-For instance, the ONEUI service is not required in a specific zone, so the service name can be found inside of the `docker-compose.common.yml` file.
-
-`vi docker-compose.common.yml`
-
-```text
-# This service creates the One UI Server component to manage both zones.
-#
-# Note: this component can be run in either zone, so one is chosen arbitrarily
-
-  # Fusion OneUI Server
-  fusion-oneui-server:
-```
-
-Restart the ONEUI service:
-
-`docker-compose up -d --force fusion-oneui-server`
+`fusion-livehive-proxy-${ZONE_NAME}`
 
 ## Rebuild
 
-In the event that you need to rebuild your Fusion environment, use the docker compose command shown below to stop and delete all containers.
+In the event that you need to rebuild your Fusion environment, use the docker compose command shown below to stop and delete all containers and volumes.
 
 `docker-compose down -v`
 
-Please note that this is a destructive action that cannot be recovered from, you will lose all container data including that stored in the persisted storage directories (e.g. `/etc/wandisco`).
+This is a destructive action that cannot be recovered from, you will lose all container data including that stored in the persisted storage directories (e.g. `/etc/wandisco`, `/etc/hadoop`).
 
-If you wanting to run through the setup script with prompts again, you can rerun the setup script with the `-a` flag:
+Run the setup script again (it will not prompt for any questions), followed by the docker compose up command to recreate the Fusion environment.
 
-`./setup-env.sh -a`
+`./setup-env.sh`
+
+`docker-compose up -d`
+
+### Create a new environment
+
+If you want to create a new environment, delete the `.yml` and `.env` files that were created after running the setup script. This should be performed after running the `docker-compose down -v` command.
+
+_Default file names_
+
+`rm -f docker-compose.common.yml docker-compose.zone-a.yml docker-compose.zone-b.yml common.env zone_a.env zone_b.env`
+
+There may also be plugin `.yml` for a specific zone that requires deletion.
+
+_Plugin file names_
+
+`rm -f docker-compose.zone-a-plugin.yml docker-compose.zone-b-plugin.yml`
+
+Now follow one of the [quickstarts](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/installation/quickstart-config) to create a new environment.

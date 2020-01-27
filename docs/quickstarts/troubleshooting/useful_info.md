@@ -28,6 +28,10 @@ Start all containers:
 
 `docker-compose start`
 
+Restart all containers:
+
+`docker-compose restart`
+
 ### Login
 
 Log in to specific container:

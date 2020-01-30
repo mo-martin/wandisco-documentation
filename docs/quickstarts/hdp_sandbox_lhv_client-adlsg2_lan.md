@@ -93,34 +93,7 @@ After all the prompts have been completed, you will be able to start the contain
 
 ### Live Hive configuration and activation
 
-1. Log into one of the containers for the HDP zone.
-
-   `docker exec -it docker_fusion-ui-server-sandbox-hdp_1 bash`
-
-[//]: <DAP-131>
-
-2. Add an additional property to the Live Hive config:
-
-   `vi /etc/wandisco/fusion/plugins/hive/live-hive-site.xml`
-
-   Add the following property and value below:
-
-   ```json
-     <property>
-       <name>live.hive.cluster.delegation.token.delayed.removal.interval.in.seconds</name>
-       <value>5</value>
-     </property>
-   ```
-
-   Once complete, save and quit the file (e.g. `:wq`).
-
-3. Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.
-
-   `exit`
-
-   `docker-compose restart`
-
-4. Log into the Fusion UI for the HDP zone, and activate the Live Hive plugin.
+1. Log into the Fusion UI for the HDP zone, and activate the Live Hive plugin.
 
    `http://<docker_IP_address>:8083`
 
@@ -163,53 +136,25 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
 3. Download Jar file from Repo
 
-   `docker exec -it docker_fusion-server-adls2_1 bash`
+   `wget https://github.com/mo-martin/wandisco-documentation/raw/hdp-adls-quickstart-refinements/docs/quickstarts/resources/live-analytics-databricks-etl-6.0.0.1.jar datatransformer.jar`
 
 [//]: <DAP-135 workaround>
 
-4. Upload the LiveAnalytics "datatransformer" jar using a curl command.
+4. Log into the Azure portal and Launch Workspace for your Databricks cluster.
 
-   `curl -v -H "Authorization: Bearer <bearer_token>" -F contents=@/opt/wandisco/fusion/plugins/live-deltalake/live-analytics-databricks-etl-6.0.0.1.jar -F path="/datatransformer.jar" https://<databricks_service_address>/api/2.0/dbfs/put`
+5. On the left-hand panel, select **Clusters** and then select your interactive cluster.
 
-   You will need to adjust the `curl` command so that your **Bearer Token** and **Databricks Service Address** is referenced.
+6. Click on the **Libraries** tab, and select the option to **Install New**.
 
-   _Example values_
+7. Select the following options for the Install Library prompt:
 
-   * Bearer Token: `dapicd7689jkb25473c765ghty78bb299a83`
-   * Databricks Service Address: `westeurope.azuredatabricks.net`
-
-   _Example command_
-
-   `curl -v -H "Authorization: Bearer dapicd7689jkb25473c765ghty78bb299a83"  -F contents=@/opt/wandisco/fusion/plugins/live-deltalake/live-analytics-databricks-etl-6.0.0.1.jar -F path="/datatransformer.jar" https://westeurope.azuredatabricks.net/api/2.0/dbfs/put`
-
-   If the command is successful, you will see that the message output contains the following text below:
-
-   ```json
-   < HTTP/1.1 100 Continue
-   < HTTP/1.1 200 OK
-   ```
-
-5. Exit back into the docker host and restart the Fusion containers so that the configuration changes are picked up.
-
-   `exit`
-
-   `docker-compose restart`
-
-6. Log into the Azure portal and Launch Workspace for your Databricks cluster.
-
-7. On the left-hand panel, select **Clusters** and then select your interactive cluster.
-
-8. Click on the **Libraries** tab, and select the option to **Install New**.
-
-9. Select the following options for the Install Library prompt:
-
-   * Library Source = `DBFS`
+   * Library Source = `Upload`
 
    * Library Type = `Jar`
 
-   * File Path = `dbfs:/datatransformer.jar`
+   * File Path = Find save location of `datatransformer.jar` from step 3.
 
-10. Select **Install** once the details are entered. Wait for the **Status** of the jar to display as **Installed** before continuing.
+8. Select **Install** once the details are entered. Wait for the **Status** of the jar to display as **Installed** before continuing.
 
 ## Replication
 
@@ -230,9 +175,9 @@ In this section, follow the steps detailed to perform live replication of HCFS d
 
    * Type = `HCFS`
 
-   * Zones = `adls2, hdp` _- Leave as default._
+   * Zones = `adls2, sandbox-hdp` _- Leave as default._
 
-   * Priority Zone = `hdp` _- Leave as default._
+   * Priority Zone = `sandbox-hdp` _- Leave as default._
 
    * Rule Name = `warehouse`
 
@@ -266,9 +211,11 @@ In this section, follow the steps detailed to perform live replication of HCFS d
 
 Prior to performing these tasks, the Databricks cluster must be in a **running** state. Please access the Azure portal and check the status of the cluster. If it is not running, select to start the cluster and wait until it is **running** before continuing.
 
+Tez Memory size may need to be reduced, this can be done by visiting http://docker_IP_address:8080/#/main/services/TEZ/configs then setting `tez.am.resource.memory.mb` to `1024`
+
 1. On the docker host, log into the HDP cluster node.
 
-   `docker exec -it sandbox-hdp bash`
+   `docker exec -it docker_sandbox-hdp_1 bash`
 
 2. Run beeline and use the `!connect` string to start a Hive session via the Hiveserver2 service.
 

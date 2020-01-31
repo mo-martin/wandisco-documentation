@@ -224,19 +224,25 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
     `docker exec -it docker_sandbox-hdp_1 bash`
 
     b. Switch to the hdfs user
+
     `sudo -iu hdfs`
 
     c. Change directory into the pivotal sample's repo
+
     `cd /tmp/pivotal-samples/sample-data`
 
     d. Create directory within hdfs for the sample data
+
     `hdfs dfs -mkdir -p /retail_demo/customer_addresses_dim/`
 
     e. Place the sample data into hdfs, so that it can be accessed by Hive
+
     `hdfs dfs -put customer_addresses_dim.tsv.gz /retail_demo/customer_addresses_dim/`
 
 3. Run beeline and use the `!connect` string to start a Hive session via the Hiveserver2 service.
+
    `beeline`
+
    `!connect jdbc:hive2://sandbox-hdp:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2`
 
    The above connection string can also be found on the Ambari UI under **Hive -> Summary -> HIVESERVER2 JDBC URL**.
@@ -253,7 +259,8 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
 5. Create a table inside of the database that points to the data previously uploaded.
 
-   ```CREATE TABLE retail_demo.customer_addresses_dim_hive
+   ```
+   CREATE TABLE retail_demo.customer_addresses_dim_hive
     (
       Customer_Address_ID  bigint,
       Customer_ID          bigint,
@@ -282,7 +289,8 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
     b. Create Table:
 
-   ```CREATE TABLE databricksdemo.customer_addresses_dim_hive
+   ```
+   CREATE TABLE databricksdemo.customer_addresses_dim_hive
       (
         Customer_Address_ID  bigint,
         Customer_ID          bigint,

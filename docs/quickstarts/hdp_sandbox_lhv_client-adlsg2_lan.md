@@ -196,7 +196,7 @@ In this section, follow the steps detailed to perform live replication of HCFS d
 
    * Type = `Hive`
 
-   * Database name = `test*`
+   * Database name = `*`
 
    * Table name = `*`
 
@@ -210,19 +210,36 @@ In this section, follow the steps detailed to perform live replication of HCFS d
 
 Prior to performing these tasks, the Databricks cluster must be in a **running** state. Please access the Azure portal and check the status of the cluster. If it is not running, select to start the cluster and wait until it is **running** before continuing.
 
-Tez Memory size may need to be reduced, this can be done by visiting http://docker_IP_address:8080/#/main/services/TEZ/configs then setting `tez.am.resource.memory.mb` to `1024`
+1. On the docker host:
 
-1. On the docker host, log into the HDP cluster node.
+    a. Clone the sample-data Repo
+    `git clone https://github.com/pivotalsoftware/pivotal-samples.git /tmp/`
 
-   `docker exec -it docker_sandbox-hdp_1 bash`
+    b. Copy the previously cloned Repo, into the docker_sandbox-hdp_1 container:
+    `docker cp /tmp/pivotal-samples/ docker_sandbox-hdp_1:/tmp/`
+
+2. Login to the docker_sandbox-hdp_1 container and place data into hdfs:
+
+    a. Login to the docker_sandbox-hdp_1 container:
+    `docker exec -it docker_sandbox-hdp_1 bash`
+
+    b. Switch to the hdfs user
+    `sudo -iu hdfs`
+
+    c. Change directory into the pivotal sample's repo
+    `cd /tmp/pivotal-samples/sample-data`
+
+    d. Create directory within hdfs for the sample data
+    `hdfs dfs -mkdir -p /retail_demo/customer_addresses_dim/`
+
+    e. Place the sample data into hdfs, so that it can be accessed by Hive
+    `hdfs dfs -put customer_addresses_dim.tsv.gz /retail_demo/customer_addresses_dim/`
 
 2. Run beeline and use the `!connect` string to start a Hive session via the Hiveserver2 service.
-
    `beeline`
+   `!connect jdbc:hive2://sandbox-hdp:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2`
 
-   `beeline> !connect jdbc:hive2://sandbox-hdp:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2`
-
-   This connection string can also be found on the Ambari UI under **Hive -> Summary -> HIVESERVER2 JDBC URL**.
+   The above connection string can also be found on the Ambari UI under **Hive -> Summary -> HIVESERVER2 JDBC URL**.
 
    When prompted for a username and password, enter the following:
 
@@ -232,17 +249,56 @@ Tez Memory size may need to be reduced, this can be done by visiting http://dock
 
 2. Create a database to use that will match the regex for the Hive replication rule created earlier in the Fusion UI.
 
-   `0: jdbc:hive2://sandbox-hdp:2181/> create database test01;`
+   `CREATE DATABASE IF NOT EXISTS retail_demo;`
 
-3. Create a table inside of the database.
+3. Create a table inside of the database that points to the data previously uploaded.
 
-   `0: jdbc:hive2://sandbox-hdp:2181/> use test01;`
+   ```CREATE TABLE retail_demo.customer_addresses_dim_hive
+    (
+      Customer_Address_ID  bigint,
+      Customer_ID          bigint,
+      Valid_From_Timestamp timestamp,
+      Valid_To_Timestamp   timestamp,
+      House_Number         string,
+      Street_Name          string,
+      Appt_Suite_No        string,
+      City                 string,
+      State_Code           string,
+      Zip_Code             string,
+      Zip_Plus_Four        string,
+      Country              string,
+      Phone_Number         string
+    )
+      ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+      STORED AS TEXTFILE
+      LOCATION '/retail_demo/customer_addresses_dim/';
+  ```
 
-   `0: jdbc:hive2://sandbox-hdp:2181/> create table table01(id int, name string) stored as ORC;`
+4. Create a second database and table that we can migrate the uploaded data into.
+    a. Create Database:
+   `CREATE DATABASE IF NOT EXISTS databricksdemo;`
+    b. Create Table:
+   ```CREATE TABLE databricksdemo.customer_addresses_dim_hive
+      (
+        Customer_Address_ID  bigint,
+        Customer_ID          bigint,
+        Valid_From_Timestamp timestamp,
+        Valid_To_Timestamp   timestamp,
+        House_Number         string,
+        Street_Name          string,
+        Appt_Suite_No        string,
+        City                 string,
+        State_Code           string,
+        Zip_Code             string,
+        Zip_Plus_Four        string,
+        Country              string,
+        Phone_Number         string
+      ) stored as ORC;
+  ```
+5. Now insert data into the table above by running the following:
 
-4. Insert data inside of the table.
+  `insert into databricksdemo.customer_addresses_dim_hive select * from retail_demo.customer_addresses_dim_hive where state_code ='CA';`
 
-   `0: jdbc:hive2://sandbox-hdp:2181/> insert into table01 values (1,'words');`
 
    This will now launch a Hive job that will insert the data values provided in this example. If this is successful, you will see **SUCCEEDED** written in the STATUS column.
 
@@ -260,97 +316,32 @@ Tez Memory size may need to be reduced, this can be done by visiting http://dock
 
    Please note that running an 'insert into table' for the first time on the HDP cluster may take a longer period of time than normal. Further jobs will complete at a much faster rate.
 
-### Verify replication
+ 6. Verify the above data has been placed correctly by running:
+    `select * from databricksdemo.customer_addresses_dim_hive;`
 
-1. To verify the data values inside of the table on the **HDP** zone, run the command below when still logged into the Hive beeline session:
 
-   `0: jdbc:hive2://sandbox-hdp:2181/> select * from table01;`
+### Setup Databricks Notebook to view Data.
 
-   The output will be similar to that of below:
+1. Navigate to your Azure Databricks Home page - The url is dependent on location, however if you are based in west Europe, you can visit https://westeurope.azuredatabricks.net.
 
-   ```json
-   +-------------+----------------+--+
-   | table01.id  |  table01.name  |
-   +-------------+----------------+--+
-   | 1           | words          |
-   +-------------+----------------+--+
-   1 rows selected (X.YZA seconds)
-   ```
+2. Create a Cluster Notebook:
 
-2. To verify the data has replicated to the ADLS Gen2 zone and Databricks cluster, access the Azure portal and and Launch Workspace for your Databricks cluster (if not already opened).
+  a. Click Workspace on the left hand side > click the drop down arrow > Create > Notebook > Name: WD-demo Language: SQL Cluster:(Choose cluster made earlier)
 
-3. On the left-hand panel, select **Data** and then select the database created for this test (i.e. `test01`).
+3. You should now see a blank notebook.
 
-4. In the _Tables_ list, select the table created for this test (i.e. `table01`).
+  a. Inside the 'Cmd 1' box add the query
+  `select * from databricksdemo.customer_addresses_dim_hive;`
 
-5. Wait for the table details to be loaded, and verify that the Schema and Sample Data match that seen in the HDP zone.
+  b. Click 'Run Cell' (looks like a play button in the top right of that box)
 
-   **Schema**
-   ```json
-   col_name   data_type
-   id         int
-   name       string
-   ```
+4. Wait for the query to return, then select the drop down graph-type and Choose Map
 
-   **Sample Data**
-   ```json
-   id         name
-   1          words
-   ```
+5. Under the Plot Options > remove all Keys > click and drag 'state_code' from the 'All fields' box, into the 'Keys' box.
 
-## Troubleshooting
+6. Click Apply.
 
-Please see the [Useful information](https://wandisco.github.io/wandisco-documentation/docs/quickstarts/troubleshooting/useful_info) section for additional commands and help.
-
-### Error 'connection refused' after starting Fusion for the first time
-
-You may see the following error occur when running `docker-compose up -d` for the first time inside the fusion-docker-compose repository:
-
-```json
-ERROR: Get https://registry-1.docker.io/v2/: dial tcp: lookup registry-1.docker.io on [::1]:53: read udp [::1]:52155->[::1]:53: read: connection refused
-```
-
-If encountering this error, run the `docker-compose up -d` command again, and this should initiate the download of the docker images.
-
-### Fusion zones not inducted together
-
-[//]: <DAP-136 workaround>
-
-If the Fusion zones are not inducted together after starting Fusion for the first time (`docker-compose up -d`), you can simply run the same command again to start the induction container:
-
-`docker-compose up -d`
-
-### Hiveserver2 down after HDP Sandbox is started
-
-The Hiveserver2 component in the HDP sandbox may be down after starting the cluster. If so, try the following steps to start it back up.
-
-1. On the docker host, change directory to the Fusion docker compose directory and restart the Fusion Server container for the HDP zone.
-
-   `cd /path/to/fusion-docker-compose`
-
-   `docker-compose restart fusion-server-hdp`
-
-   Wait until the container has finished restarting before continuing.
-
-2. Access the Ambari UI, and manually start the Hiveserver2 component.
-
-   **Ambari UI -> Hive -> Summary -> Click on the "HIVESERVER2" written in blue text.**
-
-3. Locate the HiveServer2 in the component list and click the `...` in the Action column. Select to **Start** the component in the drop-down list.
-
-### Spark2 History Server down after HDP Sandbox is started for first time
-
-When starting the HDP Sandbox for the first time, the Spark2 History Server may be in a stopped state. This is often due to the order in which Spark2 and the WANdisco Fusion client is installed.
-
-To resolve and bring the History Server online, follow the steps below:
-
-1. In the Ambari UI, select to Refresh configs for the WANdisco Fusion service.
-
-   **Ambari UI -> WANdisco Fusion -> Actions -> Refresh configs -> OK**
-
-2. Start the Spark2 service.
-
-   **Ambari UI -> Spark2 -> Actions -> Start -> CONFIRM START**
+7. You should now see a plot of USA with colour shading - dependent on the population density.
 
 ## Advanced options
 

@@ -259,33 +259,35 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
 5. Create a table inside of the database that points to the data previously uploaded.
 
-   ```
-   CREATE TABLE retail_demo.customer_addresses_dim_hive
-    (
-      Customer_Address_ID  bigint,
-      Customer_ID          bigint,
-      Valid_From_Timestamp timestamp,
-      Valid_To_Timestamp   timestamp,
-      House_Number         string,
-      Street_Name          string,
-      Appt_Suite_No        string,
-      City                 string,
-      State_Code           string,
-      Zip_Code             string,
-      Zip_Plus_Four        string,
-      Country              string,
-      Phone_Number         string
-    )
-      ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
-      STORED AS TEXTFILE
-      LOCATION '/retail_demo/customer_addresses_dim/';
-  ```
+     ```
+     CREATE TABLE retail_demo.customer_addresses_dim_hive
+      (
+        Customer_Address_ID  bigint,
+        Customer_ID          bigint,
+        Valid_From_Timestamp timestamp,
+        Valid_To_Timestamp   timestamp,
+        House_Number         string,
+        Street_Name          string,
+        Appt_Suite_No        string,
+        City                 string,
+        State_Code           string,
+        Zip_Code             string,
+        Zip_Plus_Four        string,
+        Country              string,
+        Phone_Number         string
+      )
+        ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+        STORED AS TEXTFILE
+        LOCATION '/retail_demo/customer_addresses_dim/';
+     ```
+
 
 6. Create a second database and table that we can migrate the uploaded data into.
 
     a. Create Database:
 
    `CREATE DATABASE IF NOT EXISTS databricksdemo;`
+
 
     b. Create Table:
 
@@ -307,6 +309,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
         Phone_Number         string
       ) stored as ORC;
   ```
+
 
 7. Now insert data into the table above by running the following:
 

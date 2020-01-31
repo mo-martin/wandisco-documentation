@@ -210,7 +210,7 @@ In this section, follow the steps detailed to perform live replication of HCFS d
 
 Prior to performing these tasks, the Databricks cluster must be in a **running** state. Please access the Azure portal and check the status of the cluster. If it is not running, select to start the cluster and wait until it is **running** before continuing.
 
-1. On the docker host:
+1. On the **Docker host:**
 
     a. Clone the sample-data Repo
 
@@ -220,7 +220,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
     `docker cp /tmp/pivotal-samples/ docker_sandbox-hdp_1:/tmp/`
 
-2. Login to the docker_sandbox-hdp_1 container and place data into hdfs:
+2. Login to the **docker_sandbox-hdp_1** container and place data into hdfs:
 
     a. Login to the docker_sandbox-hdp_1 container:
 

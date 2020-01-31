@@ -286,51 +286,50 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
     a. Create Database:
 
-   `CREATE DATABASE IF NOT EXISTS databricksdemo;`
+    `CREATE DATABASE IF NOT EXISTS databricksdemo;`
 
 
     b. Create Table:
 
-   ```
-   CREATE TABLE databricksdemo.customer_addresses_dim_hive
-      (
-        Customer_Address_ID  bigint,
-        Customer_ID          bigint,
-        Valid_From_Timestamp timestamp,
-        Valid_To_Timestamp   timestamp,
-        House_Number         string,
-        Street_Name          string,
-        Appt_Suite_No        string,
-        City                 string,
-        State_Code           string,
-        Zip_Code             string,
-        Zip_Plus_Four        string,
-        Country              string,
-        Phone_Number         string
-      ) stored as ORC;
-  ```
-
+    ```
+     CREATE TABLE databricksdemo.customer_addresses_dim_hive
+        (
+          Customer_Address_ID  bigint,
+          Customer_ID          bigint,
+          Valid_From_Timestamp timestamp,
+          Valid_To_Timestamp   timestamp,
+          House_Number         string,
+          Street_Name          string,
+          Appt_Suite_No        string,
+          City                 string,
+          State_Code           string,
+          Zip_Code             string,
+          Zip_Plus_Four        string,
+          Country              string,
+          Phone_Number         string
+        ) stored as ORC;
+    ```
 
 7. Now insert data into the table above by running the following:
 
-  `insert into databricksdemo.customer_addresses_dim_hive select * from retail_demo.customer_addresses_dim_hive where state_code ='CA';`
+    `insert into databricksdemo.customer_addresses_dim_hive select * from retail_demo.customer_addresses_dim_hive where state_code ='CA';`
 
 
-   This will now launch a Hive job that will insert the data values provided in this example. If this is successful, you will see **SUCCEEDED** written in the STATUS column.
+    This will now launch a Hive job that will insert the data values provided in this example. If this is successful, you will see **SUCCEEDED** written in the STATUS column.
 
-   _Example_
+    _Example_
 
-   ```json
-   --------------------------------------------------------------------------------
-           VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
-   --------------------------------------------------------------------------------
-   Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
-   --------------------------------------------------------------------------------
-   VERTICES: 01/01  [==========================>>] 100%  ELAPSED TIME: XY.ZA s
-   --------------------------------------------------------------------------------
-   ```
+    ```json
+     --------------------------------------------------------------------------------
+             VERTICES      STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+     --------------------------------------------------------------------------------
+     Map 1 ..........   SUCCEEDED      1          1        0        0       0       0
+     --------------------------------------------------------------------------------
+     VERTICES: 01/01  [==========================>>] 100%  ELAPSED TIME: XY.ZA s
+     --------------------------------------------------------------------------------
+    ```
 
-   Please note that running an 'insert into table' for the first time on the HDP cluster may take a longer period of time than normal. Further jobs will complete at a much faster rate.
+    Please note that running an 'insert into table' for the first time on the HDP cluster may take a longer period of time than normal. Further jobs will complete at a much faster rate.
 
  8. Verify the above data has been placed correctly by running:
     `select * from databricksdemo.customer_addresses_dim_hive;`

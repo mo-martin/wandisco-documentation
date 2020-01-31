@@ -15,7 +15,6 @@ This will involve the use of Live Hive for the HDP cluster, and the Databricks D
 What this guide will cover:
 
 - Installing WANdisco Fusion using the [docker-compose](https://docs.docker.com/compose/) tool.
-- Using the 'wandocker' tool to deploy a pre-configured Hadoop Sandbox based on HDP 2.6.5.
 - Integrating WANdisco Fusion with Azure Databricks.
 - Performing a sample data migration.
 
@@ -136,7 +135,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
 3. Download Jar file from Repo
 
-   `wget https://github.com/mo-martin/wandisco-documentation/raw/hdp-adls-quickstart-refinements/docs/quickstarts/resources/live-analytics-databricks-etl-6.0.0.1.jar datatransformer.jar`
+   https://github.com/mo-martin/wandisco-documentation/raw/hdp-adls-quickstart-refinements/docs/quickstarts/resources/live-analytics-databricks-etl-6.0.0.1.jar
 
 [//]: <DAP-135 workaround>
 

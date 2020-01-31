@@ -235,7 +235,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
     e. Place the sample data into hdfs, so that it can be accessed by Hive
     `hdfs dfs -put customer_addresses_dim.tsv.gz /retail_demo/customer_addresses_dim/`
 
-2. Run beeline and use the `!connect` string to start a Hive session via the Hiveserver2 service.
+3. Run beeline and use the `!connect` string to start a Hive session via the Hiveserver2 service.
    `beeline`
    `!connect jdbc:hive2://sandbox-hdp:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2`
 
@@ -247,11 +247,11 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
    `Enter password: ` _- leave blank and press enter._
 
-2. Create a database to use that will match the regex for the Hive replication rule created earlier in the Fusion UI.
+4. Create a database to use that will match the regex for the Hive replication rule created earlier in the Fusion UI.
 
    `CREATE DATABASE IF NOT EXISTS retail_demo;`
 
-3. Create a table inside of the database that points to the data previously uploaded.
+5. Create a table inside of the database that points to the data previously uploaded.
 
    ```CREATE TABLE retail_demo.customer_addresses_dim_hive
     (
@@ -274,10 +274,14 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
       LOCATION '/retail_demo/customer_addresses_dim/';
   ```
 
-4. Create a second database and table that we can migrate the uploaded data into.
+6. Create a second database and table that we can migrate the uploaded data into.
+
     a. Create Database:
+
    `CREATE DATABASE IF NOT EXISTS databricksdemo;`
+
     b. Create Table:
+
    ```CREATE TABLE databricksdemo.customer_addresses_dim_hive
       (
         Customer_Address_ID  bigint,
@@ -295,7 +299,8 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
         Phone_Number         string
       ) stored as ORC;
   ```
-5. Now insert data into the table above by running the following:
+
+7. Now insert data into the table above by running the following:
 
   `insert into databricksdemo.customer_addresses_dim_hive select * from retail_demo.customer_addresses_dim_hive where state_code ='CA';`
 
@@ -316,7 +321,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
    Please note that running an 'insert into table' for the first time on the HDP cluster may take a longer period of time than normal. Further jobs will complete at a much faster rate.
 
- 6. Verify the above data has been placed correctly by running:
+ 8. Verify the above data has been placed correctly by running:
     `select * from databricksdemo.customer_addresses_dim_hive;`
 
 

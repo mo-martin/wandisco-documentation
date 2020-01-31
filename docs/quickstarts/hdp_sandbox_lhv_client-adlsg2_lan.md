@@ -213,14 +213,17 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 1. On the docker host:
 
     a. Clone the sample-data Repo
+
     `git clone https://github.com/pivotalsoftware/pivotal-samples.git /tmp/`
 
     b. Copy the previously cloned Repo, into the docker_sandbox-hdp_1 container:
+
     `docker cp /tmp/pivotal-samples/ docker_sandbox-hdp_1:/tmp/`
 
 2. Login to the docker_sandbox-hdp_1 container and place data into hdfs:
 
     a. Login to the docker_sandbox-hdp_1 container:
+
     `docker exec -it docker_sandbox-hdp_1 bash`
 
     b. Switch to the hdfs user

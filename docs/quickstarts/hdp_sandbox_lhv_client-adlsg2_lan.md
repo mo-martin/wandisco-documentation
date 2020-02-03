@@ -295,22 +295,22 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
     b. Create Table:
 
         ```
-        CREATE TABLE databricksdemo.customer_addresses_dim_hive
-          (
-            Customer_Address_ID  bigint,
-            Customer_ID          bigint,
-            Valid_From_Timestamp timestamp,
-            Valid_To_Timestamp   timestamp,
-            House_Number         string,
-            Street_Name          string,
-            Appt_Suite_No        string,
-            City                 string,
-            State_Code           string,
-            Zip_Code             string,
-            Zip_Plus_Four        string,
-            Country              string,
-            Phone_Number         string
-          ) stored as ORC;
+          CREATE TABLE databricksdemo.customer_addresses_dim_hive
+            (
+              Customer_Address_ID  bigint,
+              Customer_ID          bigint,
+              Valid_From_Timestamp timestamp,
+              Valid_To_Timestamp   timestamp,
+              House_Number         string,
+              Street_Name          string,
+              Appt_Suite_No        string,
+              City                 string,
+              State_Code           string,
+              Zip_Code             string,
+              Zip_Plus_Four        string,
+              Country              string,
+              Phone_Number         string
+            ) stored as ORC;
         ```
 
 7. Now insert data into the table above by running the following:

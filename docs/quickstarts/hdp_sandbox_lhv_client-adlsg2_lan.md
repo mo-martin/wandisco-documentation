@@ -294,8 +294,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
     b. Create Table:
 
-    ```
-     CREATE TABLE databricksdemo.customer_addresses_dim_hive
+        ```CREATE TABLE databricksdemo.customer_addresses_dim_hive
         (
           Customer_Address_ID  bigint,
           Customer_ID          bigint,
@@ -311,7 +310,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
           Country              string,
           Phone_Number         string
         ) stored as ORC;
-    ```
+        ```
 
 7. Now insert data into the table above by running the following:
 

@@ -352,7 +352,7 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
       `select * from databricksdemo.customer_addresses_dim_hive;`
 
-    b. Click 'Run Cell' (looks like a play button in the top right of that box)
+      b. Click 'Run Cell' (looks like a play button in the top right of that box)
 
   4. Wait for the query to return, then select the drop down graph-type and Choose Map
 

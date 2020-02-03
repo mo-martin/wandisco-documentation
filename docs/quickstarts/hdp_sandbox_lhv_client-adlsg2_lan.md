@@ -344,12 +344,13 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
   2. Create a Cluster Notebook:
 
-    a. Click Workspace on the left hand side > click the drop down arrow > Create > Notebook > Name: WD-demo Language: SQL Cluster:(Choose cluster made earlier)
+      a. Click Workspace on the left hand side > click the drop down arrow > Create > Notebook > Name: WD-demo Language: SQL Cluster:(Choose cluster made earlier)
 
   3. You should now see a blank notebook.
 
-    a. Inside the 'Cmd 1' box add the query
-    `select * from databricksdemo.customer_addresses_dim_hive;`
+      a. Inside the 'Cmd 1' box add the query
+
+      `select * from databricksdemo.customer_addresses_dim_hive;`
 
     b. Click 'Run Cell' (looks like a play button in the top right of that box)
 

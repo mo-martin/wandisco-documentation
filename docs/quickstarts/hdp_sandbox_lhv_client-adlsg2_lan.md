@@ -340,26 +340,26 @@ Prior to performing these tasks, the Databricks cluster must be in a **running**
 
 ### Setup Databricks Notebook to view Data.
 
-1. Navigate to your Azure Databricks Home page - The url is dependent on location, however if you are based in west Europe, you can visit https://westeurope.azuredatabricks.net.
+  1. Navigate to your Azure Databricks Home page - The url is dependent on location, however if you are based in west Europe, you can visit https://westeurope.azuredatabricks.net.
 
-2. Create a Cluster Notebook:
+  2. Create a Cluster Notebook:
 
-  a. Click Workspace on the left hand side > click the drop down arrow > Create > Notebook > Name: WD-demo Language: SQL Cluster:(Choose cluster made earlier)
+    a. Click Workspace on the left hand side > click the drop down arrow > Create > Notebook > Name: WD-demo Language: SQL Cluster:(Choose cluster made earlier)
 
-3. You should now see a blank notebook.
+  3. You should now see a blank notebook.
 
-  a. Inside the 'Cmd 1' box add the query
-  `select * from databricksdemo.customer_addresses_dim_hive;`
+    a. Inside the 'Cmd 1' box add the query
+    `select * from databricksdemo.customer_addresses_dim_hive;`
 
-  b. Click 'Run Cell' (looks like a play button in the top right of that box)
+    b. Click 'Run Cell' (looks like a play button in the top right of that box)
 
-4. Wait for the query to return, then select the drop down graph-type and Choose Map
+  4. Wait for the query to return, then select the drop down graph-type and Choose Map
 
-5. Under the Plot Options > remove all Keys > click and drag 'state_code' from the 'All fields' box, into the 'Keys' box.
+  5. Under the Plot Options > remove all Keys > click and drag 'state_code' from the 'All fields' box, into the 'Keys' box.
 
-6. Click Apply.
+  6. Click Apply.
 
-7. You should now see a plot of USA with colour shading - dependent on the population density.
+  7. You should now see a plot of USA with colour shading - dependent on the population density.
 
 ## Advanced options
 
